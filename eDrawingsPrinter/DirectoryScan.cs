@@ -24,7 +24,7 @@ namespace eDrawingsPrinter
             // File get added to dictionary as "File = Filepath"
             foreach (string file in subFiles)
             {
-                if (!(FileStorage.ContainsKey(Path.GetFileName(file))))
+                if (!(FileStorage.ContainsKey(Path.GetFileName(file))) && (file.EndsWith("dwg", StringComparison.CurrentCultureIgnoreCase) || file.EndsWith("edrw", StringComparison.CurrentCultureIgnoreCase)))
                 {
                     FileStorage.Add(Path.GetFileName(file), file);
                 }
@@ -41,18 +41,13 @@ namespace eDrawingsPrinter
 
         }
 
-       // Returns count of FileStorage dictionary, and calls save json to persist the data
-        public static void CheckDictionary() {
-            Console.WriteLine($"\n\nCount of Dictionary: {FileStorage.Keys.Count}");
-        }
-
         public static void DirectorySearch(string parentDirectory, List<string> exclusions, Data.DrawingGroup group)
         {
             FileStorage = new Dictionary<string, string>();
             Stopwatch stopWatch = Stopwatch.StartNew();
             GetDWGFiles(parentDirectory, exclusions);
             stopWatch.Stop();
-            Log.Write.Info($"DirSeach [Group: {group.ToString()} Time: {stopWatch.Elapsed}]");
+            Log.Write.Info($"DirSeach [Group: {group.ToString()} Time: {stopWatch.Elapsed} Count: {FileStorage.Keys.Count}]");
             Data.SaveJson(FileStorage, group);
         }
         

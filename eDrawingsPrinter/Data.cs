@@ -4,7 +4,9 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace eDrawingsPrinter
 {
@@ -34,6 +36,10 @@ namespace eDrawingsPrinter
 
         public static void PreCheckDataGridLoad()
         {
+            if (!File.Exists(OPDrawingDataFile) || !File.Exists(BMDrawingDataFile))
+            {
+                PreLoadMessage.ShowMessageBox("Currently Loading One Time Processing Files.", "Please Wait.");
+            }
             if (!File.Exists(OPDrawingDataFile))
             {
                 List<string> exclusions = new List<string> { "BM" };
@@ -45,6 +51,24 @@ namespace eDrawingsPrinter
                 List<string> exclusions = new List<string> { "" };
                 DirectoryScan.DirectorySearch(@"H:\DWG\BM", exclusions, DrawingGroup.BM);
             }
+
+            DataGrid.Load();
+
+            Thread t = new Thread(() => PostDataGridLoad());
+            t.Start();
+        }
+
+        public static bool UpdateAvailable { get; set; } = false;
+
+        public static void PostDataGridLoad()
+        {
+            List<string> exclusions = new List<string> { "BM" };
+            DirectoryScan.DirectorySearch(@"H:\DWG", exclusions, DrawingGroup.OP);
+
+            exclusions = new List<string> { "" };
+            DirectoryScan.DirectorySearch(@"H:\DWG\BM", exclusions, DrawingGroup.BM);
+
+            UpdateAvailable = true;
 
             DataGrid.Load();
         }

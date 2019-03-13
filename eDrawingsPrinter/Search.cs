@@ -5,11 +5,15 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace eDrawingsPrinter
 {
     class Search
     {
+        public static CheckBox StartsWithCheckBoxReference { get; set; }
+        public static TextBox FilterTextBoxReference { get; set; }
+
         // Filters datagrid on filename by given textbox value on button click.
         public static void Filter(bool checkBox, string filterText)
         {

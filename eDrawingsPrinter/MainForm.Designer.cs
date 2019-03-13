@@ -69,6 +69,7 @@ namespace eDrawingsPrinter
             this.MainDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MainDataGridView.Size = new System.Drawing.Size(815, 474);
             this.MainDataGridView.TabIndex = 4;
+            this.MainDataGridView.DoubleClick += new System.EventHandler(this.OpenButton_Click);
             // 
             // FilterSearchButton
             // 
@@ -157,6 +158,7 @@ namespace eDrawingsPrinter
             this.Name = "MainForm";
             this.Text = "eDrawing Finder";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.Shown += new System.EventHandler(this.MainForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();

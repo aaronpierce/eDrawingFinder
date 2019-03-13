@@ -26,22 +26,34 @@ namespace eDrawingsPrinter
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
 
+
+            Search.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
+            Search.FilterTextBoxReference = FilterTextBox;
             DataGrid.DataGridReference = MainDataGridView;
             Data.PreCheckDataGridLoad();
+        }
+
+        private void MainForm_Shown(object sender, EventArgs e)
+        {
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
         private void PrintButton_Click(object sender, EventArgs e)
         {
-
             // If printing is in process, skip the printing processes from spawning again.
-            if (!eDrawings.IsPrinting)
+            if (!Printer.IsPrinting)
             {
-                eDrawings.IsPrinting = true;
-               
-                Printer.Process(DrawingStorage.GetSelectedDrawings(MainDataGridView));
+                if (!(DataGrid.DataGridReference.AreAllCellsSelected(true)))
+                {
+                    Printer.IsPrinting = true;
+                    Printer.Process(DrawingStorage.GetSelectedDrawings(MainDataGridView));
+                }
+                else
+                {
+                    MessageBox.Show("You cannot print ALL files.", "Error: All Files Selected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-        }
+}
 
         // Apply search filters to data grid view on search button click.
         private void FilterSearchButton_Click(object sender, EventArgs e)
@@ -52,11 +64,18 @@ namespace eDrawingsPrinter
         // Opens selected files in data grid when clicking button
         private void OpenButton_Click(object sender, EventArgs e)
         {
-            IEnumerator<string> list = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
-            while (list.MoveNext())
+            if (!(DataGrid.DataGridReference.AreAllCellsSelected(true)))
             {
-                Process.Start(list.Current.ToString());
-                Log.Write.Info($"File opened: {list.Current.ToString()}");
+                IEnumerator<string> list = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
+                while (list.MoveNext())
+                {
+                    Process.Start(list.Current.ToString());
+                    Log.Write.Info($"File opened: {list.Current.ToString()}");
+                }
+            }
+            else
+            {
+                MessageBox.Show("You cannot open ALL files.", "Error: All Files Selected", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
                 
         }

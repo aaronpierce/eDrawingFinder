@@ -14,9 +14,6 @@ namespace eDrawingsPrinter
             Control = new eDrawingHostControl.eDrawingControl();
         }
         public eDrawingHostControl.eDrawingControl Control { get; set; }
-
-
-        public bool IsPrinting { get; set; } = false;
     }
 }
 

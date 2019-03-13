@@ -11,6 +11,7 @@ namespace eDrawingsPrinter
     {
         // Used to accss default printer settings on machine.
         private static PrinterSettings printerSettings = new PrinterSettings();
+        public static bool IsPrinting { get; set; } = false;
 
         // Set true after events are established upon first run.
         private static bool EventsHandled { get; set; }  = false;
@@ -82,18 +83,14 @@ namespace eDrawingsPrinter
                 // Once the document is loaded, send it through the print function.
                 MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedLoadingDocument += (string fileName) =>
                 {
-                    Console.WriteLine("{0} finished loading.", fileName);
                     Print(filename: fileName, pdf: false);
-                    Console.WriteLine("{0} printed.", fileName);
                 };
 
                 // Once printing is complete, send closeing function to document.
                 MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedPrintingDocument += (string fileName) =>
                 {
-
-                    Console.WriteLine("{0} finished printing.", fileName);
+                    Log.Write.Info($"Printed: {fileName}");
                     MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
-                    Console.WriteLine("{0} closed.", fileName);
 
 
                     // If another file exists in list of drawings, move to the next, open it, and start chain of events.
@@ -105,8 +102,7 @@ namespace eDrawingsPrinter
                     // Otherwise, end printing jobs.
                     else
                     {
-                        MainForm.eDrawings.IsPrinting = false;
-                        Console.WriteLine("Process Complete.");
+                        IsPrinting = false;
                     }
                 };
 

@@ -15,8 +15,17 @@ namespace eDrawingsPrinter
             // Calling this loads json data to disk, converts from dictionary to data table and updates DrawingDataTable.
             DrawingStorage.SetDataTable();
 
-            // Uses the just updated variable DrawingDataTable as the data source for grid view.
-            DataGridReference.DataSource = DrawingStorage.OPDrawingDataTable;
+            if (Data.UpdateAvailable)
+            {
+                Data.UpdateAvailable = false;
+            }
+            else
+            {
+                // Uses the just updated variable DrawingDataTable as the data source for grid view.
+                DataGridReference.DataSource = DrawingStorage.OPDrawingDataTable;
+            }
+
+            
         }
     }
 }
