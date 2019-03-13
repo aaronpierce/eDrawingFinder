@@ -31,148 +31,147 @@ namespace eDrawingsPrinter
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
-            this.ButtonTestPrint = new System.Windows.Forms.Button();
-            this.FilePathTextbox = new System.Windows.Forms.TextBox();
-            this.FileTreeButton = new System.Windows.Forms.Button();
-            this.FilePathTextboxLabel = new System.Windows.Forms.Label();
-            this.dataGridView1 = new System.Windows.Forms.DataGridView();
-            this.LoadDataSourceButton = new System.Windows.Forms.Button();
-            this.FilterButton = new System.Windows.Forms.Button();
+            this.PrintButton = new System.Windows.Forms.Button();
+            this.MainDataGridView = new System.Windows.Forms.DataGridView();
+            this.FilterSearchButton = new System.Windows.Forms.Button();
             this.FilterTextBox = new System.Windows.Forms.TextBox();
-            this.ContainsFilterCheckBox = new System.Windows.Forms.CheckBox();
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).BeginInit();
+            this.StartsWithFilterCheckBox = new System.Windows.Forms.CheckBox();
+            this.OpenButton = new System.Windows.Forms.Button();
+            this.OPRadioButton = new System.Windows.Forms.RadioButton();
+            this.BMRadioButton = new System.Windows.Forms.RadioButton();
+            ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
-            // ButtonTestPrint
+            // PrintButton
             // 
-            this.ButtonTestPrint.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ButtonTestPrint.Location = new System.Drawing.Point(20, 12);
-            this.ButtonTestPrint.Name = "ButtonTestPrint";
-            this.ButtonTestPrint.Size = new System.Drawing.Size(111, 26);
-            this.ButtonTestPrint.TabIndex = 0;
-            this.ButtonTestPrint.Text = "Print Test";
-            this.ButtonTestPrint.UseVisualStyleBackColor = true;
-            this.ButtonTestPrint.Click += new System.EventHandler(this.ButtonTestPrint_Click);
+            this.PrintButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.PrintButton.Location = new System.Drawing.Point(612, 9);
+            this.PrintButton.Name = "PrintButton";
+            this.PrintButton.Size = new System.Drawing.Size(84, 25);
+            this.PrintButton.TabIndex = 0;
+            this.PrintButton.Text = "Print";
+            this.PrintButton.UseVisualStyleBackColor = true;
+            this.PrintButton.Click += new System.EventHandler(this.PrintButton_Click);
             // 
-            // FilePathTextbox
+            // MainDataGridView
             // 
-            this.FilePathTextbox.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this.FilePathTextbox.Location = new System.Drawing.Point(270, 45);
-            this.FilePathTextbox.Name = "FilePathTextbox";
-            this.FilePathTextbox.Size = new System.Drawing.Size(281, 20);
-            this.FilePathTextbox.TabIndex = 1;
-            this.FilePathTextbox.Text = "H:\\DWG";
+            this.MainDataGridView.AllowUserToAddRows = false;
+            this.MainDataGridView.AllowUserToDeleteRows = false;
+            this.MainDataGridView.AllowUserToResizeColumns = false;
+            this.MainDataGridView.AllowUserToResizeRows = false;
+            this.MainDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
+            this.MainDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.MainDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
+            this.MainDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.MainDataGridView.Location = new System.Drawing.Point(20, 41);
+            this.MainDataGridView.Name = "MainDataGridView";
+            this.MainDataGridView.ReadOnly = true;
+            this.MainDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
+            this.MainDataGridView.Size = new System.Drawing.Size(815, 474);
+            this.MainDataGridView.TabIndex = 4;
             // 
-            // FileTreeButton
+            // FilterSearchButton
             // 
-            this.FileTreeButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.FileTreeButton.Location = new System.Drawing.Point(644, 12);
-            this.FileTreeButton.Name = "FileTreeButton";
-            this.FileTreeButton.Size = new System.Drawing.Size(111, 25);
-            this.FileTreeButton.TabIndex = 2;
-            this.FileTreeButton.Text = "Scan Network";
-            this.FileTreeButton.UseVisualStyleBackColor = true;
-            this.FileTreeButton.Click += new System.EventHandler(this.FileTreeButton_Click);
-            // 
-            // FilePathTextboxLabel
-            // 
-            this.FilePathTextboxLabel.AutoSize = true;
-            this.FilePathTextboxLabel.Location = new System.Drawing.Point(216, 48);
-            this.FilePathTextboxLabel.Name = "FilePathTextboxLabel";
-            this.FilePathTextboxLabel.Size = new System.Drawing.Size(48, 13);
-            this.FilePathTextboxLabel.TabIndex = 3;
-            this.FilePathTextboxLabel.Text = "File Path";
-            // 
-            // dataGridView1
-            // 
-            this.dataGridView1.AllowUserToAddRows = false;
-            this.dataGridView1.AllowUserToDeleteRows = false;
-            this.dataGridView1.AllowUserToResizeColumns = false;
-            this.dataGridView1.AllowUserToResizeRows = false;
-            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.dataGridView1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.dataGridView1.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
-            this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.dataGridView1.Location = new System.Drawing.Point(20, 107);
-            this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.ReadOnly = true;
-            this.dataGridView1.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dataGridView1.Size = new System.Drawing.Size(735, 408);
-            this.dataGridView1.TabIndex = 4;
-            // 
-            // LoadDataSourceButton
-            // 
-            this.LoadDataSourceButton.Location = new System.Drawing.Point(219, 11);
-            this.LoadDataSourceButton.Name = "LoadDataSourceButton";
-            this.LoadDataSourceButton.Size = new System.Drawing.Size(332, 26);
-            this.LoadDataSourceButton.TabIndex = 5;
-            this.LoadDataSourceButton.Text = "Load Data Source";
-            this.LoadDataSourceButton.UseVisualStyleBackColor = true;
-            this.LoadDataSourceButton.Click += new System.EventHandler(this.LoadDataSourceButton_Click);
-            // 
-            // FilterButton
-            // 
-            this.FilterButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.FilterButton.Location = new System.Drawing.Point(20, 76);
-            this.FilterButton.Name = "FilterButton";
-            this.FilterButton.Size = new System.Drawing.Size(111, 25);
-            this.FilterButton.TabIndex = 6;
-            this.FilterButton.Text = "Filter";
-            this.FilterButton.UseVisualStyleBackColor = true;
-            this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
+            this.FilterSearchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.FilterSearchButton.Location = new System.Drawing.Point(20, 10);
+            this.FilterSearchButton.Name = "FilterSearchButton";
+            this.FilterSearchButton.Size = new System.Drawing.Size(93, 25);
+            this.FilterSearchButton.TabIndex = 6;
+            this.FilterSearchButton.Text = "Search";
+            this.FilterSearchButton.UseVisualStyleBackColor = true;
+            this.FilterSearchButton.Click += new System.EventHandler(this.FilterSearchButton_Click);
             // 
             // FilterTextBox
             // 
-            this.FilterTextBox.Location = new System.Drawing.Point(137, 80);
+            this.FilterTextBox.Location = new System.Drawing.Point(137, 14);
             this.FilterTextBox.Name = "FilterTextBox";
-            this.FilterTextBox.Size = new System.Drawing.Size(228, 20);
+            this.FilterTextBox.Size = new System.Drawing.Size(254, 20);
             this.FilterTextBox.TabIndex = 7;
             // 
-            // ContainsFilterCheckBox
+            // StartsWithFilterCheckBox
             // 
-            this.ContainsFilterCheckBox.AutoSize = true;
-            this.ContainsFilterCheckBox.Location = new System.Drawing.Point(371, 82);
-            this.ContainsFilterCheckBox.Name = "ContainsFilterCheckBox";
-            this.ContainsFilterCheckBox.Size = new System.Drawing.Size(67, 17);
-            this.ContainsFilterCheckBox.TabIndex = 8;
-            this.ContainsFilterCheckBox.Text = "Contains";
-            this.ContainsFilterCheckBox.UseVisualStyleBackColor = true;
+            this.StartsWithFilterCheckBox.AutoSize = true;
+            this.StartsWithFilterCheckBox.Location = new System.Drawing.Point(397, 16);
+            this.StartsWithFilterCheckBox.Name = "StartsWithFilterCheckBox";
+            this.StartsWithFilterCheckBox.Size = new System.Drawing.Size(78, 17);
+            this.StartsWithFilterCheckBox.TabIndex = 8;
+            this.StartsWithFilterCheckBox.Text = "Starts Wtih";
+            this.StartsWithFilterCheckBox.UseVisualStyleBackColor = true;
+            this.StartsWithFilterCheckBox.CheckedChanged += new System.EventHandler(this.StartsWithFilterCheckBox_CheckedChanged);
+            // 
+            // OpenButton
+            // 
+            this.OpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.OpenButton.Location = new System.Drawing.Point(711, 8);
+            this.OpenButton.Name = "OpenButton";
+            this.OpenButton.Size = new System.Drawing.Size(84, 25);
+            this.OpenButton.TabIndex = 9;
+            this.OpenButton.Text = "Open";
+            this.OpenButton.UseVisualStyleBackColor = true;
+            this.OpenButton.Click += new System.EventHandler(this.OpenButton_Click);
+            // 
+            // OPRadioButton
+            // 
+            this.OPRadioButton.AutoSize = true;
+            this.OPRadioButton.BackColor = System.Drawing.Color.Transparent;
+            this.OPRadioButton.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
+            this.OPRadioButton.Checked = true;
+            this.OPRadioButton.Location = new System.Drawing.Point(498, 15);
+            this.OPRadioButton.Name = "OPRadioButton";
+            this.OPRadioButton.Size = new System.Drawing.Size(40, 17);
+            this.OPRadioButton.TabIndex = 10;
+            this.OPRadioButton.TabStop = true;
+            this.OPRadioButton.Text = "OP";
+            this.OPRadioButton.UseVisualStyleBackColor = false;
+            this.OPRadioButton.CheckedChanged += new System.EventHandler(this.OPRadioButton_CheckedChanged);
+            // 
+            // BMRadioButton
+            // 
+            this.BMRadioButton.AutoSize = true;
+            this.BMRadioButton.BackColor = System.Drawing.Color.Transparent;
+            this.BMRadioButton.Location = new System.Drawing.Point(544, 15);
+            this.BMRadioButton.Name = "BMRadioButton";
+            this.BMRadioButton.Size = new System.Drawing.Size(41, 17);
+            this.BMRadioButton.TabIndex = 11;
+            this.BMRadioButton.Text = "BM";
+            this.BMRadioButton.UseVisualStyleBackColor = false;
+            this.BMRadioButton.CheckedChanged += new System.EventHandler(this.BMRadioButton_CheckedChanged);
             // 
             // MainForm
             // 
+            this.AcceptButton = this.FilterSearchButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(778, 543);
-            this.Controls.Add(this.ContainsFilterCheckBox);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.ClientSize = new System.Drawing.Size(856, 543);
+            this.Controls.Add(this.BMRadioButton);
+            this.Controls.Add(this.OPRadioButton);
+            this.Controls.Add(this.OpenButton);
+            this.Controls.Add(this.StartsWithFilterCheckBox);
             this.Controls.Add(this.FilterTextBox);
-            this.Controls.Add(this.FilterButton);
-            this.Controls.Add(this.LoadDataSourceButton);
-            this.Controls.Add(this.dataGridView1);
-            this.Controls.Add(this.FilePathTextboxLabel);
-            this.Controls.Add(this.FileTreeButton);
-            this.Controls.Add(this.FilePathTextbox);
-            this.Controls.Add(this.ButtonTestPrint);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.Controls.Add(this.FilterSearchButton);
+            this.Controls.Add(this.MainDataGridView);
+            this.Controls.Add(this.PrintButton);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "MainForm";
-            this.Text = "eDrawing Printer";
+            this.Text = "eDrawing Finder";
             this.Load += new System.EventHandler(this.MainForm_Load);
-            ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
         #endregion
 
-        private System.Windows.Forms.Button ButtonTestPrint;
-        private System.Windows.Forms.TextBox FilePathTextbox;
-        private System.Windows.Forms.Button FileTreeButton;
-        private System.Windows.Forms.Label FilePathTextboxLabel;
-        private System.Windows.Forms.DataGridView dataGridView1;
-        private System.Windows.Forms.Button LoadDataSourceButton;
-        private System.Windows.Forms.Button FilterButton;
+        private System.Windows.Forms.Button PrintButton;
+        private System.Windows.Forms.DataGridView MainDataGridView;
+        private System.Windows.Forms.Button FilterSearchButton;
         private System.Windows.Forms.TextBox FilterTextBox;
-        private System.Windows.Forms.CheckBox ContainsFilterCheckBox;
+        private System.Windows.Forms.CheckBox StartsWithFilterCheckBox;
+        private System.Windows.Forms.Button OpenButton;
+        private System.Windows.Forms.RadioButton OPRadioButton;
+        private System.Windows.Forms.RadioButton BMRadioButton;
     }
 }
 

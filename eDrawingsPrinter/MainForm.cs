@@ -16,7 +16,6 @@ namespace eDrawingsPrinter
     {
         // Gives the form access to the eDrawingHostControl as eDrawings.Control
         public static EDrawings eDrawings = new EDrawings();
-
         public MainForm()
         {
             InitializeComponent();
@@ -26,66 +25,56 @@ namespace eDrawingsPrinter
             // Once the form loads, add the Control and set it to invisible.
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
+
+            DataGrid.DataGridReference = MainDataGridView;
+            Data.PreCheckDataGridLoad();
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
-        private void ButtonTestPrint_Click(object sender, EventArgs e)
+        private void PrintButton_Click(object sender, EventArgs e)
         {
 
             // If printing is in process, skip the printing processes from spawning again.
             if (!eDrawings.IsPrinting)
             {
                 eDrawings.IsPrinting = true;
-                List<string> items = new List<string>();
-                foreach (DataGridViewTextBoxCell item in dataGridView1.SelectedCells)
-                {
-                    if (item.ColumnIndex == 1)
-                    {
-                        items.Add(item.Value.ToString());
-                        Console.WriteLine(item.Value.ToString());
-                    }
-                }
-
-                // Gets an enumearator from selected data grid items and sends those into the printer functions
-                IEnumerator<string> DrawingList = DrawingStorage.DataGridDrawings(items);
-                Printer.Process(DrawingList);
+               
+                Printer.Process(DrawingStorage.GetSelectedDrawings(MainDataGridView));
             }
         }
 
-        // Calls directory scanning functions on button click.
-        private void FileTreeButton_Click(object sender, EventArgs e)
+        // Apply search filters to data grid view on search button click.
+        private void FilterSearchButton_Click(object sender, EventArgs e)
         {
-            Stopwatch stopWatch = Stopwatch.StartNew();
-            // Takes input of textbox as argument on which directory to scan
-            FileTree.GetDWGFiles(FilePathTextbox.Text);
-            stopWatch.Stop();
-            Console.WriteLine(stopWatch.Elapsed);
-            // Calls function for seeing directory size, and saving directory to json.
-            FileTree.CheckDictionary();
+            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
         }
 
-        // Takes json file and fills data grid view with that data
-        private void LoadDataSourceButton_Click(object sender, EventArgs e)
+        // Opens selected files in data grid when clicking button
+        private void OpenButton_Click(object sender, EventArgs e)
         {
-            // Calling this loads json data to disk, converts from dictionary to data table and updates DrawingDataTable.
-            DrawingStorage.SetDataTable();
-
-            // Uses the just updated variable DrawingDataTable as the data source for grid view.
-            dataGridView1.DataSource = DrawingStorage.DrawingDataTable;
+            IEnumerator<string> list = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
+            while (list.MoveNext())
+            {
+                Process.Start(list.Current.ToString());
+                Log.Write.Info($"File opened: {list.Current.ToString()}");
+            }
+                
         }
 
-        // Filters datagrid on filename but given textbox value on button click.
-        private void FilterButton_Click(object sender, EventArgs e)
+        // Apply search filter instantly when box is checked.
+        private void StartsWithFilterCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            // If contains check box is checked, add '%' in front of the filtering text as a wildcard.
-            var Contains = ContainsFilterCheckBox.Checked == false ? "" : "%";
+            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
+        }
 
-            // Takes first column name and applies to a filter string
-            var Filter = $"{dataGridView1.Columns[0].HeaderText.ToString()} LIKE '{Contains}{FilterTextBox.Text}%'";
+        private void OPRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            DataGrid.DataGridReference.DataSource = DrawingStorage.OPDrawingDataTable;
+        }
 
-            DrawingStorage.DrawingDataTable.DefaultView.RowFilter = Filter;
-            
-
+        private void BMRadioButton_CheckedChanged(object sender, EventArgs e)
+        {
+            DataGrid.DataGridReference.DataSource = DrawingStorage.BMDrawingDataTable;
         }
     }
 }

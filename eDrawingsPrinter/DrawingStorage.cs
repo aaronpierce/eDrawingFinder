@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using System.IO;
 using Newtonsoft.Json;
 using System.Data;
+using System.Windows.Forms;
 
 namespace eDrawingsPrinter
 {
     class DrawingStorage
     {
         // Return Enumuerator from selected drawings in DataGridView
-        public static IEnumerator<string> DataGridDrawings(List<string> list)
+        public static IEnumerator<string> DrawingListConvertToEnumerator(List<string> list)
         {
             foreach (string item in list) { yield return item; }
         }
@@ -30,34 +31,11 @@ namespace eDrawingsPrinter
         }
         public static IEnumerator<string> DrawingList = LoadDrawings(@"C:\Users\apierce\Desktop\test\list.txt");
         */
-
-
-        // Storage loacation for drawing json files.
-        private static string filepath = @"C:\Users\apierce\Desktop\filepaths.json";
-
-        // Function for saving directory scan results to disk as json file.
-        public static void SaveJson(Dictionary<string, string> drawingDictionary)
-        {
-            using (StreamWriter file = new StreamWriter(filepath, false))
-            {
-                file.Write(JsonConvert.SerializeObject(drawingDictionary, Formatting.Indented));
-            }
-        }
-
-        // Function to load json from disk to dictionary.
-        public static Dictionary<string, string> LoadJson()
-        {
-            using (StreamReader file = new StreamReader(filepath))
-            {
-                Dictionary<string, string> pathDictionary = JsonConvert.DeserializeObject<Dictionary<string, string>>(file.ReadToEnd());
-                return pathDictionary;
-            }
-        }
-
+        
         // Converts loaded dictionary to data table for use in data grid view
-        private static DataTable ConvertToDataTable()
+        private static DataTable ConvertToDataTable(Data.DrawingGroup drawingGroup)
         {
-            IEnumerable<Drawing> DrawingDataSource = from row in DrawingStorage.LoadJson() select new Drawing() { FileName = row.Key, FilePath = row.Value };
+            IEnumerable<Drawing> DrawingDataSource = from row in Data.LoadJson(drawingGroup) select new Drawing() { FileName = row.Key, FilePath = row.Value };
 
             DataTable dt = new DataTable();
             dt.Columns.Add("File");
@@ -77,12 +55,31 @@ namespace eDrawingsPrinter
         }
 
         // Data table varibale used by data grid view
-        public static DataTable DrawingDataTable { get; set; }
+        public static DataTable OPDrawingDataTable { get; set; }
+        public static DataTable BMDrawingDataTable { get; set; }
 
         // Calling this updates the data drawing table with json file.
         public static void SetDataTable()
         {
-            DrawingDataTable = ConvertToDataTable();
+            OPDrawingDataTable = ConvertToDataTable(Data.DrawingGroup.OP);
+            BMDrawingDataTable = ConvertToDataTable(Data.DrawingGroup.BM);
+        }
+
+        public static IEnumerator<string> GetSelectedDrawings(DataGridView dgv)
+        {
+            List<string> items = new List<string>();
+            foreach (DataGridViewTextBoxCell item in dgv.SelectedCells)
+            {
+                if (item.ColumnIndex == 1)
+                {
+                    items.Add(item.Value.ToString());
+                }
+            }
+
+            // Gets an enumearator from selected data grid items and sends those into the printer functions
+            IEnumerator<string> DrawingList = DrawingListConvertToEnumerator(items);
+
+            return DrawingList;
         }
 
     }
