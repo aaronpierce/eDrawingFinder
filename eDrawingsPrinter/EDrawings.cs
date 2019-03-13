@@ -8,12 +8,14 @@ namespace eDrawingsPrinter
 {
     public class EDrawings
     {
-
+        // class that creates the eDrawingHostControl for providing printing functions.
         public EDrawings()
         {
             Control = new eDrawingHostControl.eDrawingControl();
         }
         public eDrawingHostControl.eDrawingControl Control { get; set; }
+
+
         public bool IsPrinting { get; set; } = false;
     }
 }

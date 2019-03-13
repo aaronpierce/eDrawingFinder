@@ -56,6 +56,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Drawing.cs" />
     <Compile Include="DrawingStorage.cs" />
     <Compile Include="FileTree.cs" />
     <Compile Include="EDrawings.cs" />
