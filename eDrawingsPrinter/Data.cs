@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace eDrawingsPrinter
+namespace eDrawingFinder
 {
     public static class Data
     {
@@ -38,7 +38,7 @@ namespace eDrawingsPrinter
         {
             if (!File.Exists(OPDrawingDataFile) || !File.Exists(BMDrawingDataFile))
             {
-                PreLoadMessage.ShowMessageBox("Currently Loading One Time Processing Files.", "Please Wait.");
+                PreLoadMessage.ShowMessageBox("Database being created. This is a one time process.\n\nExit this window once the application starts.", "Please Wait.");
             }
             if (!File.Exists(OPDrawingDataFile))
             {
@@ -54,8 +54,8 @@ namespace eDrawingsPrinter
 
             DataGrid.Load();
 
-            Thread t = new Thread(() => PostDataGridLoad());
-            t.Start();
+            //Thread t = new Thread(() => PostDataGridLoad());
+            //t.Start();
         }
 
         public static bool UpdateAvailable { get; set; } = false;

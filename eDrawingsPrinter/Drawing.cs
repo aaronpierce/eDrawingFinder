@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace eDrawingsPrinter
+namespace eDrawingFinder
 {
     // Object used to store Filename and Path information of a single DWG file.
     public class Drawing

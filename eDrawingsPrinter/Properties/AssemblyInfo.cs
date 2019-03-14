@@ -1,15 +1,16 @@
-﻿using System.Reflection;
+﻿using System.Resources;
+using System.Reflection;
 using System.Runtime.CompilerServices;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("eDrawingsPrinter")]
-[assembly: AssemblyDescription("")]
+[assembly: AssemblyTitle("eDrawingsFinder")]
+[assembly: AssemblyDescription("CAD Drawing Search Utility")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("eDrawingsPrinter")]
+[assembly: AssemblyCompany("Pan-Oston Company")]
+[assembly: AssemblyProduct("eDrawingsFinder")]
 [assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -33,6 +34,8 @@ using System.Runtime.InteropServices;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 [assembly: AssemblyVersion("1.0.0.0")]
-[assembly: AssemblyFileVersion("1.0.0.0")]
+[assembly: AssemblyFileVersion("3.0.0.0")]
 
 [assembly: log4net.Config.XmlConfigurator(ConfigFile = "log4net.config")]
+[assembly: NeutralResourcesLanguage("en-US")]
+

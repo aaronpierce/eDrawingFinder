@@ -4,31 +4,41 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Drawing.Printing;
+using System.Windows.Forms;
 
-namespace eDrawingsPrinter
+namespace eDrawingFinder
 {
     public class Printer
     {
+        public static ToolStripComboBox PrinterSelectionComboBoxRefrence;
+        public static void SetPrinterOptions()
+        {
+            PrinterSettings.StringCollection printers = PrinterSettings.InstalledPrinters;
+            var printersList = new List<string>();
+            foreach (string printer in printers)
+            {
+                printersList.Add(printer);
+            }
+
+            PrinterSelectionComboBoxRefrence.ComboBox.Items.Clear();
+            PrinterSelectionComboBoxRefrence.ComboBox.Items.AddRange(printersList.ToArray<object>());
+
+        }
+
         // Used to accss default printer settings on machine.
-        private static PrinterSettings printerSettings = new PrinterSettings();
+        private static PrinterSettings PrinterSettings = new PrinterSettings();
+
+        public static string SelectedPrinter { get; set; }
+   
         public static bool IsPrinting { get; set; } = false;
 
         // Set true after events are established upon first run.
         private static bool EventsHandled { get; set; }  = false;
 
         // Main print function that established page setup options and sends print command.
-        private static void Print(string filename, bool pdf)
+        private static void Print(string filename)
         {
-            string printer;
-
-            if (pdf == true)
-            {
-                printer = "Foxit Reader PDF Printer";
-            }
-            else
-            {
-                printer = printerSettings.PrinterName;
-            }
+            string printer = SelectedPrinter ?? PrinterSettings.PrinterName;
 
             // Sets page options
             MainForm.eDrawings.Control.eDrawingControlWrapper.SetPageSetupOptions(
@@ -83,7 +93,7 @@ namespace eDrawingsPrinter
                 // Once the document is loaded, send it through the print function.
                 MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedLoadingDocument += (string fileName) =>
                 {
-                    Print(filename: fileName, pdf: false);
+                    Print(filename: fileName);
                 };
 
                 // Once printing is complete, send closeing function to document.

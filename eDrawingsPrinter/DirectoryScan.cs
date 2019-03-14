@@ -5,7 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 
-namespace eDrawingsPrinter
+namespace eDrawingFinder
 {
     public static class DirectoryScan
     {

@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace eDrawingsPrinter
+namespace eDrawingFinder
 {
     class Log
     {

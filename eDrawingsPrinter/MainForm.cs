@@ -9,8 +9,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Drawing.Printing;
 
-namespace eDrawingsPrinter
+namespace eDrawingFinder
 {
     public partial class MainForm : Form
     {
@@ -20,13 +21,14 @@ namespace eDrawingsPrinter
         {
             InitializeComponent();
         }
+
         private void MainForm_Load(object sender, EventArgs e)
         {
             // Once the form loads, add the Control and set it to invisible.
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
 
-
+            Printer.PrinterSelectionComboBoxRefrence = PrinterSelectionComboBox;
             Search.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
             Search.FilterTextBoxReference = FilterTextBox;
             DataGrid.DataGridReference = MainDataGridView;
@@ -43,14 +45,14 @@ namespace eDrawingsPrinter
             // If printing is in process, skip the printing processes from spawning again.
             if (!Printer.IsPrinting)
             {
-                if (!(DataGrid.DataGridReference.AreAllCellsSelected(true)))
+                if ((DataGrid.DataGridReference.AreAllCellsSelected(true)) && (DataGrid.DataGridReference.SelectedRows.Count > 10))
                 {
-                    Printer.IsPrinting = true;
-                    Printer.Process(DrawingStorage.GetSelectedDrawings(MainDataGridView));
+                    MessageBox.Show("Too many files are currently selected.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {
-                    MessageBox.Show("You cannot print ALL files.", "Error: All Files Selected", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Printer.IsPrinting = true;
+                    Printer.Process(DrawingStorage.GetSelectedDrawings(MainDataGridView));
                 }
             }
 }
@@ -64,7 +66,12 @@ namespace eDrawingsPrinter
         // Opens selected files in data grid when clicking button
         private void OpenButton_Click(object sender, EventArgs e)
         {
-            if (!(DataGrid.DataGridReference.AreAllCellsSelected(true)))
+
+            if ((DataGrid.DataGridReference.AreAllCellsSelected(true)) && (DataGrid.DataGridReference.SelectedRows.Count > 10))
+            {
+                MessageBox.Show("Too many files are currently selected.", "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else
             {
                 IEnumerator<string> list = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
                 while (list.MoveNext())
@@ -72,10 +79,6 @@ namespace eDrawingsPrinter
                     Process.Start(list.Current.ToString());
                     Log.Write.Info($"File opened: {list.Current.ToString()}");
                 }
-            }
-            else
-            {
-                MessageBox.Show("You cannot open ALL files.", "Error: All Files Selected", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
                 
         }
@@ -94,6 +97,21 @@ namespace eDrawingsPrinter
         private void BMRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             DataGrid.DataGridReference.DataSource = DrawingStorage.BMDrawingDataTable;
+        }
+
+        private void SettingsMainToolStripMenu_Click(object sender, EventArgs e)
+        {
+            Printer.SetPrinterOptions();
+        }
+
+        private void PrinterSelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            this.Invoke((MethodInvoker)(() => Printer.SelectedPrinter = PrinterSelectionComboBox.Text));
+        }
+
+        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        {
+            this.Close();
         }
     }
 }

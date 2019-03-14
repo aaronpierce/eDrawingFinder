@@ -8,7 +8,7 @@ using Newtonsoft.Json;
 using System.Data;
 using System.Windows.Forms;
 
-namespace eDrawingsPrinter
+namespace eDrawingFinder
 {
     class DrawingStorage
     {
