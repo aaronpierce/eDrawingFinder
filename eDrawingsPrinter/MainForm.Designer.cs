@@ -49,6 +49,8 @@ namespace eDrawingFinder
             this.SettingsMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectionComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.PreviewFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
+            this.ExpandButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.MainToolStripMenu.SuspendLayout();
             this.SuspendLayout();
@@ -74,12 +76,13 @@ namespace eDrawingFinder
             this.MainDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.MainDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.MainDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.MainDataGridView.Location = new System.Drawing.Point(12, 63);
+            this.MainDataGridView.Location = new System.Drawing.Point(7, 62);
             this.MainDataGridView.Name = "MainDataGridView";
             this.MainDataGridView.ReadOnly = true;
             this.MainDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MainDataGridView.Size = new System.Drawing.Size(815, 474);
             this.MainDataGridView.TabIndex = 4;
+            this.MainDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MainDataGridView_CellClick);
             this.MainDataGridView.DoubleClick += new System.EventHandler(this.OpenButton_Click);
             // 
             // FilterSearchButton
@@ -114,7 +117,7 @@ namespace eDrawingFinder
             // OpenButton
             // 
             this.OpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.OpenButton.Location = new System.Drawing.Point(703, 30);
+            this.OpenButton.Location = new System.Drawing.Point(694, 31);
             this.OpenButton.Name = "OpenButton";
             this.OpenButton.Size = new System.Drawing.Size(84, 25);
             this.OpenButton.TabIndex = 9;
@@ -159,7 +162,7 @@ namespace eDrawingFinder
             this.MainToolStripMenu.Name = "MainToolStripMenu";
             this.MainToolStripMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.MainToolStripMenu.ShowItemToolTips = true;
-            this.MainToolStripMenu.Size = new System.Drawing.Size(840, 24);
+            this.MainToolStripMenu.Size = new System.Drawing.Size(1194, 24);
             this.MainToolStripMenu.TabIndex = 12;
             // 
             // FileMainToolStripMenu
@@ -179,7 +182,7 @@ namespace eDrawingFinder
             this.OpenMainToolStripMenu.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.OpenMainToolStripMenu.Name = "OpenMainToolStripMenu";
             this.OpenMainToolStripMenu.ShortcutKeyDisplayString = "";
-            this.OpenMainToolStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.OpenMainToolStripMenu.Size = new System.Drawing.Size(140, 22);
             this.OpenMainToolStripMenu.Text = "Open";
             this.OpenMainToolStripMenu.Click += new System.EventHandler(this.OpenButton_Click);
             // 
@@ -202,7 +205,7 @@ namespace eDrawingFinder
             // exitToolStripMenuItem1
             // 
             this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(180, 22);
+            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(140, 22);
             this.exitToolStripMenuItem1.Text = "E&xit";
             this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
             // 
@@ -227,7 +230,7 @@ namespace eDrawingFinder
             this.PrinterSelectMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrinterSelectionComboBox});
             this.PrinterSelectMainToolStripMenu.Name = "PrinterSelectMainToolStripMenu";
-            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(143, 22);
             this.PrinterSelectMainToolStripMenu.Text = "Printer Select";
             // 
             // PrinterSelectionComboBox
@@ -239,13 +242,33 @@ namespace eDrawingFinder
             this.PrinterSelectionComboBox.Sorted = true;
             this.PrinterSelectionComboBox.SelectedIndexChanged += new System.EventHandler(this.PrinterSelectionComboBox_SelectedIndexChanged);
             // 
+            // PreviewFlowLayoutPanel
+            // 
+            this.PreviewFlowLayoutPanel.Location = new System.Drawing.Point(835, 230);
+            this.PreviewFlowLayoutPanel.Name = "PreviewFlowLayoutPanel";
+            this.PreviewFlowLayoutPanel.Size = new System.Drawing.Size(352, 307);
+            this.PreviewFlowLayoutPanel.TabIndex = 13;
+            // 
+            // ExpandButton
+            // 
+            this.ExpandButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.ExpandButton.Image = ((System.Drawing.Image)(resources.GetObject("ExpandButton.Image")));
+            this.ExpandButton.Location = new System.Drawing.Point(797, 30);
+            this.ExpandButton.Name = "ExpandButton";
+            this.ExpandButton.Size = new System.Drawing.Size(25, 25);
+            this.ExpandButton.TabIndex = 14;
+            this.ExpandButton.UseVisualStyleBackColor = true;
+            this.ExpandButton.Click += new System.EventHandler(this.ExpandButton_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.FilterSearchButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(840, 558);
+            this.ClientSize = new System.Drawing.Size(1194, 548);
+            this.Controls.Add(this.ExpandButton);
+            this.Controls.Add(this.PreviewFlowLayoutPanel);
             this.Controls.Add(this.BMRadioButton);
             this.Controls.Add(this.OPRadioButton);
             this.Controls.Add(this.OpenButton);
@@ -291,6 +314,8 @@ namespace eDrawingFinder
         private System.Windows.Forms.ToolStripMenuItem SettingsMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem PrinterSelectMainToolStripMenu;
         private System.Windows.Forms.ToolStripComboBox PrinterSelectionComboBox;
+        private System.Windows.Forms.FlowLayoutPanel PreviewFlowLayoutPanel;
+        private System.Windows.Forms.Button ExpandButton;
     }
 }
 

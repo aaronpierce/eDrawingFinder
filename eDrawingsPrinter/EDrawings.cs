@@ -12,8 +12,12 @@ namespace eDrawingFinder
         public EDrawings()
         {
             Control = new eDrawingHostControl.eDrawingControl();
+            PreviewControl = new eDrawingHostControl.eDrawingControl();
+
+            
         }
         public eDrawingHostControl.eDrawingControl Control { get; set; }
+        public eDrawingHostControl.eDrawingControl PreviewControl { get; set; }
     }
 }
 

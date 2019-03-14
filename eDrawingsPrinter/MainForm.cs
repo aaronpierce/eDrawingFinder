@@ -28,15 +28,23 @@ namespace eDrawingFinder
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
 
+            this.PreviewFlowLayoutPanel.Controls.Add(eDrawings.PreviewControl);
+            eDrawings.PreviewControl.eDrawingControlWrapper.ViewOperator = EModelView.EMVOperators.eMVOperatorPan;
+
             Printer.PrinterSelectionComboBoxRefrence = PrinterSelectionComboBox;
             Search.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
             Search.FilterTextBoxReference = FilterTextBox;
             DataGrid.DataGridReference = MainDataGridView;
             Data.PreCheckDataGridLoad();
+
+            Preview.Expand();
+
+
         }
 
         private void MainForm_Shown(object sender, EventArgs e)
         {
+
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
@@ -112,6 +120,17 @@ namespace eDrawingFinder
         private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.Close();
+        }
+
+        private void ExpandButton_Click(object sender, EventArgs e)
+        {
+            Preview.Expand();
+        }
+
+        private void MainDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (Preview.MainFormExpanded)
+                Preview.ShowDrawing();
         }
     }
 }

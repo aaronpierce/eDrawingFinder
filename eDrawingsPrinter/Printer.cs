@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Drawing.Printing;
 using System.Windows.Forms;
+using EModelView;
 
 namespace eDrawingFinder
 {
@@ -28,12 +29,14 @@ namespace eDrawingFinder
         // Used to accss default printer settings on machine.
         private static PrinterSettings PrinterSettings = new PrinterSettings();
 
+        private static IEnumerator<string> DrawingListToPrint;
+
         public static string SelectedPrinter { get; set; }
    
         public static bool IsPrinting { get; set; } = false;
 
-        // Set true after events are established upon first run.
-        private static bool EventsHandled { get; set; }  = false;
+       
+
 
         // Main print function that established page setup options and sends print command.
         private static void Print(string filename)
@@ -74,50 +77,52 @@ namespace eDrawingFinder
         }
 
         // Starts chain of events for opening/printing/closing
-        public static void Process(IEnumerator<string> DrawingList)
+        public static void Process(IEnumerator<string> IncomingDrawingListToPrint)
         {
-            DrawingList.MoveNext();
+            DrawingListToPrint = IncomingDrawingListToPrint;
+            DrawingListToPrint.MoveNext();
 
             // Prints first file in list
-            MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingList.Current, true, false, true, "");
+            MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingListToPrint.Current, true, false, true, "");
 
             // Establishes the events needed for chain processing
-            HandleEvents(DrawingList);
+            EstablishHandlerEvents();
         }
 
-        private static void HandleEvents(IEnumerator<string> DrawingList)
+
+        private static void EstablishHandlerEvents()
         {
-            // If events have already been handled, skip this.
-            if (!EventsHandled) {
-                
-                // Once the document is loaded, send it through the print function.
-                MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedLoadingDocument += (string fileName) =>
-                {
-                    Print(filename: fileName);
-                };
+            MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedLoadingDocument += EDrawingControlWrapper_OnFinishedLoadingDocument;
+            MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedPrintingDocument += EDrawingControlWrapper_OnFinishedPrintingDocument;
+        }
 
-                // Once printing is complete, send closeing function to document.
-                MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedPrintingDocument += (string fileName) =>
-                {
-                    Log.Write.Info($"Printed: {fileName}");
-                    MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
+        private static void RemoveHandlerEvents()
+        {
+            MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedLoadingDocument -= EDrawingControlWrapper_OnFinishedLoadingDocument;
+            MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedPrintingDocument -= EDrawingControlWrapper_OnFinishedPrintingDocument;
+        }
 
+        private static void EDrawingControlWrapper_OnFinishedLoadingDocument(string FileName)
+        {
+            Print(filename: FileName);
+        }
+        private static void EDrawingControlWrapper_OnFinishedPrintingDocument(string PrintJobName)
+        {
+            Log.Write.Info($"Printed: {PrintJobName}");
+            MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
 
-                    // If another file exists in list of drawings, move to the next, open it, and start chain of events.
-                    if (DrawingList.MoveNext())
-                    {
-                        MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingList.Current, true, false, true, "");
-                    }
+            // If another file exists in list of drawings, move to the next, open it, and start chain of events.
+            if (DrawingListToPrint.MoveNext())
+            {
+                MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingListToPrint.Current, true, false, true, "");
+            }
 
-                    // Otherwise, end printing jobs.
-                    else
-                    {
-                        IsPrinting = false;
-                    }
-                };
-
-                // Establish events were handled.
-                EventsHandled = true;
+            // Otherwise, end printing jobs.
+            else
+            {
+                IsPrinting = false;
+                DrawingListToPrint = null;
+                RemoveHandlerEvents();
             }
         }
     }
