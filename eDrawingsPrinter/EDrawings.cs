@@ -8,7 +8,7 @@ namespace eDrawingFinder
 {
     public class EDrawings
     {
-        // class that creates the eDrawingHostControl for providing printing functions.
+        // Creates eDrawingHostControl for providing eDrawing functions.
         public EDrawings()
         {
             Control = new eDrawingHostControl.eDrawingControl();
@@ -16,7 +16,10 @@ namespace eDrawingFinder
 
             
         }
+        // Main control used for opening/printing files.
         public eDrawingHostControl.eDrawingControl Control { get; set; }
+
+        // Secondary control utilized for preview files on the side of UI
         public eDrawingHostControl.eDrawingControl PreviewControl { get; set; }
     }
 }

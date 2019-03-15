@@ -23,8 +23,11 @@ namespace eDrawingFinder
             // Takes first column name and applies to a filter string
             string filter = $"{DataGrid.DataGridReference.Columns[0].HeaderText.ToString()} LIKE '{startsWith}{filterText}%'";
 
+            // Applies filter to both data tables
             DrawingStorage.OPDrawingDataTable.DefaultView.RowFilter = filter;
             DrawingStorage.BMDrawingDataTable.DefaultView.RowFilter = filter;
+
+            // Sets current data grid to ascending order by default
             DataGrid.DataGridReference.Sort(DataGrid.DataGridReference.Columns["Path"], ListSortDirection.Ascending);
         }
     }

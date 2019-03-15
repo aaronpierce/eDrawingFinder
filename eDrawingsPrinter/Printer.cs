@@ -9,9 +9,13 @@ using EModelView;
 
 namespace eDrawingFinder
 {
+    // Provides printer functionaility 
     public class Printer
     {
+        // Gives public access to printer selection
         public static ToolStripComboBox PrinterSelectionComboBoxRefrence;
+
+        // Filles PrinterSelectionComboBox with list of installed printers upon opening
         public static void SetPrinterOptions()
         {
             PrinterSettings.StringCollection printers = PrinterSettings.InstalledPrinters;
@@ -32,7 +36,8 @@ namespace eDrawingFinder
         private static IEnumerator<string> DrawingListToPrint;
 
         public static string SelectedPrinter { get; set; }
-   
+
+        public static bool EventsHandled { get; set; } = false;
         public static bool IsPrinting { get; set; } = false;
 
        
@@ -41,6 +46,7 @@ namespace eDrawingFinder
         // Main print function that established page setup options and sends print command.
         private static void Print(string filename)
         {
+            // If no printer is selected, use computer default
             string printer = SelectedPrinter ?? PrinterSettings.PrinterName;
 
             // Sets page options
@@ -85,10 +91,10 @@ namespace eDrawingFinder
             // Prints first file in list
             MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingListToPrint.Current, true, false, true, "");
 
-            // Establishes the events needed for chain processing
-            EstablishHandlerEvents();
+            if (!EventsHandled)
+                // Establishes the events needed for chain processing
+                EstablishHandlerEvents();
         }
-
 
         private static void EstablishHandlerEvents()
         {
@@ -96,16 +102,20 @@ namespace eDrawingFinder
             MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedPrintingDocument += EDrawingControlWrapper_OnFinishedPrintingDocument;
         }
 
+        // Tested removing and adding events on every interaction. Current not in use. 
         private static void RemoveHandlerEvents()
         {
             MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedLoadingDocument -= EDrawingControlWrapper_OnFinishedLoadingDocument;
             MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedPrintingDocument -= EDrawingControlWrapper_OnFinishedPrintingDocument;
         }
 
+        // Once document fully loads, send it to print method
         private static void EDrawingControlWrapper_OnFinishedLoadingDocument(string FileName)
         {
             Print(filename: FileName);
         }
+
+        // Once document finishes printing, close it, and move to the next document, if available.
         private static void EDrawingControlWrapper_OnFinishedPrintingDocument(string PrintJobName)
         {
             Log.Write.Info($"Printed: {PrintJobName}");
@@ -122,7 +132,7 @@ namespace eDrawingFinder
             {
                 IsPrinting = false;
                 DrawingListToPrint = null;
-                RemoveHandlerEvents();
+                //RemoveHandlerEvents();
             }
         }
     }

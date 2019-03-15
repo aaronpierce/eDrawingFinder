@@ -41,6 +41,7 @@ namespace eDrawingFinder
 
         }
 
+        // Facilitates directory scanning by clearing storage dictionary, and sends save method.
         public static void DirectorySearch(string parentDirectory, List<string> exclusions, Data.DrawingGroup group)
         {
             FileStorage = new Dictionary<string, string>();

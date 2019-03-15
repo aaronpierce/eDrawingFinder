@@ -8,6 +8,7 @@ using System.Windows.Forms;
 
 namespace eDrawingFinder
 {
+    // Provides a seperate thread to display a message box while program runs directory scans.
     class PreLoadMessage
     {
         public static Thread MessageThread;

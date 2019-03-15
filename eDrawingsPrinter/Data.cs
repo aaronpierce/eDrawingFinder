@@ -12,8 +12,11 @@ namespace eDrawingFinder
 {
     public static class Data
     {
+        // Class to reference loading/saving data
         static Data()
         {
+
+            // Establishing disk file paths
             string appDataFolder = Environment.GetEnvironmentVariable("LOCALAPPDATA");
             string programAppDataFolder = Path.Combine(appDataFolder, "eDrawingFinder");
             string opDrawingDataFile = Path.Combine(programAppDataFolder, "OPDrawingPaths.json");
@@ -34,12 +37,16 @@ namespace eDrawingFinder
         public static string OPDrawingDataFile { get; }
         public static string BMDrawingDataFile { get; }
 
+        // If the required json files don't exists, make them.
         public static void PreCheckDataGridLoad()
         {
+            // If either dont exists, tell the user whats happening.
             if (!File.Exists(OPDrawingDataFile) || !File.Exists(BMDrawingDataFile))
             {
                 PreLoadMessage.ShowMessageBox("Database being created. This is a one time process.\n\nExit this window once the application starts.", "Please Wait.");
             }
+
+
             if (!File.Exists(OPDrawingDataFile))
             {
                 List<string> exclusions = new List<string> { "BM" };
@@ -52,6 +59,7 @@ namespace eDrawingFinder
                 DirectoryScan.DirectorySearch(@"H:\DWG\BM", exclusions, DrawingGroup.BM);
             }
 
+            // Loads json files to Data Grid for UI 
             DataGrid.Load();
 
             //Thread t = new Thread(() => PostDataGridLoad());
@@ -60,6 +68,7 @@ namespace eDrawingFinder
 
         public static bool UpdateAvailable { get; set; } = false;
 
+        // Runs every start after the inital loading to update datasets everytime.
         public static void PostDataGridLoad()
         {
             List<string> exclusions = new List<string> { "BM" };
@@ -68,8 +77,10 @@ namespace eDrawingFinder
             exclusions = new List<string> { "" };
             DirectoryScan.DirectorySearch(@"H:\DWG\BM", exclusions, DrawingGroup.BM);
 
+            // Tells program an updated set of files are available
             UpdateAvailable = true;
 
+            // Reloads DataGrid from disk
             DataGrid.Load();
         }
 
@@ -94,6 +105,7 @@ namespace eDrawingFinder
             }
         }
 
+        // Helper enum to distinguish which data set is being worked with
         public enum DrawingGroup
         {
             OP,

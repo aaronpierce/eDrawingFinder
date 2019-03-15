@@ -9,6 +9,7 @@ namespace eDrawingFinder
 {
     class DataGrid
     {
+        // Refernce to the main data grid for public access
         public static DataGridView DataGridReference { get; set; }
         public static void Load()
         {

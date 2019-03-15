@@ -65,6 +65,7 @@ namespace eDrawingFinder
             BMDrawingDataTable = ConvertToDataTable(Data.DrawingGroup.BM);
         }
 
+        // Returns items that have been selected in the UI Data Grid
         public static IEnumerator<string> GetSelectedDrawings(DataGridView dgv)
         {
             List<string> items = new List<string>();

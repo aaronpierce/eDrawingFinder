@@ -9,9 +9,10 @@ namespace eDrawingFinder
 {
     public static class Preview
     {
+
+        // Takes the topmost selected drawing from data grid and sends to previewcontrol for displaying on sidebar
         public static void ShowDrawing()
-        {
-            Console.WriteLine(MainForm.eDrawings.Control.eDrawingControlWrapper.FileName);
+        { 
             MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
 
             IEnumerator<string> selected = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
@@ -20,6 +21,7 @@ namespace eDrawingFinder
             MainForm.eDrawings.PreviewControl.eDrawingControlWrapper.OpenDoc(Current, false, false, false, "");
         }
 
+        // If expanded == false, extend width, otherwise shrink width
         public static void Expand()
         {
             if (MainFormExpanded)
