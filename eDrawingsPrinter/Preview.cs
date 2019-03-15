@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Text.RegularExpressions;
 
 namespace eDrawingFinder
 {
@@ -16,9 +18,20 @@ namespace eDrawingFinder
             MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
 
             IEnumerator<string> selected = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
-            selected.MoveNext();
-            Current = selected.Current;
-            MainForm.eDrawings.PreviewControl.eDrawingControlWrapper.OpenDoc(Current, false, false, false, "");
+            if (selected.MoveNext())
+            {
+                Current = selected.Current;
+
+                PreviewNameTextBoxRefernce.Text = Current.Split('\\').Last();
+
+                PreviewLastModifiedTextBoxReference.Text = File.GetLastWriteTime(Current).ToShortDateString();
+
+                Match regMatch = VersionRegex.Match(Path.GetFileNameWithoutExtension(Current));
+                PreviewRevisionTextBoxReference.Text = (regMatch.Success) ? regMatch.Value.ToUpper() : "";
+
+                MainForm.eDrawings.PreviewControl.eDrawingControlWrapper.OpenDoc(Current, false, false, false, "");
+                MainForm.eDrawings.PreviewControl.eDrawingControlWrapper.ViewOperator = EModelView.EMVOperators.eMVOperatorPan;
+            }
         }
 
         // If expanded == false, extend width, otherwise shrink width
@@ -39,5 +52,9 @@ namespace eDrawingFinder
         public static bool MainFormExpanded { get; set; } = true;
 
         private static string Current { get; set; }
+        public static TextBox PreviewNameTextBoxRefernce { get; set; }
+        public static TextBox PreviewLastModifiedTextBoxReference { get; set; }
+        public static TextBox PreviewRevisionTextBoxReference { get; set; }
+        private static Regex VersionRegex { get; set; } = new Regex(@"(r|R)[0-9]{1,2}$");
     }
 }

@@ -57,6 +57,7 @@ namespace eDrawingFinder
         // Data table varibale used by data grid view
         public static DataTable OPDrawingDataTable { get; set; }
         public static DataTable BMDrawingDataTable { get; set; }
+        public static DataTable CurrentDataTable { get; set; }
 
         // Calling this updates the data drawing table with json file.
         public static void SetDataTable()
@@ -71,9 +72,12 @@ namespace eDrawingFinder
             List<string> items = new List<string>();
             foreach (DataGridViewTextBoxCell item in dgv.SelectedCells)
             {
-                if (item.ColumnIndex == 1)
+                if (item.ColumnIndex == 1) 
                 {
-                    items.Add(item.Value.ToString());
+                    if (item.RowIndex >= 0)
+                    {
+                        items.Add(item.Value.ToString());
+                    }
                 }
             }
 

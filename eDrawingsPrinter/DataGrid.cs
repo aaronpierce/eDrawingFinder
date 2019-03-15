@@ -22,11 +22,12 @@ namespace eDrawingFinder
             }
             else
             {
+                DrawingStorage.CurrentDataTable = DrawingStorage.OPDrawingDataTable;
                 // Uses the just updated variable DrawingDataTable as the data source for grid view.
-                DataGridReference.DataSource = DrawingStorage.OPDrawingDataTable;
+                DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
             }
 
-            
+
         }
     }
 }

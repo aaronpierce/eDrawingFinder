@@ -17,6 +17,7 @@ namespace eDrawingFinder
     {
         // Gives the form access to the eDrawingHostControl as eDrawings.Control
         public static EDrawings eDrawings = new EDrawings();
+        public static BatchForm batchForm;
         public MainForm()
         {
             InitializeComponent();
@@ -28,9 +29,13 @@ namespace eDrawingFinder
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
 
-            this.PreviewFlowLayoutPanel.Controls.Add(eDrawings.PreviewControl);
-            eDrawings.PreviewControl.eDrawingControlWrapper.ViewOperator = EModelView.EMVOperators.eMVOperatorPan;
+            this.PreviewPanel.Controls.Add(eDrawings.PreviewControl);
 
+            //eDrawings.PreviewControl.eDrawingControlWrapper.
+
+            Preview.PreviewNameTextBoxRefernce = PreviewNameTextBox;
+            Preview.PreviewLastModifiedTextBoxReference = PreviewLastModifiedTextBox;
+            Preview.PreviewRevisionTextBoxReference = PreviewRevisionTextBox;
             Printer.PrinterSelectionComboBoxRefrence = PrinterSelectionComboBox;
             Search.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
             Search.FilterTextBoxReference = FilterTextBox;
@@ -63,12 +68,6 @@ namespace eDrawingFinder
                     Printer.Process(DrawingStorage.GetSelectedDrawings(MainDataGridView));
                 }
             }
-}
-
-        // Apply search filters to data grid view on search button click.
-        private void FilterSearchButton_Click(object sender, EventArgs e)
-        {
-            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
         }
 
         // Opens selected files in data grid when clicking button
@@ -99,12 +98,16 @@ namespace eDrawingFinder
 
         private void OPRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            DataGrid.DataGridReference.DataSource = DrawingStorage.OPDrawingDataTable;
+            DrawingStorage.CurrentDataTable = DrawingStorage.OPDrawingDataTable;
+            DataGrid.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
+            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
         }
 
         private void BMRadioButton_CheckedChanged(object sender, EventArgs e)
         {
-            DataGrid.DataGridReference.DataSource = DrawingStorage.BMDrawingDataTable;
+            DrawingStorage.CurrentDataTable = DrawingStorage.BMDrawingDataTable;
+            DataGrid.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
+            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
         }
 
         private void SettingsMainToolStripMenu_Click(object sender, EventArgs e)
@@ -117,7 +120,7 @@ namespace eDrawingFinder
             this.Invoke((MethodInvoker)(() => Printer.SelectedPrinter = PrinterSelectionComboBox.Text));
         }
 
-        private void exitToolStripMenuItem1_Click(object sender, EventArgs e)
+        private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -127,9 +130,21 @@ namespace eDrawingFinder
             Preview.Expand();
         }
 
-        private void MainDataGridView_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void BatchPrintMainToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Preview.MainFormExpanded)
+            batchForm = BatchForm.New();
+            batchForm.Show();
+        }
+
+        private void FilterButton_Click(object sender, EventArgs e)
+        {
+            MainDataGridView.ClearSelection();
+            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
+        }
+
+        private void MainDataGridView_SelectionChanged(object sender, EventArgs e)
+        {
+            if (Preview.MainFormExpanded && (MainDataGridView.SelectedRows.Count == 1))
                 Preview.ShowDrawing();
         }
     }

@@ -33,7 +33,6 @@ namespace eDrawingFinder
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.PrintButton = new System.Windows.Forms.Button();
             this.MainDataGridView = new System.Windows.Forms.DataGridView();
-            this.FilterSearchButton = new System.Windows.Forms.Button();
             this.FilterTextBox = new System.Windows.Forms.TextBox();
             this.StartsWithFilterCheckBox = new System.Windows.Forms.CheckBox();
             this.OpenButton = new System.Windows.Forms.Button();
@@ -44,21 +43,30 @@ namespace eDrawingFinder
             this.OpenMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrintMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
-            this.exitToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            this.ExitMainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ToolsMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.BatchPrintMainToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.SettingsMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectionComboBox = new System.Windows.Forms.ToolStripComboBox();
-            this.PreviewFlowLayoutPanel = new System.Windows.Forms.FlowLayoutPanel();
             this.ExpandButton = new System.Windows.Forms.Button();
+            this.PreviewPanel = new System.Windows.Forms.Panel();
+            this.PreviewRevisionTextBox = new System.Windows.Forms.TextBox();
+            this.RevisionLabel = new System.Windows.Forms.Label();
+            this.PreviewLastModifiedTextBox = new System.Windows.Forms.TextBox();
+            this.PreviewLastModifiedLabel = new System.Windows.Forms.Label();
+            this.PreviewNameTextBox = new System.Windows.Forms.TextBox();
+            this.PreviewNameLabel = new System.Windows.Forms.Label();
+            this.FilterButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.MainToolStripMenu.SuspendLayout();
+            this.PreviewPanel.SuspendLayout();
             this.SuspendLayout();
             // 
             // PrintButton
             // 
             this.PrintButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.PrintButton.Location = new System.Drawing.Point(604, 31);
+            this.PrintButton.Location = new System.Drawing.Point(577, 30);
             this.PrintButton.Name = "PrintButton";
             this.PrintButton.Size = new System.Drawing.Size(84, 25);
             this.PrintButton.TabIndex = 0;
@@ -82,31 +90,20 @@ namespace eDrawingFinder
             this.MainDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MainDataGridView.Size = new System.Drawing.Size(815, 474);
             this.MainDataGridView.TabIndex = 4;
-            this.MainDataGridView.CellClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.MainDataGridView_CellClick);
+            this.MainDataGridView.SelectionChanged += new System.EventHandler(this.MainDataGridView_SelectionChanged);
             this.MainDataGridView.DoubleClick += new System.EventHandler(this.OpenButton_Click);
-            // 
-            // FilterSearchButton
-            // 
-            this.FilterSearchButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.FilterSearchButton.Location = new System.Drawing.Point(12, 32);
-            this.FilterSearchButton.Name = "FilterSearchButton";
-            this.FilterSearchButton.Size = new System.Drawing.Size(93, 25);
-            this.FilterSearchButton.TabIndex = 6;
-            this.FilterSearchButton.Text = "Search";
-            this.FilterSearchButton.UseVisualStyleBackColor = true;
-            this.FilterSearchButton.Click += new System.EventHandler(this.FilterSearchButton_Click);
             // 
             // FilterTextBox
             // 
-            this.FilterTextBox.Location = new System.Drawing.Point(129, 36);
+            this.FilterTextBox.Location = new System.Drawing.Point(97, 34);
             this.FilterTextBox.Name = "FilterTextBox";
-            this.FilterTextBox.Size = new System.Drawing.Size(254, 20);
+            this.FilterTextBox.Size = new System.Drawing.Size(231, 20);
             this.FilterTextBox.TabIndex = 7;
             // 
             // StartsWithFilterCheckBox
             // 
             this.StartsWithFilterCheckBox.AutoSize = true;
-            this.StartsWithFilterCheckBox.Location = new System.Drawing.Point(389, 38);
+            this.StartsWithFilterCheckBox.Location = new System.Drawing.Point(343, 38);
             this.StartsWithFilterCheckBox.Name = "StartsWithFilterCheckBox";
             this.StartsWithFilterCheckBox.Size = new System.Drawing.Size(78, 17);
             this.StartsWithFilterCheckBox.TabIndex = 8;
@@ -117,7 +114,7 @@ namespace eDrawingFinder
             // OpenButton
             // 
             this.OpenButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.OpenButton.Location = new System.Drawing.Point(694, 31);
+            this.OpenButton.Location = new System.Drawing.Point(692, 30);
             this.OpenButton.Name = "OpenButton";
             this.OpenButton.Size = new System.Drawing.Size(84, 25);
             this.OpenButton.TabIndex = 9;
@@ -131,7 +128,7 @@ namespace eDrawingFinder
             this.OPRadioButton.BackColor = System.Drawing.Color.Transparent;
             this.OPRadioButton.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
             this.OPRadioButton.Checked = true;
-            this.OPRadioButton.Location = new System.Drawing.Point(490, 37);
+            this.OPRadioButton.Location = new System.Drawing.Point(468, 35);
             this.OPRadioButton.Name = "OPRadioButton";
             this.OPRadioButton.Size = new System.Drawing.Size(40, 17);
             this.OPRadioButton.TabIndex = 10;
@@ -144,7 +141,7 @@ namespace eDrawingFinder
             // 
             this.BMRadioButton.AutoSize = true;
             this.BMRadioButton.BackColor = System.Drawing.Color.Transparent;
-            this.BMRadioButton.Location = new System.Drawing.Point(536, 37);
+            this.BMRadioButton.Location = new System.Drawing.Point(514, 35);
             this.BMRadioButton.Name = "BMRadioButton";
             this.BMRadioButton.Size = new System.Drawing.Size(41, 17);
             this.BMRadioButton.TabIndex = 11;
@@ -171,7 +168,7 @@ namespace eDrawingFinder
             this.OpenMainToolStripMenu,
             this.PrintMainToolStripMenu,
             this.toolStripSeparator2,
-            this.exitToolStripMenuItem1});
+            this.ExitMainToolStripMenuItem});
             this.FileMainToolStripMenu.Name = "FileMainToolStripMenu";
             this.FileMainToolStripMenu.Size = new System.Drawing.Size(37, 20);
             this.FileMainToolStripMenu.Text = "File";
@@ -202,18 +199,27 @@ namespace eDrawingFinder
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(137, 6);
             // 
-            // exitToolStripMenuItem1
+            // ExitMainToolStripMenuItem
             // 
-            this.exitToolStripMenuItem1.Name = "exitToolStripMenuItem1";
-            this.exitToolStripMenuItem1.Size = new System.Drawing.Size(140, 22);
-            this.exitToolStripMenuItem1.Text = "E&xit";
-            this.exitToolStripMenuItem1.Click += new System.EventHandler(this.exitToolStripMenuItem1_Click);
+            this.ExitMainToolStripMenuItem.Name = "ExitMainToolStripMenuItem";
+            this.ExitMainToolStripMenuItem.Size = new System.Drawing.Size(140, 22);
+            this.ExitMainToolStripMenuItem.Text = "E&xit";
+            this.ExitMainToolStripMenuItem.Click += new System.EventHandler(this.ExitToolStripMenuItem_Click);
             // 
             // ToolsMainToolStripMenu
             // 
+            this.ToolsMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.BatchPrintMainToolStripMenuItem});
             this.ToolsMainToolStripMenu.Name = "ToolsMainToolStripMenu";
             this.ToolsMainToolStripMenu.Size = new System.Drawing.Size(48, 20);
             this.ToolsMainToolStripMenu.Text = "Tools";
+            // 
+            // BatchPrintMainToolStripMenuItem
+            // 
+            this.BatchPrintMainToolStripMenuItem.Name = "BatchPrintMainToolStripMenuItem";
+            this.BatchPrintMainToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.BatchPrintMainToolStripMenuItem.Text = "Batch Print";
+            this.BatchPrintMainToolStripMenuItem.Click += new System.EventHandler(this.BatchPrintMainToolStripMenuItem_Click);
             // 
             // SettingsMainToolStripMenu
             // 
@@ -242,13 +248,6 @@ namespace eDrawingFinder
             this.PrinterSelectionComboBox.Sorted = true;
             this.PrinterSelectionComboBox.SelectedIndexChanged += new System.EventHandler(this.PrinterSelectionComboBox_SelectedIndexChanged);
             // 
-            // PreviewFlowLayoutPanel
-            // 
-            this.PreviewFlowLayoutPanel.Location = new System.Drawing.Point(835, 230);
-            this.PreviewFlowLayoutPanel.Name = "PreviewFlowLayoutPanel";
-            this.PreviewFlowLayoutPanel.Size = new System.Drawing.Size(352, 307);
-            this.PreviewFlowLayoutPanel.TabIndex = 13;
-            // 
             // ExpandButton
             // 
             this.ExpandButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
@@ -260,21 +259,102 @@ namespace eDrawingFinder
             this.ExpandButton.UseVisualStyleBackColor = true;
             this.ExpandButton.Click += new System.EventHandler(this.ExpandButton_Click);
             // 
+            // PreviewPanel
+            // 
+            this.PreviewPanel.Controls.Add(this.PreviewRevisionTextBox);
+            this.PreviewPanel.Controls.Add(this.RevisionLabel);
+            this.PreviewPanel.Controls.Add(this.PreviewLastModifiedTextBox);
+            this.PreviewPanel.Controls.Add(this.PreviewLastModifiedLabel);
+            this.PreviewPanel.Controls.Add(this.PreviewNameTextBox);
+            this.PreviewPanel.Controls.Add(this.PreviewNameLabel);
+            this.PreviewPanel.Location = new System.Drawing.Point(830, 102);
+            this.PreviewPanel.Name = "PreviewPanel";
+            this.PreviewPanel.Size = new System.Drawing.Size(352, 433);
+            this.PreviewPanel.TabIndex = 15;
+            // 
+            // PreviewRevisionTextBox
+            // 
+            this.PreviewRevisionTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PreviewRevisionTextBox.Enabled = false;
+            this.PreviewRevisionTextBox.Location = new System.Drawing.Point(105, 361);
+            this.PreviewRevisionTextBox.Name = "PreviewRevisionTextBox";
+            this.PreviewRevisionTextBox.Size = new System.Drawing.Size(213, 20);
+            this.PreviewRevisionTextBox.TabIndex = 5;
+            // 
+            // RevisionLabel
+            // 
+            this.RevisionLabel.AutoSize = true;
+            this.RevisionLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.RevisionLabel.Location = new System.Drawing.Point(6, 366);
+            this.RevisionLabel.Name = "RevisionLabel";
+            this.RevisionLabel.Size = new System.Drawing.Size(57, 15);
+            this.RevisionLabel.TabIndex = 4;
+            this.RevisionLabel.Text = "Revision:";
+            // 
+            // PreviewLastModifiedTextBox
+            // 
+            this.PreviewLastModifiedTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PreviewLastModifiedTextBox.Enabled = false;
+            this.PreviewLastModifiedTextBox.Location = new System.Drawing.Point(105, 387);
+            this.PreviewLastModifiedTextBox.Name = "PreviewLastModifiedTextBox";
+            this.PreviewLastModifiedTextBox.Size = new System.Drawing.Size(213, 20);
+            this.PreviewLastModifiedTextBox.TabIndex = 3;
+            // 
+            // PreviewLastModifiedLabel
+            // 
+            this.PreviewLastModifiedLabel.AutoSize = true;
+            this.PreviewLastModifiedLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.PreviewLastModifiedLabel.Location = new System.Drawing.Point(6, 392);
+            this.PreviewLastModifiedLabel.Name = "PreviewLastModifiedLabel";
+            this.PreviewLastModifiedLabel.Size = new System.Drawing.Size(84, 15);
+            this.PreviewLastModifiedLabel.TabIndex = 2;
+            this.PreviewLastModifiedLabel.Text = "Last Modified:";
+            // 
+            // PreviewNameTextBox
+            // 
+            this.PreviewNameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.PreviewNameTextBox.Enabled = false;
+            this.PreviewNameTextBox.Location = new System.Drawing.Point(105, 335);
+            this.PreviewNameTextBox.Name = "PreviewNameTextBox";
+            this.PreviewNameTextBox.Size = new System.Drawing.Size(213, 20);
+            this.PreviewNameTextBox.TabIndex = 1;
+            // 
+            // PreviewNameLabel
+            // 
+            this.PreviewNameLabel.AutoSize = true;
+            this.PreviewNameLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.PreviewNameLabel.Location = new System.Drawing.Point(6, 340);
+            this.PreviewNameLabel.Name = "PreviewNameLabel";
+            this.PreviewNameLabel.Size = new System.Drawing.Size(93, 15);
+            this.PreviewNameLabel.TabIndex = 0;
+            this.PreviewNameLabel.Text = "Drawing Name:";
+            // 
+            // FilterButton
+            // 
+            this.FilterButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.FilterButton.Location = new System.Drawing.Point(7, 32);
+            this.FilterButton.Name = "FilterButton";
+            this.FilterButton.Size = new System.Drawing.Size(84, 25);
+            this.FilterButton.TabIndex = 16;
+            this.FilterButton.Text = "Filter";
+            this.FilterButton.UseVisualStyleBackColor = true;
+            this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
+            // 
             // MainForm
             // 
-            this.AcceptButton = this.FilterSearchButton;
+            this.AcceptButton = this.FilterButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1194, 548);
+            this.Controls.Add(this.FilterButton);
+            this.Controls.Add(this.PreviewPanel);
             this.Controls.Add(this.ExpandButton);
-            this.Controls.Add(this.PreviewFlowLayoutPanel);
             this.Controls.Add(this.BMRadioButton);
             this.Controls.Add(this.OPRadioButton);
             this.Controls.Add(this.OpenButton);
             this.Controls.Add(this.StartsWithFilterCheckBox);
             this.Controls.Add(this.FilterTextBox);
-            this.Controls.Add(this.FilterSearchButton);
             this.Controls.Add(this.MainDataGridView);
             this.Controls.Add(this.PrintButton);
             this.Controls.Add(this.MainToolStripMenu);
@@ -290,6 +370,8 @@ namespace eDrawingFinder
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).EndInit();
             this.MainToolStripMenu.ResumeLayout(false);
             this.MainToolStripMenu.PerformLayout();
+            this.PreviewPanel.ResumeLayout(false);
+            this.PreviewPanel.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -298,7 +380,6 @@ namespace eDrawingFinder
 
         private System.Windows.Forms.Button PrintButton;
         private System.Windows.Forms.DataGridView MainDataGridView;
-        private System.Windows.Forms.Button FilterSearchButton;
         private System.Windows.Forms.TextBox FilterTextBox;
         private System.Windows.Forms.CheckBox StartsWithFilterCheckBox;
         private System.Windows.Forms.Button OpenButton;
@@ -309,13 +390,21 @@ namespace eDrawingFinder
         private System.Windows.Forms.ToolStripMenuItem OpenMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem PrintMainToolStripMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
-        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem1;
+        private System.Windows.Forms.ToolStripMenuItem ExitMainToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ToolsMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem SettingsMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem PrinterSelectMainToolStripMenu;
         private System.Windows.Forms.ToolStripComboBox PrinterSelectionComboBox;
-        private System.Windows.Forms.FlowLayoutPanel PreviewFlowLayoutPanel;
         private System.Windows.Forms.Button ExpandButton;
+        private System.Windows.Forms.ToolStripMenuItem BatchPrintMainToolStripMenuItem;
+        private System.Windows.Forms.Panel PreviewPanel;
+        private System.Windows.Forms.TextBox PreviewNameTextBox;
+        private System.Windows.Forms.Label PreviewNameLabel;
+        private System.Windows.Forms.TextBox PreviewLastModifiedTextBox;
+        private System.Windows.Forms.Label PreviewLastModifiedLabel;
+        private System.Windows.Forms.TextBox PreviewRevisionTextBox;
+        private System.Windows.Forms.Label RevisionLabel;
+        private System.Windows.Forms.Button FilterButton;
     }
 }
 

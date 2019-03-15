@@ -106,12 +106,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BatchDataGrid.cs" />
     <Compile Include="Data.cs" />
     <Compile Include="DataGrid.cs" />
     <Compile Include="Drawing.cs" />
     <Compile Include="DrawingStorage.cs" />
     <Compile Include="DirectoryScan.cs" />
     <Compile Include="EDrawings.cs" />
+    <Compile Include="BatchForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="BatchForm.Designer.cs">
+      <DependentUpon>BatchForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Logger.cs" />
     <Compile Include="MainForm.cs">
       <SubType>Form</SubType>
@@ -135,6 +142,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Search.cs" />
+    <EmbeddedResource Include="BatchForm.resx">
+      <DependentUpon>BatchForm.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>

@@ -105,6 +105,36 @@ namespace eDrawingFinder
             }
         }
 
+        public static OpenFileDialog OpenFileDialog { get; set; } = OpenFileDialog = new OpenFileDialog()
+        {
+            FileName = "Select a file",
+            Filter = "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*", 
+            Title = "Open A List of Drawings"
+        };
+
+        public static void BatchPrintLoadFile()
+        {
+            List<string> drawings = new List<string>();
+
+            OpenFileDialog.ShowDialog();
+
+            using (StreamReader reader = new StreamReader(OpenFileDialog.FileName))
+            {
+                string line = string.Empty;
+                string cleaned = string.Empty;
+
+                while ((line = reader.ReadLine()) != null)
+                {
+                    cleaned = line.Trim();
+                    drawings.Add(cleaned);
+                }
+            }
+
+            BatchDataGrid.LoadedDrawingList = drawings;
+
+        }
+
+
         // Helper enum to distinguish which data set is being worked with
         public enum DrawingGroup
         {
