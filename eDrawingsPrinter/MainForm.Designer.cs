@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace eDrawingFinder
+﻿namespace eDrawingFinder
 {
     partial class MainForm
     {
@@ -30,9 +28,21 @@ namespace eDrawingFinder
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.PrintButton = new System.Windows.Forms.Button();
             this.MainDataGridView = new System.Windows.Forms.DataGridView();
+            this.DataGridContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.CopyDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.PartNumberDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.DrawingFilenameDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.FilePathDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.OpenWithDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.EDrawingsDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.FileExplorerDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.PrintDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
+            this.SendToBatchDataGridContextMenuStrip = new System.Windows.Forms.ToolStripMenuItem();
             this.FilterTextBox = new System.Windows.Forms.TextBox();
             this.StartsWithFilterCheckBox = new System.Windows.Forms.CheckBox();
             this.OpenButton = new System.Windows.Forms.Button();
@@ -59,6 +69,7 @@ namespace eDrawingFinder
             this.PreviewNameLabel = new System.Windows.Forms.Label();
             this.FilterButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
+            this.DataGridContextMenuStrip.SuspendLayout();
             this.MainToolStripMenu.SuspendLayout();
             this.PreviewPanel.SuspendLayout();
             this.SuspendLayout();
@@ -84,6 +95,7 @@ namespace eDrawingFinder
             this.MainDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.MainDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
             this.MainDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.MainDataGridView.ContextMenuStrip = this.DataGridContextMenuStrip;
             this.MainDataGridView.Location = new System.Drawing.Point(7, 62);
             this.MainDataGridView.Name = "MainDataGridView";
             this.MainDataGridView.ReadOnly = true;
@@ -92,6 +104,91 @@ namespace eDrawingFinder
             this.MainDataGridView.TabIndex = 4;
             this.MainDataGridView.SelectionChanged += new System.EventHandler(this.MainDataGridView_SelectionChanged);
             this.MainDataGridView.DoubleClick += new System.EventHandler(this.OpenButton_Click);
+            // 
+            // DataGridContextMenuStrip
+            // 
+            this.DataGridContextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.CopyDataGridContextMenuStrip,
+            this.OpenWithDataGridContextMenuStrip,
+            this.PrintDataGridContextMenuStrip,
+            this.toolStripSeparator3,
+            this.SendToBatchDataGridContextMenuStrip});
+            this.DataGridContextMenuStrip.Name = "DataGridContextMenuStrip";
+            this.DataGridContextMenuStrip.Size = new System.Drawing.Size(202, 98);
+            // 
+            // CopyDataGridContextMenuStrip
+            // 
+            this.CopyDataGridContextMenuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.PartNumberDataGridContextMenuStrip,
+            this.DrawingFilenameDataGridContextMenuStrip,
+            this.FilePathDataGridContextMenuStrip});
+            this.CopyDataGridContextMenuStrip.Name = "CopyDataGridContextMenuStrip";
+            this.CopyDataGridContextMenuStrip.Size = new System.Drawing.Size(201, 22);
+            this.CopyDataGridContextMenuStrip.Text = "Copy";
+            // 
+            // PartNumberDataGridContextMenuStrip
+            // 
+            this.PartNumberDataGridContextMenuStrip.Name = "PartNumberDataGridContextMenuStrip";
+            this.PartNumberDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
+            this.PartNumberDataGridContextMenuStrip.Text = "Part Number";
+            this.PartNumberDataGridContextMenuStrip.Click += new System.EventHandler(this.PartNumberDataGridContextMenuStrip_Click);
+            // 
+            // DrawingFilenameDataGridContextMenuStrip
+            // 
+            this.DrawingFilenameDataGridContextMenuStrip.Name = "DrawingFilenameDataGridContextMenuStrip";
+            this.DrawingFilenameDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
+            this.DrawingFilenameDataGridContextMenuStrip.Text = "Drawing Filename";
+            this.DrawingFilenameDataGridContextMenuStrip.Click += new System.EventHandler(this.DrawingFilenameDataGridContextMenuStrip_Click);
+            // 
+            // FilePathDataGridContextMenuStrip
+            // 
+            this.FilePathDataGridContextMenuStrip.Name = "FilePathDataGridContextMenuStrip";
+            this.FilePathDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
+            this.FilePathDataGridContextMenuStrip.Text = "File Path";
+            this.FilePathDataGridContextMenuStrip.Click += new System.EventHandler(this.FilePathDataGridContextMenuStrip_Click);
+            // 
+            // OpenWithDataGridContextMenuStrip
+            // 
+            this.OpenWithDataGridContextMenuStrip.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.EDrawingsDataGridContextMenuStrip,
+            this.FileExplorerDataGridContextMenuStrip});
+            this.OpenWithDataGridContextMenuStrip.Name = "OpenWithDataGridContextMenuStrip";
+            this.OpenWithDataGridContextMenuStrip.Size = new System.Drawing.Size(201, 22);
+            this.OpenWithDataGridContextMenuStrip.Text = "Open With";
+            // 
+            // EDrawingsDataGridContextMenuStrip
+            // 
+            this.EDrawingsDataGridContextMenuStrip.Name = "EDrawingsDataGridContextMenuStrip";
+            this.EDrawingsDataGridContextMenuStrip.Size = new System.Drawing.Size(137, 22);
+            this.EDrawingsDataGridContextMenuStrip.Text = "eDrawings";
+            this.EDrawingsDataGridContextMenuStrip.Click += new System.EventHandler(this.OpenButton_Click);
+            // 
+            // FileExplorerDataGridContextMenuStrip
+            // 
+            this.FileExplorerDataGridContextMenuStrip.Name = "FileExplorerDataGridContextMenuStrip";
+            this.FileExplorerDataGridContextMenuStrip.Size = new System.Drawing.Size(137, 22);
+            this.FileExplorerDataGridContextMenuStrip.Text = "File Explorer";
+            this.FileExplorerDataGridContextMenuStrip.Click += new System.EventHandler(this.FileExplorerDataGridContextMenuStrip_Click);
+            // 
+            // PrintDataGridContextMenuStrip
+            // 
+            this.PrintDataGridContextMenuStrip.Name = "PrintDataGridContextMenuStrip";
+            this.PrintDataGridContextMenuStrip.Size = new System.Drawing.Size(201, 22);
+            this.PrintDataGridContextMenuStrip.Text = "Print";
+            this.PrintDataGridContextMenuStrip.Click += new System.EventHandler(this.PrintButton_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(198, 6);
+            // 
+            // SendToBatchDataGridContextMenuStrip
+            // 
+            this.SendToBatchDataGridContextMenuStrip.Enabled = false;
+            this.SendToBatchDataGridContextMenuStrip.Name = "SendToBatchDataGridContextMenuStrip";
+            this.SendToBatchDataGridContextMenuStrip.Size = new System.Drawing.Size(201, 22);
+            this.SendToBatchDataGridContextMenuStrip.Text = "Send To Batch Selection";
+            this.SendToBatchDataGridContextMenuStrip.Click += new System.EventHandler(this.SendToBatchDataGridContextMenuStrip_Click);
             // 
             // FilterTextBox
             // 
@@ -346,7 +443,7 @@ namespace eDrawingFinder
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1194, 548);
+            this.ClientSize = new System.Drawing.Size(1194, 543);
             this.Controls.Add(this.FilterButton);
             this.Controls.Add(this.PreviewPanel);
             this.Controls.Add(this.ExpandButton);
@@ -365,9 +462,10 @@ namespace eDrawingFinder
             this.Name = "MainForm";
             this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "eDrawing Finder";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
-            this.Shown += new System.EventHandler(this.MainForm_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).EndInit();
+            this.DataGridContextMenuStrip.ResumeLayout(false);
             this.MainToolStripMenu.ResumeLayout(false);
             this.MainToolStripMenu.PerformLayout();
             this.PreviewPanel.ResumeLayout(false);
@@ -405,6 +503,17 @@ namespace eDrawingFinder
         private System.Windows.Forms.TextBox PreviewRevisionTextBox;
         private System.Windows.Forms.Label RevisionLabel;
         private System.Windows.Forms.Button FilterButton;
+        private System.Windows.Forms.ContextMenuStrip DataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem CopyDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem PartNumberDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem DrawingFilenameDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem FilePathDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem SendToBatchDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem OpenWithDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem EDrawingsDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem FileExplorerDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem PrintDataGridContextMenuStrip;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

@@ -1,23 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Diagnostics;
-using System.Drawing;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
-using System.Drawing.Printing;
 
 namespace eDrawingFinder
 {
     public partial class MainForm : Form
     {
+        public static string VERSION = "3.0.0";
+
         // Gives the form access to the eDrawingHostControl as eDrawings.Control
         public static EDrawings eDrawings = new EDrawings();
         public static BatchForm batchForm;
+        public UserPreferences preferences = new UserPreferences();
+
         public MainForm()
         {
             InitializeComponent();
@@ -31,63 +25,45 @@ namespace eDrawingFinder
 
             this.PreviewPanel.Controls.Add(eDrawings.PreviewControl);
 
-            //eDrawings.PreviewControl.eDrawingControlWrapper.
 
-            Preview.PreviewNameTextBoxRefernce = PreviewNameTextBox;
-            Preview.PreviewLastModifiedTextBoxReference = PreviewLastModifiedTextBox;
-            Preview.PreviewRevisionTextBoxReference = PreviewRevisionTextBox;
-            Printer.PrinterSelectionComboBoxRefrence = PrinterSelectionComboBox;
-            Search.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
-            Search.FilterTextBoxReference = FilterTextBox;
-            DataGrid.DataGridReference = MainDataGridView;
+            MainUI.SendToBatchDataGridContextMenuStripReference = SendToBatchDataGridContextMenuStrip;
+            MainUI.PreviewNameTextBoxRefernce = PreviewNameTextBox;
+            MainUI.PreviewLastModifiedTextBoxReference = PreviewLastModifiedTextBox;
+            MainUI.PreviewRevisionTextBoxReference = PreviewRevisionTextBox;
+            MainUI.PrinterSelectionComboBoxReference = PrinterSelectionComboBox;
+            MainUI.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
+            MainUI.FilterTextBoxReference = FilterTextBox;
+            MainUI.DataGridReference = MainDataGridView;
             Data.PreCheckDataGridLoad();
 
             Preview.Expand();
 
+            // Apply Settings
+            if (!(preferences.Expanded == Preview.MainFormExpanded))
+                Preview.Expand();
+
+            Printer.SelectedPrinter = preferences.Printer;
 
         }
 
-        private void MainForm_Shown(object sender, EventArgs e)
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
-
+            //Set and Save Settings
+            preferences.Printer = Printer.SelectedPrinter;
+            preferences.Expanded = Preview.MainFormExpanded;
+            preferences.Save();
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
         private void PrintButton_Click(object sender, EventArgs e)
         {
-            // If printing is in process, skip the printing processes from spawning again.
-            if (!Printer.IsPrinting)
-            {
-                if ((DataGrid.DataGridReference.AreAllCellsSelected(true)) && (DataGrid.DataGridReference.SelectedRows.Count > 10))
-                {
-                    MessageBox.Show("Too many files are currently selected.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-                else
-                {
-                    Printer.IsPrinting = true;
-                    Printer.Process(DrawingStorage.GetSelectedDrawings(MainDataGridView));
-                }
-            }
+            Printer.PreProcess();
         }
 
         // Opens selected files in data grid when clicking button
         private void OpenButton_Click(object sender, EventArgs e)
         {
-
-            if ((DataGrid.DataGridReference.AreAllCellsSelected(true)) && (DataGrid.DataGridReference.SelectedRows.Count > 10))
-            {
-                MessageBox.Show("Too many files are currently selected.", "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else
-            {
-                IEnumerator<string> list = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
-                while (list.MoveNext())
-                {
-                    Process.Start(list.Current.ToString());
-                    Log.Write.Info($"File opened: {list.Current.ToString()}");
-                }
-            }
-                
+            Opener.PreProcess();   
         }
 
         // Apply search filter instantly when box is checked.
@@ -99,20 +75,21 @@ namespace eDrawingFinder
         private void OPRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             DrawingStorage.CurrentDataTable = DrawingStorage.OPDrawingDataTable;
-            DataGrid.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
+            MainUI.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
             Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
         }
 
         private void BMRadioButton_CheckedChanged(object sender, EventArgs e)
         {
             DrawingStorage.CurrentDataTable = DrawingStorage.BMDrawingDataTable;
-            DataGrid.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
+            MainUI.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
             Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
         }
 
         private void SettingsMainToolStripMenu_Click(object sender, EventArgs e)
         {
             Printer.SetPrinterOptions();
+            MainUI.PrinterSelectionComboBoxReference.SelectedItem = Printer.SelectedPrinter;
         }
 
         private void PrinterSelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -144,8 +121,40 @@ namespace eDrawingFinder
 
         private void MainDataGridView_SelectionChanged(object sender, EventArgs e)
         {
-            if (Preview.MainFormExpanded && (MainDataGridView.SelectedRows.Count == 1))
+            if (Preview.MainFormExpanded && (DrawingStorage.SelectionLessThanOrEqual(1)))
                 Preview.ShowDrawing();
         }
+
+        private void PartNumberDataGridContextMenuStrip_Click(object sender, EventArgs e)
+        {
+            if (DrawingStorage.SelectionLessThanOrEqual(1000))
+                ContextClipboard.CopyPartNumber();
+        }
+
+        private void DrawingFilenameDataGridContextMenuStrip_Click(object sender, EventArgs e)
+        {
+            if (DrawingStorage.SelectionLessThanOrEqual(1000))
+                ContextClipboard.CopyDrawingFileName();
+        }
+
+        private void FilePathDataGridContextMenuStrip_Click(object sender, EventArgs e)
+        {
+            if (DrawingStorage.SelectionLessThanOrEqual(1000))
+                ContextClipboard.CopyFilePath();
+        }
+
+        private void FileExplorerDataGridContextMenuStrip_Click(object sender, EventArgs e)
+        {
+            if (DrawingStorage.SelectionLessThanOrEqual(5))
+                ContextClipboard.OpenWithFileExplorer();
+        }
+
+        private void SendToBatchDataGridContextMenuStrip_Click(object sender, EventArgs e)
+        {
+            if (DrawingStorage.SelectionLessThanOrEqual(1))
+                BatchDataGrid.PullMainSelectionToBatchCell();
+
+        }
+
     }
 }

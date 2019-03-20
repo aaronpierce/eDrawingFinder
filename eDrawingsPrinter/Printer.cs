@@ -1,20 +1,39 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Drawing.Printing;
 using System.Windows.Forms;
-using EModelView;
+using System.Threading;
 
 namespace eDrawingFinder
 {
     // Provides printer functionaility 
     public class Printer
     {
-        // Gives public access to printer selection
-        public static ToolStripComboBox PrinterSelectionComboBoxRefrence;
+        public static void PreProcess()
+        {
+            // If printing is in process, skip the printing processes from spawning again.
+            if (!IsPrinting)
+            {
+                if ((MainUI.DataGridReference.AreAllCellsSelected(true)) && (!DrawingStorage.SelectionLessThanOrEqual(10)))
+                {
+                    Error();
+                }
+                else if (!DrawingStorage.SelectionLessThanOrEqual(10))
+                {
+                    Error();
+                }
+                else
+                {
+                    IsPrinting = true;
+                    Printer.Process(DrawingStorage.GetSelectedDrawings(MainUI.DataGridReference));
+                }
+            }
+        }
 
+        private static void Error()
+        {
+            MessageBox.Show("Too many files are currently selected.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        }
         // Filles PrinterSelectionComboBox with list of installed printers upon opening
         public static void SetPrinterOptions()
         {
@@ -25,23 +44,20 @@ namespace eDrawingFinder
                 printersList.Add(printer);
             }
 
-            PrinterSelectionComboBoxRefrence.ComboBox.Items.Clear();
-            PrinterSelectionComboBoxRefrence.ComboBox.Items.AddRange(printersList.ToArray<object>());
+            MainUI.PrinterSelectionComboBoxReference.ComboBox.Items.Clear();
+            MainUI.PrinterSelectionComboBoxReference.ComboBox.Items.AddRange(printersList.ToArray<object>());
 
         }
 
         // Used to accss default printer settings on machine.
-        private static PrinterSettings PrinterSettings = new PrinterSettings();
+        public static PrinterSettings PrinterSettings = new PrinterSettings();
 
         private static IEnumerator<string> DrawingListToPrint;
 
         public static string SelectedPrinter { get; set; }
 
-        public static bool EventsHandled { get; set; } = false;
-        public static bool IsPrinting { get; set; } = false;
-
-       
-
+        private static bool EventsHandled { get; set; } = false;
+        private static bool IsPrinting { get; set; } = false;
 
         // Main print function that established page setup options and sends print command.
         private static void Print(string filename)
@@ -100,7 +116,9 @@ namespace eDrawingFinder
         {
             MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedLoadingDocument += EDrawingControlWrapper_OnFinishedLoadingDocument;
             MainForm.eDrawings.Control.eDrawingControlWrapper.OnFinishedPrintingDocument += EDrawingControlWrapper_OnFinishedPrintingDocument;
-        }
+       }
+
+
 
         // Tested removing and adding events on every interaction. Current not in use. 
         private static void RemoveHandlerEvents()
@@ -132,7 +150,7 @@ namespace eDrawingFinder
             {
                 IsPrinting = false;
                 DrawingListToPrint = null;
-                //RemoveHandlerEvents();
+                RemoveHandlerEvents();
             }
         }
     }

@@ -9,8 +9,6 @@ namespace eDrawingFinder
 {
     class DataGrid
     {
-        // Refernce to the main data grid for public access
-        public static DataGridView DataGridReference { get; set; }
         public static void Load()
         {
             // Calling this loads json data to disk, converts from dictionary to data table and updates DrawingDataTable.
@@ -24,7 +22,7 @@ namespace eDrawingFinder
             {
                 DrawingStorage.CurrentDataTable = DrawingStorage.OPDrawingDataTable;
                 // Uses the just updated variable DrawingDataTable as the data source for grid view.
-                DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
+                MainUI.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
             }
 
 

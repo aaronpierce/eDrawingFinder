@@ -1,12 +1,10 @@
-﻿using Newtonsoft.Json;
+﻿using CsvHelper;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.Linq;
 
 namespace eDrawingFinder
 {
@@ -108,26 +106,42 @@ namespace eDrawingFinder
         public static OpenFileDialog OpenFileDialog { get; set; } = OpenFileDialog = new OpenFileDialog()
         {
             FileName = "Select a file",
-            Filter = "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv|All files (*.*)|*.*", 
+            Filter = "Text files (*.txt)|*.txt|CSV files (*.csv)|*.csv", 
             Title = "Open A List of Drawings"
         };
 
         public static void BatchPrintLoadFile()
         {
-            List<string> drawings = new List<string>();
-
             OpenFileDialog.ShowDialog();
 
-            using (StreamReader reader = new StreamReader(OpenFileDialog.FileName))
-            {
-                string line = string.Empty;
-                string cleaned = string.Empty;
+            bool isCSVFile = Path.GetExtension(OpenFileDialog.FileName).Equals(".csv") ? true : false;
 
-                while ((line = reader.ReadLine()) != null)
+            List<string> drawings = new List<string>();
+
+            BatchUI.BatchFileTextBoxReference.Text = OpenFileDialog.FileName;
+
+            using (StreamReader fileReader = new StreamReader(OpenFileDialog.FileName))
+            using (CsvReader csvReader = new CsvReader(fileReader))
+            {
+                if (!isCSVFile)
                 {
-                    cleaned = line.Trim();
-                    drawings.Add(cleaned);
+                    string line = string.Empty;
+                    string cleaned = string.Empty;
+
+                    while ((line = fileReader.ReadLine()) != null)
+                    {
+                        cleaned = line.TrimEnd(',').Trim();
+                        drawings.Add(cleaned);
+                    }
                 }
+                else
+                {
+                    while (csvReader.Read())
+                    {
+                        drawings.Add(csvReader.GetField<string>(0));
+                    }
+                }
+
             }
 
             BatchDataGrid.LoadedDrawingList = drawings;

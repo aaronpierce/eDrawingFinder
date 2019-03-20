@@ -17,17 +17,17 @@ namespace eDrawingFinder
         { 
             MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
 
-            IEnumerator<string> selected = DrawingStorage.GetSelectedDrawings(DataGrid.DataGridReference);
+            IEnumerator<string> selected = DrawingStorage.GetSelectedDrawings(MainUI.DataGridReference);
             if (selected.MoveNext())
             {
                 Current = selected.Current;
 
-                PreviewNameTextBoxRefernce.Text = Current.Split('\\').Last();
+                MainUI.PreviewNameTextBoxRefernce.Text = Current.Split('\\').Last();
 
-                PreviewLastModifiedTextBoxReference.Text = File.GetLastWriteTime(Current).ToShortDateString();
+                MainUI.PreviewLastModifiedTextBoxReference.Text = File.GetLastWriteTime(Current).ToShortDateString();
 
                 Match regMatch = VersionRegex.Match(Path.GetFileNameWithoutExtension(Current));
-                PreviewRevisionTextBoxReference.Text = (regMatch.Success) ? regMatch.Value.ToUpper() : "";
+                MainUI.PreviewRevisionTextBoxReference.Text = (regMatch.Success) ? regMatch.Value.ToUpper() : "";
 
                 MainForm.eDrawings.PreviewControl.eDrawingControlWrapper.OpenDoc(Current, false, false, false, "");
                 MainForm.eDrawings.PreviewControl.eDrawingControlWrapper.ViewOperator = EModelView.EMVOperators.eMVOperatorPan;
@@ -52,9 +52,6 @@ namespace eDrawingFinder
         public static bool MainFormExpanded { get; set; } = true;
 
         private static string Current { get; set; }
-        public static TextBox PreviewNameTextBoxRefernce { get; set; }
-        public static TextBox PreviewLastModifiedTextBoxReference { get; set; }
-        public static TextBox PreviewRevisionTextBoxReference { get; set; }
         private static Regex VersionRegex { get; set; } = new Regex(@"(r|R)[0-9]{1,2}$");
     }
 }

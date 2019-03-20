@@ -87,5 +87,8 @@ namespace eDrawingFinder
             return DrawingList;
         }
 
+        public static bool SelectionLessThanOrEqual(int cap ) => (MainUI.DataGridReference.SelectedRows.Count <= cap) ? true : false;
+
+        public static int CountOfSelection() => MainUI.DataGridReference.SelectedRows.Count;
     }
 }

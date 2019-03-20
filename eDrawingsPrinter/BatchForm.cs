@@ -10,14 +10,33 @@ using System.Windows.Forms;
 
 namespace eDrawingFinder
 {
+
     public partial class BatchForm : Form
     {
+        private static bool IsOpen { get; set; } = false;
+        
+
         public BatchForm()
         {
             InitializeComponent();
         }
 
-        private static bool IsOpen {get; set;} = false;
+        private void BatchForm_Load(object sender, EventArgs e)
+        {
+            BatchUI.BatchConfirmButtonReference = BatchConfirmButton;
+            BatchUI.BatchPrintButtonReference = BatchPrintButton;
+            BatchUI.BatchDataGridReference = BatchDataGridView;
+            BatchUI.ProgressBarReference = BatchPrintStatusProgressBar;
+            BatchUI.StatusStripReference = StatusStrip;
+            BatchUI.BatchFileTextBoxReference = BatchFileTextBox;
+
+            BatchUI.BatchPrintStausLabelPreference = BatchPrintStatusLabel;
+            BatchUI.BatchPrintStausLabelPreference.Text = "Ready";
+
+            BatchUI.SendToBatchDataGridContextMenuStripRefernce.Enabled = true;
+
+
+        }
 
         public static BatchForm New()
         {
@@ -36,6 +55,7 @@ namespace eDrawingFinder
         private void BatchForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             IsOpen = false;
+            BatchUI.SendToBatchDataGridContextMenuStripRefernce.Enabled = true;
         }
 
         private void SelectFileButton_Click(object sender, EventArgs e)
@@ -44,9 +64,19 @@ namespace eDrawingFinder
             BatchDataGrid.SetInputIntoGrid();
         }
 
-        private void BatchForm_Load(object sender, EventArgs e)
+        private void BatchDataGridView_CellValueChanged(object sender, DataGridViewCellEventArgs e)
         {
-            BatchDataGrid.BatchDataGridReference = BatchDataGridView;
+            BatchDataGrid.DataGridStatistics();
+        }
+
+        private void BatchConfirmButton_Click(object sender, EventArgs e)
+        {
+            BatchDataGrid.Confirm();
+        }
+
+        private void BatchPrintButton_Click(object sender, EventArgs e)
+        {
+            BatchDataGrid.Print();
         }
     }
 }
