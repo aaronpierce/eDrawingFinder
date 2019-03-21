@@ -314,8 +314,9 @@
             // BatchPrintMainToolStripMenuItem
             // 
             this.BatchPrintMainToolStripMenuItem.Name = "BatchPrintMainToolStripMenuItem";
-            this.BatchPrintMainToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
+            this.BatchPrintMainToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.BatchPrintMainToolStripMenuItem.Text = "Batch Print";
+            this.BatchPrintMainToolStripMenuItem.Visible = false;
             this.BatchPrintMainToolStripMenuItem.Click += new System.EventHandler(this.BatchPrintMainToolStripMenuItem_Click);
             // 
             // SettingsMainToolStripMenu

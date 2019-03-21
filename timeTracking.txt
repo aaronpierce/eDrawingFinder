@@ -1,5 +1,0 @@
-Without Prints:
-00:05:13.6718894
-
-Not using EnumerateFileSystemEnteries
-00:00:14.4704128

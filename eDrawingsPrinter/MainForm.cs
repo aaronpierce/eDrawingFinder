@@ -5,12 +5,9 @@ namespace eDrawingFinder
 {
     public partial class MainForm : Form
     {
-        public static string VERSION = "3.0.0";
-
         // Gives the form access to the eDrawingHostControl as eDrawings.Control
         public static EDrawings eDrawings = new EDrawings();
         public static BatchForm batchForm;
-        public UserPreferences preferences = new UserPreferences();
 
         public MainForm()
         {
@@ -19,6 +16,7 @@ namespace eDrawingFinder
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (eDrawings.Control is null || eDrawings.PreviewControl is null) { this.Close();  }
             // Once the form loads, add the Control and set it to invisible.
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
@@ -39,19 +37,20 @@ namespace eDrawingFinder
             Preview.Expand();
 
             // Apply Settings
-            if (!(preferences.Expanded == Preview.MainFormExpanded))
+            if (!(Properties.Settings.Default.FormExpanded == Preview.MainFormExpanded))
                 Preview.Expand();
 
-            Printer.SelectedPrinter = preferences.Printer;
+            if (!(Properties.Settings.Default.DefaultPrinter == String.Empty))
+                Printer.SelectedPrinter = Properties.Settings.Default.DefaultPrinter;
 
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //Set and Save Settings
-            preferences.Printer = Printer.SelectedPrinter;
-            preferences.Expanded = Preview.MainFormExpanded;
-            preferences.Save();
+            Properties.Settings.Default.DefaultPrinter = Printer.SelectedPrinter;
+            Properties.Settings.Default.FormExpanded = Preview.MainFormExpanded;
+            Properties.Settings.Default.Save();
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.

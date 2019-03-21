@@ -261,4 +261,5 @@ __pycache__/
 *.pyc
 
 # Personal Additions
-timeTracking.txt
+*.bat
+*.ps1

@@ -22,5 +22,29 @@ namespace eDrawingFinder.Properties {
                 return defaultInstance;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool FormExpanded {
+            get {
+                return ((bool)(this["FormExpanded"]));
+            }
+            set {
+                this["FormExpanded"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string DefaultPrinter {
+            get {
+                return ((string)(this["DefaultPrinter"]));
+            }
+            set {
+                this["DefaultPrinter"] = value;
+            }
+        }
     }
 }

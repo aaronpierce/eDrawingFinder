@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace eDrawingFinder
 {
@@ -11,9 +12,18 @@ namespace eDrawingFinder
         // Creates eDrawingHostControl for providing eDrawing functions.
         public EDrawings()
         {
-            Control = new eDrawingHostControl.eDrawingControl();
-            PreviewControl = new eDrawingHostControl.eDrawingControl();
-
+            try
+            {
+                Control = new eDrawingHostControl.eDrawingControl();
+                PreviewControl = new eDrawingHostControl.eDrawingControl();
+                //throw new Exception("Test Exception for missing eDrawings installation.");
+            }
+            catch
+            {
+                MessageBox.Show("eDrawings 2018 Installation Not Found", "Error - Installation Missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                Control = null;
+                PreviewControl = null;
+            }
             
         }
         // Main control used for opening/printing files.

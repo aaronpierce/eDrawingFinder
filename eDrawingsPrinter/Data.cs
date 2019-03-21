@@ -48,13 +48,13 @@ namespace eDrawingFinder
             if (!File.Exists(OPDrawingDataFile))
             {
                 List<string> exclusions = new List<string> { "BM" };
-                DirectoryScan.DirectorySearch(@"H:\DWG", exclusions, DrawingGroup.OP);
+                DirectoryScan.DirectorySearch(@"\\pokydata1\CAD\DWG", exclusions, DrawingGroup.OP);
             }
 
             if (!File.Exists(BMDrawingDataFile))
             {
                 List<string> exclusions = new List<string> { "" };
-                DirectoryScan.DirectorySearch(@"H:\DWG\BM", exclusions, DrawingGroup.BM);
+                DirectoryScan.DirectorySearch(@"\\pokydata1\CAD\DWG\BM", exclusions, DrawingGroup.BM);
             }
 
             // Loads json files to Data Grid for UI 
@@ -70,10 +70,10 @@ namespace eDrawingFinder
         public static void PostDataGridLoad()
         {
             List<string> exclusions = new List<string> { "BM" };
-            DirectoryScan.DirectorySearch(@"H:\DWG", exclusions, DrawingGroup.OP);
+            DirectoryScan.DirectorySearch(@"\\pokydata1\CAD\DWG", exclusions, DrawingGroup.OP);
 
             exclusions = new List<string> { "" };
-            DirectoryScan.DirectorySearch(@"H:\DWG\BM", exclusions, DrawingGroup.BM);
+            DirectoryScan.DirectorySearch(@"\\pokydata1\CAD\DWG\BM", exclusions, DrawingGroup.BM);
 
             // Tells program an updated set of files are available
             UpdateAvailable = true;
