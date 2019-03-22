@@ -68,10 +68,13 @@
             this.PreviewNameTextBox = new System.Windows.Forms.TextBox();
             this.PreviewNameLabel = new System.Windows.Forms.Label();
             this.FilterButton = new System.Windows.Forms.Button();
+            this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.VersionMainStatusStrip = new System.Windows.Forms.ToolStripStatusLabel();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.DataGridContextMenuStrip.SuspendLayout();
             this.MainToolStripMenu.SuspendLayout();
             this.PreviewPanel.SuspendLayout();
+            this.MainStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // PrintButton
@@ -314,9 +317,8 @@
             // BatchPrintMainToolStripMenuItem
             // 
             this.BatchPrintMainToolStripMenuItem.Name = "BatchPrintMainToolStripMenuItem";
-            this.BatchPrintMainToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.BatchPrintMainToolStripMenuItem.Size = new System.Drawing.Size(132, 22);
             this.BatchPrintMainToolStripMenuItem.Text = "Batch Print";
-            this.BatchPrintMainToolStripMenuItem.Visible = false;
             this.BatchPrintMainToolStripMenuItem.Click += new System.EventHandler(this.BatchPrintMainToolStripMenuItem_Click);
             // 
             // SettingsMainToolStripMenu
@@ -365,7 +367,7 @@
             this.PreviewPanel.Controls.Add(this.PreviewLastModifiedLabel);
             this.PreviewPanel.Controls.Add(this.PreviewNameTextBox);
             this.PreviewPanel.Controls.Add(this.PreviewNameLabel);
-            this.PreviewPanel.Location = new System.Drawing.Point(830, 102);
+            this.PreviewPanel.Location = new System.Drawing.Point(830, 78);
             this.PreviewPanel.Name = "PreviewPanel";
             this.PreviewPanel.Size = new System.Drawing.Size(352, 433);
             this.PreviewPanel.TabIndex = 15;
@@ -438,13 +440,33 @@
             this.FilterButton.UseVisualStyleBackColor = true;
             this.FilterButton.Click += new System.EventHandler(this.FilterButton_Click);
             // 
+            // MainStatusStrip
+            // 
+            this.MainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.VersionMainStatusStrip});
+            this.MainStatusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
+            this.MainStatusStrip.Location = new System.Drawing.Point(0, 541);
+            this.MainStatusStrip.Name = "MainStatusStrip";
+            this.MainStatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
+            this.MainStatusStrip.Size = new System.Drawing.Size(1194, 22);
+            this.MainStatusStrip.TabIndex = 18;
+            // 
+            // VersionMainStatusStrip
+            // 
+            this.VersionMainStatusStrip.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.VersionMainStatusStrip.Name = "VersionMainStatusStrip";
+            this.VersionMainStatusStrip.Size = new System.Drawing.Size(162, 17);
+            this.VersionMainStatusStrip.Text = "eDrawing Finder, Version x.x.x";
+            this.VersionMainStatusStrip.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // MainForm
             // 
             this.AcceptButton = this.FilterButton;
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
-            this.ClientSize = new System.Drawing.Size(1194, 543);
+            this.ClientSize = new System.Drawing.Size(1194, 563);
+            this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.FilterButton);
             this.Controls.Add(this.PreviewPanel);
             this.Controls.Add(this.ExpandButton);
@@ -471,6 +493,8 @@
             this.MainToolStripMenu.PerformLayout();
             this.PreviewPanel.ResumeLayout(false);
             this.PreviewPanel.PerformLayout();
+            this.MainStatusStrip.ResumeLayout(false);
+            this.MainStatusStrip.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -515,6 +539,8 @@
         private System.Windows.Forms.ToolStripMenuItem FileExplorerDataGridContextMenuStrip;
         private System.Windows.Forms.ToolStripMenuItem PrintDataGridContextMenuStrip;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripStatusLabel VersionMainStatusStrip;
+        private System.Windows.Forms.StatusStrip MainStatusStrip;
     }
 }
 

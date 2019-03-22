@@ -55,7 +55,7 @@ namespace eDrawingFinder
         private void BatchForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             IsOpen = false;
-            BatchUI.SendToBatchDataGridContextMenuStripRefernce.Enabled = true;
+            BatchUI.SendToBatchDataGridContextMenuStripRefernce.Enabled = false;
         }
 
         private void SelectFileButton_Click(object sender, EventArgs e)

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Squirrel;
+using System;
+using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace eDrawingFinder
@@ -32,6 +34,9 @@ namespace eDrawingFinder
             MainUI.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
             MainUI.FilterTextBoxReference = FilterTextBox;
             MainUI.DataGridReference = MainDataGridView;
+
+            BatchUI.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
+
             Data.PreCheckDataGridLoad();
 
             Preview.Expand();
@@ -43,6 +48,7 @@ namespace eDrawingFinder
             if (!(Properties.Settings.Default.DefaultPrinter == String.Empty))
                 Printer.SelectedPrinter = Properties.Settings.Default.DefaultPrinter;
 
+             CheckForUpdate();
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -51,6 +57,17 @@ namespace eDrawingFinder
             Properties.Settings.Default.DefaultPrinter = Printer.SelectedPrinter;
             Properties.Settings.Default.FormExpanded = Preview.MainFormExpanded;
             Properties.Settings.Default.Save();
+        }
+
+        private async void CheckForUpdate()
+        {
+            using (var updateManager = new UpdateManager(@"\\pokydata1\CAD\eDrawingFinder\Releases"))
+            {
+                VersionMainStatusStrip.Text = $"eDrawing Finder, Version {updateManager.CurrentlyInstalledVersion()}";
+                VersionMainStatusStrip.Alignment = ToolStripItemAlignment.Right;
+                var releaseEntry = await updateManager.UpdateApp();
+                Log.Write.Info($"Current Version: {updateManager.CurrentlyInstalledVersion()} -- {$"{releaseEntry?.Version.ToString()} Version update found." ?? "No update found."}");
+            }
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
@@ -154,6 +171,5 @@ namespace eDrawingFinder
                 BatchDataGrid.PullMainSelectionToBatchCell();
 
         }
-
     }
 }
