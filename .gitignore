@@ -3,7 +3,7 @@
 
 
 # Personal Additions
-nuget/
+[Nn]uget/
 
 # User-specific files
 *.suo
