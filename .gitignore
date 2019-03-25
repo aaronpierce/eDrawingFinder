@@ -3,7 +3,8 @@
 
 
 # Personal Additions
-[Nn]uget/
+/[Nn]uget/
+/[Rr]esources/DLL
 
 # User-specific files
 *.suo
