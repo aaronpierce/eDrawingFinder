@@ -5,12 +5,12 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("eDrawing Finder")]
-[assembly: AssemblyDescription("eDrawing Finder Application")]
+[assembly: AssemblyTitle("EDF.Common")]
+[assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Pan-Oston")]
-[assembly: AssemblyProduct("eDrawing Finder")]
-[assembly: AssemblyCopyright("Copyright ©2019")]
+[assembly: AssemblyCompany("")]
+[assembly: AssemblyProduct("EDF.Common")]
+[assembly: AssemblyCopyright("Copyright ©  2019")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("38e6d205-e6b3-401f-a47d-035989511992")]
+[assembly: Guid("0ff8d33c-631f-4662-b134-1eb2057d4dfd")]
 
 // Version information for an assembly consists of the following four values:
 //

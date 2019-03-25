@@ -263,3 +263,4 @@ __pycache__/
 # Personal Additions
 *.bat
 *.ps1
+*.txt

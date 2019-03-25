@@ -1,8 +1,0 @@
-<-- To Deploy Application -->
-
-1. - Change version number in nuget\EDF.nuspec
-
-2. - Package Manager Command (.\nuget pack nuget\EDF.nuspec)
-
-2. - Package Manager Command (Squirrel --releasify eDrawingFinder.0.0.0.nupkg --releaseDir "\\pokydata1\CAD\eDrawingFinder\Releases" --no-msi) 
-<-- Beta Versions: 0.0.0-beta0
