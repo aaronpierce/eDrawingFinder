@@ -89,11 +89,12 @@
     <Reference Include="DeltaCompressionDotNet.PatchApi, Version=1.1.0.0, Culture=neutral, PublicKeyToken=3e8888ee913ed789, processorArchitecture=MSIL">
       <HintPath>..\packages\DeltaCompressionDotNet.1.1.0\lib\net20\DeltaCompressionDotNet.PatchApi.dll</HintPath>
     </Reference>
-    <Reference Include="eDrawingHostControl">
-      <HintPath>..\Resources\eDrawingHostControl.dll</HintPath>
+    <Reference Include="eDrawingHostControl, Version=1.0.6976.16913, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\DLL\eDrawingHostControl.dll</HintPath>
     </Reference>
     <Reference Include="EModelView">
-      <HintPath>..\Resources\EModelView.dll</HintPath>
+      <HintPath>..\Resources\DLL\EModelView.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">

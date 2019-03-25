@@ -54,11 +54,12 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="eDrawingHostControl">
-      <HintPath>..\Resources\eDrawingHostControl.dll</HintPath>
+    <Reference Include="eDrawingHostControl, Version=1.0.6976.16913, Culture=neutral, processorArchitecture=AMD64">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Resources\DLL\eDrawingHostControl.dll</HintPath>
     </Reference>
     <Reference Include="EModelView">
-      <HintPath>..\Resources\EModelView.dll</HintPath>
+      <HintPath>..\Resources\DLL\EModelView.dll</HintPath>
       <EmbedInteropTypes>True</EmbedInteropTypes>
     </Reference>
     <Reference Include="log4net, Version=2.0.8.0, Culture=neutral, PublicKeyToken=669e0ddf0bb1aa2a, processorArchitecture=MSIL">
