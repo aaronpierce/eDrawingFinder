@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using EDF.Common;
 using Squirrel;
 using EDF.DL;
+using EDF.BL;
 
 
 namespace EDF.UI
@@ -12,6 +13,7 @@ namespace EDF.UI
         // Gives the form access to the eDrawingHostControl as eDrawings.Control
         public static EDrawings eDrawings = new EDrawings();
         public static BatchForm batchForm;
+        public static TestForm testForm;
     
         public MainForm()
         {
@@ -39,8 +41,8 @@ namespace EDF.UI
 
             BatchUI.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
 
-            DirectoryScan.PreCheckDataGridLoad();
-            DataGrid.Load();
+            //DirectoryScan.PreCheckDataGridLoad();
+            //DataGrid.Load();
 
             Preview.Expand();
 
@@ -49,7 +51,7 @@ namespace EDF.UI
                 Preview.Expand();
 
             if (!(Properties.Settings.Default.DefaultPrinter == String.Empty))
-                Printer.SelectedPrinter = Properties.Settings.Default.DefaultPrinter;
+                FilePrint.SelectedPrinter = Properties.Settings.Default.DefaultPrinter;
 
              CheckForUpdate();
         }
@@ -57,7 +59,7 @@ namespace EDF.UI
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             //Set and Save Settings
-            Properties.Settings.Default.DefaultPrinter = Printer.SelectedPrinter;
+            Properties.Settings.Default.DefaultPrinter = FilePrint.SelectedPrinter;
             Properties.Settings.Default.FormExpanded = Preview.MainFormExpanded;
             Properties.Settings.Default.Save();
         }
@@ -69,20 +71,20 @@ namespace EDF.UI
                 VersionMainStatusStrip.Text = $"eDrawing Finder, Version {updateManager.CurrentlyInstalledVersion()}";
                 VersionMainStatusStrip.Alignment = ToolStripItemAlignment.Right;
                 var releaseEntry = await updateManager.UpdateApp();
-                Log.Write.Info($"Current Version: {updateManager.CurrentlyInstalledVersion()} -- {$"{releaseEntry?.Version.ToString()} Version update found." ?? "No update found."}");
+                Log.Write.Info($"Running Version [{updateManager.CurrentlyInstalledVersion()}] | {$"[{releaseEntry?.Version.ToString()}] update pending." ?? "No update found."}");
             }
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
         private void PrintButton_Click(object sender, EventArgs e)
         {
-            Printer.PreProcess();
+            FilePrint.PreProcess();
         }
 
         // Opens selected files in data grid when clicking button
         private void OpenButton_Click(object sender, EventArgs e)
         {
-            Opener.PreProcess();   
+            FileOpen.PreProcess();   
         }
 
         // Apply search filter instantly when box is checked.
@@ -107,13 +109,13 @@ namespace EDF.UI
 
         private void SettingsMainToolStripMenu_Click(object sender, EventArgs e)
         {
-            Printer.SetPrinterOptions();
-            MainReference.PrinterSelectionComboBoxReference.SelectedItem = Printer.SelectedPrinter;
+            FilePrint.SetPrinterOptions();
+            MainReference.PrinterSelectionComboBoxReference.SelectedItem = FilePrint.SelectedPrinter;
         }
 
         private void PrinterSelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.Invoke((MethodInvoker)(() => Printer.SelectedPrinter = PrinterSelectionComboBox.Text));
+            this.Invoke((MethodInvoker)(() => FilePrint.SelectedPrinter = PrinterSelectionComboBox.Text));
         }
 
         private void ExitToolStripMenuItem_Click(object sender, EventArgs e)
@@ -173,6 +175,12 @@ namespace EDF.UI
             if (DataGrid.SelectionLessThanOrEqual(1))
                 BatchDataGrid.PullMainSelectionToBatchCell();
 
+        }
+
+        private void TestButton_Click(object sender, EventArgs e)
+        {
+            testForm = TestForm.New();
+            testForm.Show();
         }
     }
 }

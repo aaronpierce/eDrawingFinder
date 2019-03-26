@@ -9,7 +9,7 @@ using EDF.Common;
 namespace EDF.UI
 {
     // Provides printer functionaility 
-    public class Printer
+    public class FilePrint
     {
         public static void PreProcess()
         {
@@ -18,24 +18,20 @@ namespace EDF.UI
             {
                 if ((MainReference.DataGridReference.AreAllCellsSelected(true)) && (!DataGrid.SelectionLessThanOrEqual(10)))
                 {
-                    Error();
+                    MessageBoxes.TooManyFilesSelected("Print Error");
                 }
                 else if (!DataGrid.SelectionLessThanOrEqual(10))
                 {
-                    Error();
+                    MessageBoxes.TooManyFilesSelected("Print Error");
                 }
                 else
                 {
                     IsPrinting = true;
-                    Printer.Process(DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference));
+                    FilePrint.Process(DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference));
                 }
             }
         }
 
-        private static void Error()
-        {
-            MessageBox.Show("Too many files are currently selected.", "Print Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-        }
         // Filles PrinterSelectionComboBox with list of installed printers upon opening
         public static void SetPrinterOptions()
         {

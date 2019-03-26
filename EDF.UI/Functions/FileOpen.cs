@@ -6,17 +6,17 @@ using EDF.DL;
 
 namespace EDF.UI
 {
-    public class Opener
+    public class FileOpen
     {
         public static void PreProcess()
         {
             if ((MainReference.DataGridReference.AreAllCellsSelected(true)) && (!DataGrid.SelectionLessThanOrEqual(10)))
             {
-                Error();
+                MessageBoxes.TooManyFilesSelected("File Open Error");
             }
             else if (!DataGrid.SelectionLessThanOrEqual(10))
             {
-                Error();
+                MessageBoxes.TooManyFilesSelected("File Open Error");
             }
             else
             {
@@ -27,11 +27,6 @@ namespace EDF.UI
                     Log.Write.Info($"File opened: {list.Current.ToString()}");
                 }
             }
-        }
-
-        private static void Error()
-        {
-            MessageBox.Show("Too many files are currently selected.", "File Open Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
     }
 }

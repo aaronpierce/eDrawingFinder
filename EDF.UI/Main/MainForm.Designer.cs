@@ -70,6 +70,7 @@
             this.FilterButton = new System.Windows.Forms.Button();
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.VersionMainStatusStrip = new System.Windows.Forms.ToolStripStatusLabel();
+            this.TestButton = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.DataGridContextMenuStrip.SuspendLayout();
             this.MainToolStripMenu.SuspendLayout();
@@ -459,6 +460,17 @@
             this.VersionMainStatusStrip.Text = "eDrawing Finder, Version x.x.x";
             this.VersionMainStatusStrip.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
+            // TestButton
+            // 
+            this.TestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.TestButton.Location = new System.Drawing.Point(845, 30);
+            this.TestButton.Name = "TestButton";
+            this.TestButton.Size = new System.Drawing.Size(84, 25);
+            this.TestButton.TabIndex = 19;
+            this.TestButton.Text = "Test";
+            this.TestButton.UseVisualStyleBackColor = true;
+            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.FilterButton;
@@ -466,6 +478,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1194, 563);
+            this.Controls.Add(this.TestButton);
             this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.FilterButton);
             this.Controls.Add(this.PreviewPanel);
@@ -541,6 +554,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripStatusLabel VersionMainStatusStrip;
         private System.Windows.Forms.StatusStrip MainStatusStrip;
+        private System.Windows.Forms.Button TestButton;
     }
 }
 

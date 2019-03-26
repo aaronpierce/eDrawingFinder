@@ -5,7 +5,7 @@
     <Setting Name="FormExpanded" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">True</Value>
     </Setting>
-    <Setting Name="DeafultPrinter" Type="System.String" Scope="User">
+    <Setting Name="DefaultPrinter" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
   </Settings>

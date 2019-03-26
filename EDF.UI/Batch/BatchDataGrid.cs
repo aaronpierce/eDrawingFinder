@@ -108,7 +108,7 @@ namespace EDF.UI
 
             BatchUI.BatchPrintButtonReference.Enabled = false;
 
-            Printer.Process(BatchDataProcess());
+            FilePrint.Process(BatchDataProcess());
 
             BatchUI.BatchConfirmButtonReference.Enabled = true;
         }
@@ -161,7 +161,7 @@ namespace EDF.UI
         {
 
 
-            string text = $"There are {ErrorCount()} non-associated part numbers.\nThese are to be skipped and will NOT print.\n\nThe following printer is currently selected:\n{Printer.SelectedPrinter ?? Printer.PrinterSettings.PrinterName} \n\nWould you like to confirm this and continue?";
+            string text = $"There are {ErrorCount()} non-associated part numbers.\nThese are to be skipped and will NOT print.\n\nThe following printer is currently selected:\n{FilePrint.SelectedPrinter ?? FilePrint.PrinterSettings.PrinterName} \n\nWould you like to confirm this and continue?";
             string caption = "Confimation";
             DialogResult conf = MessageBox.Show(text: text, caption: caption, buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Question);
             if (conf.ToString() == "OK")

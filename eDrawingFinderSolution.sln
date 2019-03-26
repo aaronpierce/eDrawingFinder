@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDF.BL", "EDF.BL\EDF.BL.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDF.Common", "EDF.Common\EDF.Common.csproj", "{0FF8D33C-631F-4662-B134-1EB2057D4DFD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDF.DLTests", "EDF.DLTests\EDF.DLTests.csproj", "{F4853F87-EB12-4F16-A050-24AB0B2DB346}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,9 +55,20 @@ Global
 		{0FF8D33C-631F-4662-B134-1EB2057D4DFD}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0FF8D33C-631F-4662-B134-1EB2057D4DFD}.Release|x64.ActiveCfg = Release|x64
 		{0FF8D33C-631F-4662-B134-1EB2057D4DFD}.Release|x64.Build.0 = Release|x64
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Debug|x64.ActiveCfg = Debug|x64
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Debug|x64.Build.0 = Debug|x64
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Release|x64.ActiveCfg = Release|x64
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F4853F87-EB12-4F16-A050-24AB0B2DB346} = {822F3C82-ED55-4A05-A602-BB54B86A332A}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {3F62A971-6D2E-4FEF-BA73-E96DA3A30098}

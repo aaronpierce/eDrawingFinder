@@ -38,15 +38,13 @@ namespace EDF.UI.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
-        public string DeafultPrinter {
+        public string DefaultPrinter {
             get {
-                return ((string)(this["DeafultPrinter"]));
+                return ((string)(this["DefaultPrinter"]));
             }
             set {
-                this["DeafultPrinter"] = value;
+                this["DefaultPrinter"] = value;
             }
         }
-
-        public string DefaultPrinter { get; internal set; }
     }
 }
