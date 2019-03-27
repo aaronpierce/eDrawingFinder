@@ -6,6 +6,7 @@ using System.IO;
 using System.Windows.Forms;
 using System.Linq;
 using EDF.Common;
+using System.Configuration;
 
 namespace EDF.DL
 {
@@ -32,7 +33,6 @@ namespace EDF.DL
             ProgramFolder = programAppDataFolder;
             OPDrawingDataFile = opDrawingDataFile;
             BMDrawingDataFile = bmDrawingDataFile;
-
         }
 
         public static string ProgramFolder { get; }

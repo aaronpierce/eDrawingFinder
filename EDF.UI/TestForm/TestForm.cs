@@ -23,7 +23,7 @@ namespace EDF.UI
             }
             else
             {
-                MainForm.batchForm.BringToFront();
+                MainForm.testForm.BringToFront();
                 return MainForm.testForm;
             }
         }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -15,23 +16,21 @@ namespace EDF.BL
         public static Dictionary<string, string> FileStorage;
         private static List<Drawing> opDrawings;
         private static List<Drawing> bmDrawings;
-        private static List<Drawing> CoreDrawingList;
         //private static int Counter;
 
         public static void DirectorySearch()
         {
             
-            opDrawings = new List<Drawing>();
+            //opDrawings = new List<Drawing>();
             bmDrawings = new List<Drawing>();
-            Log.Write.Info("Starting OP Scan");
-            //Counter = 0;
-            Process(opDrawings, @"\\pokydata1\CAD\DWG", DrawingGroup.OP, new List<string>() { "BM" });
+            //Log.Write.Info("Starting OP Scan");
+            //Process(opDrawings, @"\\pokydata1\CAD\DWG", DrawingGroup.OP, new List<string>() { "BM" });
             Log.Write.Info("Starting BM Scan");
-            //Counter = 0;
             Process(bmDrawings, @"\\pokydata1\CAD\DWG\BM", DrawingGroup.BM, new List<string>() { "" });
             Log.Write.Info("Writting to DB");
-            SqliteDataAccess.SaveDrawings(opDrawings);
+            //SqliteDataAccess.SaveDrawings(opDrawings);
             SqliteDataAccess.SaveDrawings(bmDrawings);
+
         }
 
         private static void Process(List<Drawing> drawingList, string parentDirectory, DrawingGroup group, List<string> exclusions)
@@ -44,7 +43,6 @@ namespace EDF.BL
 
         public static void GetDBData(List<Drawing> drawingList, string parentDirectory, string group, List<string> exclusions)
         {
-            //Counter++;
             string parentFilename = Path.GetFileName(parentDirectory);
             
 
@@ -56,9 +54,11 @@ namespace EDF.BL
             {
                 if ((file.EndsWith("dwg", StringComparison.CurrentCultureIgnoreCase) || file.EndsWith("edrw", StringComparison.CurrentCultureIgnoreCase)))
                 {
-                    drawingList.Add(new Drawing(){
-                        File = Path.GetFileName(file),
-                        Path = file,
+                   var temp = file;
+                   if (file.Contains("'")) { temp = file.Replace("'", "''"); }
+                   drawingList.Add(new Drawing(){
+                        File = Path.GetFileName(temp),
+                        Path = temp,
                         Group = group
                         }
                     );
@@ -75,6 +75,31 @@ namespace EDF.BL
             }
 
             return;
+        }
+
+        public static void PreCheckDataGridLoad()
+        {
+            
+            if (!File.Exists(SqliteDataAccess.LoadDatabaseName()))
+            {
+                Log.Write.Info("Creating New Database.");
+                SQLiteConnection.CreateFile(SqliteDataAccess.LoadDatabaseName());
+
+                using (SQLiteConnection connection = new SQLiteConnection(SqliteDataAccess.LoadConnectionString()))
+                {
+                    connection.Open();
+
+                    string createTable = "CREATE TABLE \"Drawings\"(\"Id\" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, \"File\" TEXT NOT NULL, \"Path\" TEXT NOT NULL, \"Group\" TEXT NOT NULL)";
+                    
+                    SQLiteCommand command = new SQLiteCommand(createTable, connection);
+                    command.ExecuteNonQuery();
+
+                    connection.Close();
+                }
+            }
+
+            //Thread t = new Thread(() => PostDataGridLoad());
+            //t.Start();
         }
 
         // Main directory scanning function that updates the FileStorage dictionary
@@ -116,7 +141,7 @@ namespace EDF.BL
             Data.SaveJson(FileStorage, group);
         }
 
-        public static void PreCheckDataGridLoad()
+        public static void PreCheckDataGridLoad0()
         {
             // If either dont exists, tell the user whats happening.
             if (!File.Exists(Data.OPDrawingDataFile) || !File.Exists(Data.BMDrawingDataFile))

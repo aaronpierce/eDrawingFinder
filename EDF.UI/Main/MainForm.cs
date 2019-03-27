@@ -41,7 +41,7 @@ namespace EDF.UI
 
             BatchUI.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
 
-            //DirectoryScan.PreCheckDataGridLoad();
+            DirectoryScan.PreCheckDataGridLoad();
             //DataGrid.Load();
 
             Preview.Expand();
