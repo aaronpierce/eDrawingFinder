@@ -11,6 +11,8 @@ namespace EDF.UI
     // Provides printer functionaility 
     public class FilePrint
     {
+        //private static PrintProgressForm ProgressForm { get; set; }
+
         public static void PreProcess()
         {
             // If printing is in process, skip the printing processes from spawning again.
@@ -26,12 +28,16 @@ namespace EDF.UI
                 }
                 else
                 {
+                    //ProgressForm = PrintProgressForm.Display();
+                    //ProgressForm.ProgressBarSetup(DataGrid.CountOfSelection());
+
                     IsPrinting = true;
-                    FilePrint.Process(DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference));
+                    FilePrint.Process(DataGrid.GetSelectedDrawings());
                 }
             }
         }
 
+       
         // Filles PrinterSelectionComboBox with list of installed printers upon opening
         public static void SetPrinterOptions()
         {
@@ -137,6 +143,7 @@ namespace EDF.UI
             Log.Write.Info($"Printed: {PrintJobName}");
             MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
 
+            //ProgressForm.ShowProgress();
             // If another file exists in list of drawings, move to the next, open it, and start chain of events.
             if (DrawingListToPrint.MoveNext())
             {
@@ -147,6 +154,8 @@ namespace EDF.UI
             else
             {
                 IsPrinting = false;
+                //ProgressForm.ProgressBarTeardown();
+                //PrintProgressForm.PrintProgressFormThread.Abort();
                 DrawingListToPrint = null;
                 RemoveHandlerEvents();
             }

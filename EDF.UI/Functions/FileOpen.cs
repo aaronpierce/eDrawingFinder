@@ -20,7 +20,7 @@ namespace EDF.UI
             }
             else
             {
-                IEnumerator<string> list = DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference);
+                IEnumerator<string> list = DataGrid.GetSelectedDrawings();
                 while (list.MoveNext())
                 {
                     Process.Start(list.Current.ToString());

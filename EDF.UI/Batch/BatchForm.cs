@@ -23,17 +23,22 @@ namespace EDF.UI
 
         private void BatchForm_Load(object sender, EventArgs e)
         {
-            BatchUI.BatchConfirmButtonReference = BatchConfirmButton;
-            BatchUI.BatchPrintButtonReference = BatchPrintButton;
-            BatchUI.BatchDataGridReference = BatchDataGridView;
-            BatchUI.ProgressBarReference = BatchPrintStatusProgressBar;
-            BatchUI.StatusStripReference = StatusStrip;
-            BatchUI.BatchFileTextBoxReference = BatchFileTextBox;
+            BatchReference.BatchConfirmButtonReference = BatchConfirmButton;
+            BatchReference.BatchPrintButtonReference = BatchPrintButton;
 
-            BatchUI.BatchPrintStausLabelPreference = BatchPrintStatusLabel;
-            BatchUI.BatchPrintStausLabelPreference.Text = "Ready";
+            BatchReference.BatchDataGridReference = BatchDataGridView;
+            BatchReference.ProgressBarReference = BatchPrintStatusProgressBar;
+            BatchReference.StatusStripReference = StatusStrip;
 
-            BatchUI.SendToBatchDataGridContextMenuStripRefernce.Enabled = true;
+            BatchReference.BatchFileTextBoxReference = BatchFileTextBox;
+
+            BatchReference.BatchOPCheckBoxReference = BatchOPCheckBox;
+            BatchReference.BatchBMCheckBoxReference = BatchBMCheckBox;
+
+            BatchReference.BatchPrintStausLabelPreference = BatchPrintStatusLabel;
+            BatchReference.BatchPrintStausLabelPreference.Text = "Ready";
+
+            BatchReference.SendToBatchDataGridContextMenuStripRefernce.Enabled = true;
 
 
         }
@@ -55,7 +60,7 @@ namespace EDF.UI
         private void BatchForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             IsOpen = false;
-            BatchUI.SendToBatchDataGridContextMenuStripRefernce.Enabled = false;
+            BatchReference.SendToBatchDataGridContextMenuStripRefernce.Enabled = false;
         }
 
         private void SelectFileButton_Click(object sender, EventArgs e)

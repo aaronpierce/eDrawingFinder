@@ -7,7 +7,7 @@ using System.Windows.Forms;
 
 namespace EDF.UI
 {
-    class BatchUI
+    class BatchReference
     {
         public static Button BatchConfirmButtonReference {get; set;}
         public static Button BatchPrintButtonReference {get; set;}
@@ -17,5 +17,7 @@ namespace EDF.UI
         public static ToolStripStatusLabel BatchPrintStausLabelPreference {get; set;}
         public static ToolStripMenuItem SendToBatchDataGridContextMenuStripRefernce { get; set; }
         public static TextBox BatchFileTextBoxReference { get; set; }
+        public static CheckBox BatchOPCheckBoxReference { get; set; }
+        public static CheckBox BatchBMCheckBoxReference { get; set; }
     }
 }

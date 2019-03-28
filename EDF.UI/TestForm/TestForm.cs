@@ -30,7 +30,7 @@ namespace EDF.UI
 
         private void LoadSQLButton_Click(object sender, EventArgs e)
         {
-            List<EDF.DL.Drawing> drawings = SqliteDataAccess.LoadDrawings();
+            List<EDF.DL.Drawing> drawings = SqliteDataAccess.LoadAllDrawings();
             using (DataTable dt = new DataTable())
             {
                 TestDataGridView.DataSource = drawings;

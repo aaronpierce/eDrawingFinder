@@ -17,157 +17,89 @@ namespace EDF.UI
     {
         public static DataTable BatchDataTable { get; set; }
         public static List<string> LoadedDrawingList { get; set; }
-        public static Dictionary<string, string> MatchedDrawings { get; set; }
+        public static List<Matcher> MatchList { get; set; }
 
         public static void SetInputIntoGrid()
         {
             ProgressBarSetup();
-            MatchedDrawings = FindMatch();
-            BatchDataTable = ConvertToDataTable(MatchedDrawings);
-            BatchUI.BatchDataGridReference.DataSource = BatchDataTable;
+            MatchList = DrawingToPart.Match(LoadedDrawingList);
+            BatchReference.BatchDataGridReference.DataSource = MatchList;
             ProgressBarTearDown();
-
-        }
-
-        private static DataTable ConvertToDataTable(Dictionary<string, string> MatchedDrawings)
-        {
-            DataTable dt = new DataTable();
-            dt.Columns.Add("Part_Number");
-            dt.Columns.Add("Drawing_File");
-
-            foreach (KeyValuePair<string, string> item in MatchedDrawings)
-            {
-                DataRow row = dt.NewRow();
-
-                row["Part_Number"] = item.Key;
-                row["Drawing_File"] = item.Value;
-                dt.Rows.Add(row);
-            }
-
-            return dt;
-        }
-
-        public static Dictionary<string, string> FindMatch()
-        {
-
-            Dictionary<string, string> matches = new Dictionary<string, string>();
-            foreach (string part in LoadedDrawingList)
-            {
-                BatchUI.ProgressBarReference.Increment(BatchUI.ProgressBarReference.Step);
-                if (!matches.Keys.Contains(part))
-                {
-                    string column = MainReference.DataGridReference.Columns[0].HeaderText.ToString();
-                    string filter = $"{column} LIKE '{part}%'";
-                    DataRow[] result = DrawingStorage.OPDrawingDataTable.Select(filter);
-                    if (result.Length > 0)
-                    {
-                        matches.Add(part, result[0].Field<string>(column));
-                    }
-                    else
-                    {
-                        matches.Add(part, "Error; No Exact Match");
-                    }
-                }
-            }
-
-            
-            return matches;
 
         }
 
         public static void PullMainSelectionToBatchCell()
         {
-            IEnumerator<string> selectedMain = DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference);
-            if (selectedMain.MoveNext()) {
-                DataGridViewCell cell = BatchUI.BatchDataGridReference.CurrentRow.Cells[1];
-                if (cell.Value.ToString().Contains("Error") || cell.Value.ToString().Contains("*"))
-                    cell.Value = $"{Path.GetFileName(selectedMain.Current)}*";
-        
-            }
+            IEnumerator<string> selectedMain = DataGrid.GetSelectedDrawings();
+            if (selectedMain.MoveNext())
+            {
+                DataGridViewRow row = BatchReference.BatchDataGridReference.CurrentRow;
+                MatchList[row.Index] = DrawingToPart.Match(new List<string>() { Path.GetFileName(selectedMain.Current) })[0];
+                BatchReference.BatchDataGridReference.UpdateCellValue(1, row.Index);
+            }    
         }
 
         private static void ProgressBarSetup()
         {
-            BatchUI.BatchPrintStausLabelPreference.Text = "Processing Imports...";
-            BatchUI.StatusStripReference.Update();
-            BatchUI.ProgressBarReference.Visible = true;
-            BatchUI.ProgressBarReference.Step = LoadedDrawingList.Count / 100;
-            BatchUI.ProgressBarReference.Value = 0;
+            BatchReference.BatchPrintStausLabelPreference.Text = "Processing Imports...";
+            BatchReference.StatusStripReference.Update();
+            BatchReference.ProgressBarReference.Visible = true;
+            BatchReference.ProgressBarReference.Step = LoadedDrawingList.Count / 100;
+            BatchReference.ProgressBarReference.Value = 0;
         }
 
         private static void ProgressBarTearDown()
         {
-            BatchUI.ProgressBarReference.Visible = false;
+            BatchReference.ProgressBarReference.Visible = false;
             DataGridStatistics();
-            BatchUI.BatchConfirmButtonReference.Enabled = true;
+            BatchReference.BatchConfirmButtonReference.Enabled = true;
         }
 
         public static void Print()
         {
             Log.Write.Info("Batch Print Job Started.");
 
-            BatchUI.BatchPrintButtonReference.Enabled = false;
+            BatchReference.BatchPrintButtonReference.Enabled = false;
 
-            FilePrint.Process(BatchDataProcess());
+            FilePrint.Process(GetDrawingPaths());
 
-            BatchUI.BatchConfirmButtonReference.Enabled = true;
+            BatchReference.BatchConfirmButtonReference.Enabled = true;
         }
 
-        public static IEnumerator<string> BatchDataProcess()
+        public static IEnumerator<string> GetDrawingPaths()
         {
-            List<string> drawingNames = new List<string>();
-            List<string> drawingPaths = new List<string>();
+            List<string> drawingsToPrint = new List<string>();
 
-            foreach (DataGridViewRow row in BatchUI.BatchDataGridReference.Rows)
+            foreach (Matcher match in MatchList)
             {
-                string cell = row.Cells[1].Value.ToString();
-                if (cell.EndsWith(".dwg", StringComparison.CurrentCultureIgnoreCase) || cell.EndsWith(".edrw", StringComparison.CurrentCultureIgnoreCase))
-                    drawingNames.Add(cell);
+                if (File.Exists(match.Drawing.Path))
+                    drawingsToPrint.Add(match.Drawing.Path);
             }
 
-            //Clears filter on datagrid to allow for all drawings to be queried against.
-            MainReference.FilterTextBoxReference.Text = string.Empty;
-            Search.Filter(MainReference.StartsWithCheckBoxReference.Checked, MainReference.FilterTextBoxReference.Text);
-
-            foreach (string item in drawingNames)
-            {
-                DataGridViewRow row = MainReference.DataGridReference.Rows
-                    .Cast<DataGridViewRow>()
-                    .Where(r => r.Cells[0].Value.ToString().Equals(item, StringComparison.CurrentCultureIgnoreCase))
-                    .First();
-                    
-                drawingPaths.Add(row.Cells[1].Value.ToString());
-            }
-
-
-            return DrawingStorage.DrawingListConvertToEnumerator(drawingPaths);
+            return ListToEnum.Convert(drawingsToPrint);
         }
 
         public static void DataGridStatistics()
         {
-            BatchUI.BatchPrintStausLabelPreference.Text = $"Errors Found: {ErrorCount().ToString()}";
-            BatchUI.StatusStripReference.Update();
+            BatchReference.BatchPrintStausLabelPreference.Text = $"Errors Found: {ErrorCount().ToString()}";
+            BatchReference.StatusStripReference.Update();
         }
 
         private static int ErrorCount()
         {
-            string column = $"{BatchUI.BatchDataGridReference.Columns[1].HeaderText.ToString()}";
-            string filter = $"{column} LIKE 'Error%'";
-            return BatchDataTable.Select(filter).Count();
-
+            return 0;
         }
 
         public static void Confirm()
         {
-
 
             string text = $"There are {ErrorCount()} non-associated part numbers.\nThese are to be skipped and will NOT print.\n\nThe following printer is currently selected:\n{FilePrint.SelectedPrinter ?? FilePrint.PrinterSettings.PrinterName} \n\nWould you like to confirm this and continue?";
             string caption = "Confimation";
             DialogResult conf = MessageBox.Show(text: text, caption: caption, buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Question);
             if (conf.ToString() == "OK")
             {
-                BatchUI.BatchConfirmButtonReference.Enabled = false;
-                BatchUI.BatchPrintButtonReference.Enabled = true;
+                BatchReference.BatchConfirmButtonReference.Enabled = false;
+                BatchReference.BatchPrintButtonReference.Enabled = true;
             }
             else
             {

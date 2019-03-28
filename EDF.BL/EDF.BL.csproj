@@ -83,7 +83,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DirectoryScan.cs" />
-    <Compile Include="Drawing.cs" />
     <Compile Include="EDrawings.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

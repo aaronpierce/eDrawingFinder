@@ -6,10 +6,10 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace EDF.UI
+namespace EDF.Common
 {
     // Provides a seperate thread to display a message box while program runs directory scans.
-    class PreLoadMessage
+    public class ThreadedMessageBox
     {
         public static Thread MessageThread;
         public static void ShowMessageBox(string text, string caption)

@@ -18,7 +18,7 @@ namespace EDF.UI
         { 
             MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
 
-            IEnumerator<string> selected = DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference);
+            IEnumerator<string> selected = DataGrid.GetSelectedDrawings();
             if (selected.MoveNext())
             {
                 Current = selected.Current;

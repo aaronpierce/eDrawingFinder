@@ -4,7 +4,7 @@ using EDF.Common;
 using Squirrel;
 using EDF.DL;
 using EDF.BL;
-
+using System.Threading;
 
 namespace EDF.UI
 {
@@ -22,7 +22,10 @@ namespace EDF.UI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            Log.Write.Info("################## - New application instance has started - ##################");
+            // If eDrawings >= 2018 is not installed these will be null and application will close.
             if (eDrawings.Control is null || eDrawings.PreviewControl is null) { this.Close();  }
+
             // Once the form loads, add the Control and set it to invisible.
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
@@ -39,10 +42,21 @@ namespace EDF.UI
             MainReference.FilterTextBoxReference = FilterTextBox;
             MainReference.DataGridReference = MainDataGridView;
 
-            BatchUI.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
+            BatchReference.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
 
-            DirectoryScan.PreCheckDataGridLoad();
-            //DataGrid.Load();
+            if (!DirectoryScan.DatabaseExists())
+            {
+                AlertForm.ShowCreateDBAlert();
+                DirectoryScan.PreLoadDatabase();
+            }
+
+            DataGrid.Load();
+
+            if (AlertForm.CreateDBAlertThread.IsAlive)
+                AlertForm.CreateDBAlertThread.Abort();
+
+
+            Log.Write.Debug("Passed precheck in Main Form");
 
             Preview.Expand();
 
@@ -71,8 +85,14 @@ namespace EDF.UI
                 VersionMainStatusStrip.Text = $"eDrawing Finder, Version {updateManager.CurrentlyInstalledVersion()}";
                 VersionMainStatusStrip.Alignment = ToolStripItemAlignment.Right;
                 var releaseEntry = await updateManager.UpdateApp();
-                Log.Write.Info($"Running Version [{updateManager.CurrentlyInstalledVersion()}] | {$"[{releaseEntry?.Version.ToString()}] update pending." ?? "No update found."}");
+                Log.Write.Info($"Current application version [{updateManager.CurrentlyInstalledVersion()}] | {$"Version [{releaseEntry?.Version.ToString()}] update is pending application restart" ?? "No updates found"}");
             }
+        }
+
+        private void RefreshFilterResults()
+        {
+            MainDataGridView.ClearSelection();
+            MainDataGridView.DataSource = Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text, OPCheckBox.Checked, BMCheckBox.Checked);
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
@@ -90,21 +110,7 @@ namespace EDF.UI
         // Apply search filter instantly when box is checked.
         private void StartsWithFilterCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
-        }
-
-        private void OPRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            DrawingStorage.CurrentDataTable = DrawingStorage.OPDrawingDataTable;
-            MainReference.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
-            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
-        }
-
-        private void BMRadioButton_CheckedChanged(object sender, EventArgs e)
-        {
-            DrawingStorage.CurrentDataTable = DrawingStorage.BMDrawingDataTable;
-            MainReference.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
-            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
+            RefreshFilterResults();
         }
 
         private void SettingsMainToolStripMenu_Click(object sender, EventArgs e)
@@ -136,8 +142,7 @@ namespace EDF.UI
 
         private void FilterButton_Click(object sender, EventArgs e)
         {
-            MainDataGridView.ClearSelection();
-            Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text);
+            RefreshFilterResults();
         }
 
         private void MainDataGridView_SelectionChanged(object sender, EventArgs e)
@@ -179,8 +184,25 @@ namespace EDF.UI
 
         private void TestButton_Click(object sender, EventArgs e)
         {
-            testForm = TestForm.New();
-            testForm.Show();
+            AlertForm.ShowCreateDBAlert();
+        }
+
+        private void BMCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!BMCheckBox.Checked && !OPCheckBox.Checked)
+            {
+                OPCheckBox.Checked = true;
+            }
+            RefreshFilterResults();
+        }
+
+        private void OPCheckBox_CheckedChanged(object sender, EventArgs e)
+        {
+            if (!OPCheckBox.Checked && !BMCheckBox.Checked)
+            {
+                BMCheckBox.Checked = true;
+            }
+            RefreshFilterResults();
         }
     }
 }

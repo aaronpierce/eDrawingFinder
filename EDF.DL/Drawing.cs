@@ -14,6 +14,11 @@ namespace EDF.DL
         public string File { get; set; }
         public string Path { get; set; }
         public string Group { get; set; }
+
+        public override string ToString()
+        {
+            return File;
+        }
     }
 
     // Helper enum to distinguish which data set is being worked with

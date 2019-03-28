@@ -26,7 +26,7 @@ namespace EDF.UI
 
             List<string> drawings = new List<string>();
 
-            BatchUI.BatchFileTextBoxReference.Text = OpenFileDialog.FileName;
+            BatchReference.BatchFileTextBoxReference.Text = OpenFileDialog.FileName;
 
             drawings = Data.BatchPrintLoadFile(isCSVFile, OpenFileDialog.FileName).ToList();
 

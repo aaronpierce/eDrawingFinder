@@ -29,7 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            System.Windows.Forms.Panel CheckBoxPanel;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
+            this.BMCheckBox = new System.Windows.Forms.CheckBox();
+            this.OPCheckBox = new System.Windows.Forms.CheckBox();
             this.PrintButton = new System.Windows.Forms.Button();
             this.MainDataGridView = new System.Windows.Forms.DataGridView();
             this.DataGridContextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -46,8 +49,6 @@
             this.FilterTextBox = new System.Windows.Forms.TextBox();
             this.StartsWithFilterCheckBox = new System.Windows.Forms.CheckBox();
             this.OpenButton = new System.Windows.Forms.Button();
-            this.OPRadioButton = new System.Windows.Forms.RadioButton();
-            this.BMRadioButton = new System.Windows.Forms.RadioButton();
             this.MainToolStripMenu = new System.Windows.Forms.MenuStrip();
             this.FileMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.OpenMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
@@ -71,6 +72,8 @@
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
             this.VersionMainStatusStrip = new System.Windows.Forms.ToolStripStatusLabel();
             this.TestButton = new System.Windows.Forms.Button();
+            CheckBoxPanel = new System.Windows.Forms.Panel();
+            CheckBoxPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
             this.DataGridContextMenuStrip.SuspendLayout();
             this.MainToolStripMenu.SuspendLayout();
@@ -78,10 +81,51 @@
             this.MainStatusStrip.SuspendLayout();
             this.SuspendLayout();
             // 
+            // CheckBoxPanel
+            // 
+            CheckBoxPanel.BackColor = System.Drawing.Color.LightGray;
+            CheckBoxPanel.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            CheckBoxPanel.Controls.Add(this.BMCheckBox);
+            CheckBoxPanel.Controls.Add(this.OPCheckBox);
+            CheckBoxPanel.Location = new System.Drawing.Point(465, 30);
+            CheckBoxPanel.Name = "CheckBoxPanel";
+            CheckBoxPanel.Size = new System.Drawing.Size(131, 26);
+            CheckBoxPanel.TabIndex = 22;
+            // 
+            // BMCheckBox
+            // 
+            this.BMCheckBox.AutoSize = true;
+            this.BMCheckBox.Checked = true;
+            this.BMCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.BMCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.BMCheckBox.Location = new System.Drawing.Point(18, 3);
+            this.BMCheckBox.Name = "BMCheckBox";
+            this.BMCheckBox.Size = new System.Drawing.Size(48, 18);
+            this.BMCheckBox.TabIndex = 21;
+            this.BMCheckBox.Text = "BM";
+            this.BMCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.BMCheckBox.UseVisualStyleBackColor = true;
+            this.BMCheckBox.CheckedChanged += new System.EventHandler(this.BMCheckBox_CheckedChanged);
+            // 
+            // OPCheckBox
+            // 
+            this.OPCheckBox.AutoSize = true;
+            this.OPCheckBox.Checked = true;
+            this.OPCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.OPCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.OPCheckBox.Location = new System.Drawing.Point(72, 3);
+            this.OPCheckBox.Name = "OPCheckBox";
+            this.OPCheckBox.Size = new System.Drawing.Size(47, 18);
+            this.OPCheckBox.TabIndex = 20;
+            this.OPCheckBox.Text = "OP";
+            this.OPCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.OPCheckBox.UseVisualStyleBackColor = true;
+            this.OPCheckBox.CheckedChanged += new System.EventHandler(this.OPCheckBox_CheckedChanged);
+            // 
             // PrintButton
             // 
             this.PrintButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.PrintButton.Location = new System.Drawing.Point(577, 30);
+            this.PrintButton.Location = new System.Drawing.Point(602, 30);
             this.PrintButton.Name = "PrintButton";
             this.PrintButton.Size = new System.Drawing.Size(84, 25);
             this.PrintButton.TabIndex = 0;
@@ -204,9 +248,10 @@
             // StartsWithFilterCheckBox
             // 
             this.StartsWithFilterCheckBox.AutoSize = true;
-            this.StartsWithFilterCheckBox.Location = new System.Drawing.Point(343, 38);
+            this.StartsWithFilterCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
+            this.StartsWithFilterCheckBox.Location = new System.Drawing.Point(334, 35);
             this.StartsWithFilterCheckBox.Name = "StartsWithFilterCheckBox";
-            this.StartsWithFilterCheckBox.Size = new System.Drawing.Size(78, 17);
+            this.StartsWithFilterCheckBox.Size = new System.Drawing.Size(84, 18);
             this.StartsWithFilterCheckBox.TabIndex = 8;
             this.StartsWithFilterCheckBox.Text = "Starts Wtih";
             this.StartsWithFilterCheckBox.UseVisualStyleBackColor = true;
@@ -222,33 +267,6 @@
             this.OpenButton.Text = "Open";
             this.OpenButton.UseVisualStyleBackColor = true;
             this.OpenButton.Click += new System.EventHandler(this.OpenButton_Click);
-            // 
-            // OPRadioButton
-            // 
-            this.OPRadioButton.AutoSize = true;
-            this.OPRadioButton.BackColor = System.Drawing.Color.Transparent;
-            this.OPRadioButton.CheckAlign = System.Drawing.ContentAlignment.TopLeft;
-            this.OPRadioButton.Checked = true;
-            this.OPRadioButton.Location = new System.Drawing.Point(468, 35);
-            this.OPRadioButton.Name = "OPRadioButton";
-            this.OPRadioButton.Size = new System.Drawing.Size(40, 17);
-            this.OPRadioButton.TabIndex = 10;
-            this.OPRadioButton.TabStop = true;
-            this.OPRadioButton.Text = "OP";
-            this.OPRadioButton.UseVisualStyleBackColor = false;
-            this.OPRadioButton.CheckedChanged += new System.EventHandler(this.OPRadioButton_CheckedChanged);
-            // 
-            // BMRadioButton
-            // 
-            this.BMRadioButton.AutoSize = true;
-            this.BMRadioButton.BackColor = System.Drawing.Color.Transparent;
-            this.BMRadioButton.Location = new System.Drawing.Point(514, 35);
-            this.BMRadioButton.Name = "BMRadioButton";
-            this.BMRadioButton.Size = new System.Drawing.Size(41, 17);
-            this.BMRadioButton.TabIndex = 11;
-            this.BMRadioButton.Text = "BM";
-            this.BMRadioButton.UseVisualStyleBackColor = false;
-            this.BMRadioButton.CheckedChanged += new System.EventHandler(this.BMRadioButton_CheckedChanged);
             // 
             // MainToolStripMenu
             // 
@@ -478,13 +496,12 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1194, 563);
+            this.Controls.Add(CheckBoxPanel);
             this.Controls.Add(this.TestButton);
             this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.FilterButton);
             this.Controls.Add(this.PreviewPanel);
             this.Controls.Add(this.ExpandButton);
-            this.Controls.Add(this.BMRadioButton);
-            this.Controls.Add(this.OPRadioButton);
             this.Controls.Add(this.OpenButton);
             this.Controls.Add(this.StartsWithFilterCheckBox);
             this.Controls.Add(this.FilterTextBox);
@@ -500,6 +517,8 @@
             this.Text = "eDrawing Finder";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.MainForm_FormClosing);
             this.Load += new System.EventHandler(this.MainForm_Load);
+            CheckBoxPanel.ResumeLayout(false);
+            CheckBoxPanel.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).EndInit();
             this.DataGridContextMenuStrip.ResumeLayout(false);
             this.MainToolStripMenu.ResumeLayout(false);
@@ -519,9 +538,6 @@
         private System.Windows.Forms.TextBox FilterTextBox;
         private System.Windows.Forms.CheckBox StartsWithFilterCheckBox;
         private System.Windows.Forms.Button OpenButton;
-        private System.Windows.Forms.RadioButton OPRadioButton;
-        private System.Windows.Forms.RadioButton BMRadioButton;
-        private System.Windows.Forms.MenuStrip MainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem FileMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem OpenMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem PrintMainToolStripMenu;
@@ -555,6 +571,9 @@
         private System.Windows.Forms.ToolStripStatusLabel VersionMainStatusStrip;
         private System.Windows.Forms.StatusStrip MainStatusStrip;
         private System.Windows.Forms.Button TestButton;
+        private System.Windows.Forms.CheckBox OPCheckBox;
+        private System.Windows.Forms.CheckBox BMCheckBox;
+        private System.Windows.Forms.MenuStrip MainToolStripMenu;
     }
 }
 

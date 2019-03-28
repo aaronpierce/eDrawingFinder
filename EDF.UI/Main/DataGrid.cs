@@ -1,10 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using EDF.DL;
+using EDF.Common;
 
 namespace EDF.UI
 {
@@ -12,23 +14,40 @@ namespace EDF.UI
     {
         public static void Load()
         {
-            // Calling this loads json data to disk, converts from dictionary to data table and updates DrawingDataTable.
-            DrawingStorage.SetDataTable();
-
-            if (Data.UpdateAvailable)
-            {
-                Data.UpdateAvailable = false;
-            }
-            else
-            {
-                DrawingStorage.CurrentDataTable = DrawingStorage.OPDrawingDataTable;
-                // Uses the just updated variable DrawingDataTable as the data source for grid view.
-                MainReference.DataGridReference.DataSource = DrawingStorage.CurrentDataTable;
-            }
+            MainReference.DataGridReference.DataSource = SqliteDataAccess.LoadAllDrawings();
+            ApplyGridSettings();
         }
 
-        public static bool SelectionLessThanOrEqual(int cap) => (MainReference.DataGridReference.SelectedRows.Count <= cap) ? true : false;
+        private static void ApplyGridSettings()
+        {
+            MainReference.DataGridReference.Columns["Id"].Visible = false;
+            MainReference.DataGridReference.Columns["File"].FillWeight = 90;
+            MainReference.DataGridReference.Columns["Group"].Width = 50;
+        }
+
+
+        public static IEnumerator<string> GetSelectedDrawings()
+        {
+            List<string> items = new List<string>();
+            foreach (DataGridViewTextBoxCell item in MainReference.DataGridReference.SelectedCells)
+            {
+                if (item.ColumnIndex == 2)
+                {
+                    if (item.RowIndex >= 0)
+                    {
+                        items.Add(item.Value.ToString());
+                    }
+                }
+            }
+
+            // Gets an enumearator from selected data grid items and sends those into the printer functions
+            return ListToEnum.Convert(items);
+
+        }
 
         public static int CountOfSelection() => MainReference.DataGridReference.SelectedRows.Count;
+        public static bool SelectionLessThanOrEqual(int cap) => (CountOfSelection() <= cap) ? true : false;
+
     }
+
 }

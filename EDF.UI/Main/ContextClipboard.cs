@@ -10,7 +10,7 @@ namespace EDF.UI
     {
         public static void CopyPartNumber()
         {
-            IEnumerator<string> drawings = DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference);
+            IEnumerator<string> drawings = DataGrid.GetSelectedDrawings();
             string items = string.Empty;
             while (drawings.MoveNext())
             {
@@ -23,7 +23,7 @@ namespace EDF.UI
         }
         public static void CopyDrawingFileName()
         {
-            IEnumerator<string> drawings = DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference);
+            IEnumerator<string> drawings = DataGrid.GetSelectedDrawings();
             string items = string.Empty;
             while (drawings.MoveNext())
             {
@@ -36,7 +36,7 @@ namespace EDF.UI
         }
         public static void CopyFilePath()
         {
-            IEnumerator<string> drawings = DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference);
+            IEnumerator<string> drawings = DataGrid.GetSelectedDrawings();
             string items = string.Empty;
             while (drawings.MoveNext())
             {
@@ -50,7 +50,7 @@ namespace EDF.UI
 
         public static void OpenWithFileExplorer()
         {
-            IEnumerator<string> drawings = DrawingStorage.GetSelectedDrawings(MainReference.DataGridReference);
+            IEnumerator<string> drawings = DataGrid.GetSelectedDrawings();
 
             HashSet<string> paths = new HashSet<string>();
             while (drawings.MoveNext())

@@ -17,5 +17,6 @@ namespace EDF.UI
         public static CheckBox StartsWithCheckBoxReference {get; set;}
         public static TextBox FilterTextBoxReference {get; set;}
         public static DataGridView DataGridReference {get; set;}
+        public static ToolStripProgressBar PrintingToolStripBarReference { get; set; }
     }
 }
