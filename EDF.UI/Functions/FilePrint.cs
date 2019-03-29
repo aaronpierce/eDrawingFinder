@@ -5,34 +5,49 @@ using System.Windows.Forms;
 using System.Threading;
 using EDF.DL;
 using EDF.Common;
+using System.IO;
 
 namespace EDF.UI
 {
     // Provides printer functionaility 
     public class FilePrint
     {
+        // Used to accss default printer settings on machine.
+        public static PrinterSettings PrinterSettings = new PrinterSettings();
+        private static IEnumerator<IDrawing> DrawingListToPrint;
+        public static string SelectedPrinter { get; set; }
+        private static bool EventsHandled { get; set; } = false;
+        private static bool IsPrinting { get; set; } = false;
+        private static int PrintCounter { get; set; }
+        private static int CountOfFiles { get; set; }
         //private static PrintProgressForm ProgressForm { get; set; }
+        private static void UpdateStatus(string file, bool restart = false)
+        {
+            if (restart)
+            {
+                PrintCounter = 0;
+            }
+            PrintCounter++;
+            StatusBar.UpdateMain($"Printing in Progress [{PrintCounter}/{CountOfFiles}]. Current File: {file}");
+        }
 
         public static void PreProcess()
         {
             // If printing is in process, skip the printing processes from spawning again.
             if (!IsPrinting)
             {
-                if ((MainReference.DataGridReference.AreAllCellsSelected(true)) && (!DataGrid.SelectionLessThanOrEqual(10)))
+                if ((MainReference.DataGridReference.AreAllCellsSelected(true)) && (!DataGrid.SelectionLessThanOrEqual(10, MainReference.DataGridReference)))
                 {
                     MessageBoxes.TooManyFilesSelected("Print Error");
                 }
-                else if (!DataGrid.SelectionLessThanOrEqual(10))
+                else if (!DataGrid.SelectionLessThanOrEqual(10, MainReference.DataGridReference))
                 {
                     MessageBoxes.TooManyFilesSelected("Print Error");
                 }
                 else
                 {
-                    //ProgressForm = PrintProgressForm.Display();
-                    //ProgressForm.ProgressBarSetup(DataGrid.CountOfSelection());
-
                     IsPrinting = true;
-                    FilePrint.Process(DataGrid.GetSelectedDrawings());
+                    FilePrint.Process(DataGrid.GetSelectedDrawings(MainReference.DataGridReference), DataGrid.CountOfSelection(MainReference.DataGridReference));
                 }
             }
         }
@@ -52,16 +67,6 @@ namespace EDF.UI
             MainReference.PrinterSelectionComboBoxReference.ComboBox.Items.AddRange(printersList.ToArray<object>());
 
         }
-
-        // Used to accss default printer settings on machine.
-        public static PrinterSettings PrinterSettings = new PrinterSettings();
-
-        private static IEnumerator<string> DrawingListToPrint;
-
-        public static string SelectedPrinter { get; set; }
-
-        private static bool EventsHandled { get; set; } = false;
-        private static bool IsPrinting { get; set; } = false;
 
         // Main print function that established page setup options and sends print command.
         private static void Print(string filename)
@@ -103,13 +108,16 @@ namespace EDF.UI
         }
 
         // Starts chain of events for opening/printing/closing
-        public static void Process(IEnumerator<string> IncomingDrawingListToPrint)
+        public static void Process(IEnumerator<IDrawing> IncomingDrawingListToPrint, int IncomingTotalCount)
         {
             DrawingListToPrint = IncomingDrawingListToPrint;
             DrawingListToPrint.MoveNext();
 
+            CountOfFiles = IncomingTotalCount;
+            UpdateStatus(DrawingListToPrint.Current.File, true);
+
             // Prints first file in list
-            MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingListToPrint.Current, true, false, true, "");
+            MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingListToPrint.Current.Path, true, false, true, "");
 
             if (!EventsHandled)
                 // Establishes the events needed for chain processing
@@ -142,20 +150,19 @@ namespace EDF.UI
         {
             Log.Write.Info($"Printed: {PrintJobName}");
             MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
-
-            //ProgressForm.ShowProgress();
+            
             // If another file exists in list of drawings, move to the next, open it, and start chain of events.
             if (DrawingListToPrint.MoveNext())
             {
-                MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingListToPrint.Current, true, false, true, "");
+                UpdateStatus(DrawingListToPrint.Current.File);
+                MainForm.eDrawings.Control.eDrawingControlWrapper.OpenDoc(DrawingListToPrint.Current.Path, true, false, true, "");
             }
 
             // Otherwise, end printing jobs.
             else
             {
                 IsPrinting = false;
-                //ProgressForm.ProgressBarTeardown();
-                //PrintProgressForm.PrintProgressFormThread.Abort();
+                StatusBar.UpdateMain("Printing Complete.");
                 DrawingListToPrint = null;
                 RemoveHandlerEvents();
             }

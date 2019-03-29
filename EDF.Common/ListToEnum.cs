@@ -8,9 +8,9 @@ namespace EDF.Common
 {
     public class ListToEnum
     {
-        public static IEnumerator<string> Convert(List<string> list)
+        public static IEnumerator<IDrawing> Convert(List<IDrawing> list)
         {
-            foreach (string item in list) { yield return item; }
+            foreach (IDrawing item in list) { yield return item; }
         }
     }
 }

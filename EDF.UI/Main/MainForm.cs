@@ -5,6 +5,7 @@ using Squirrel;
 using EDF.DL;
 using EDF.BL;
 using System.Threading;
+using System.IO;
 
 namespace EDF.UI
 {
@@ -41,6 +42,9 @@ namespace EDF.UI
             MainReference.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
             MainReference.FilterTextBoxReference = FilterTextBox;
             MainReference.DataGridReference = MainDataGridView;
+            MainReference.StatusStripStatusLabelReference = StatusStripStatusLabel;
+            MainReference.OPCheckBoxReference = OPCheckBox;
+            MainReference.BMCheckBoxReference = BMCheckBox;
 
             BatchReference.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
 
@@ -50,7 +54,7 @@ namespace EDF.UI
                 DirectoryScan.PreLoadDatabase();
             }
 
-            DataGrid.Load();
+            DataGrid.MainLoad();
 
             if (AlertForm.CreateDBAlertThread.IsAlive)
                 AlertForm.CreateDBAlertThread.Abort();
@@ -89,10 +93,13 @@ namespace EDF.UI
             }
         }
 
-        private void RefreshFilterResults()
+        private void RefreshFilterResults(string keyword = ".")
         {
             MainDataGridView.ClearSelection();
-            MainDataGridView.DataSource = Search.Filter(StartsWithFilterCheckBox.Checked, FilterTextBox.Text, OPCheckBox.Checked, BMCheckBox.Checked);
+            if (Search.Ready)
+                keyword = (keyword == ".") ? FilterTextBox.Text : keyword;
+                MainDataGridView.DataSource = Search.Filter(StartsWithFilterCheckBox.Checked, keyword, OPCheckBox.Checked, BMCheckBox.Checked);
+
         }
 
         // Takes the selected items on the DataGridView and sends them through to a printer.
@@ -147,37 +154,45 @@ namespace EDF.UI
 
         private void MainDataGridView_SelectionChanged(object sender, EventArgs e)
         {
-            if (Preview.MainFormExpanded && (DataGrid.SelectionLessThanOrEqual(1)))
+            if (Preview.MainFormExpanded && (DataGrid.SelectionLessThanOrEqual(1, MainDataGridView)))
                 Preview.ShowDrawing();
+
+            if (DataGrid.SelectionLessThanOrEqual(1, MainDataGridView)) { 
+                StatusBar.UpdateMain($"Selected: {DataGrid.GetFirstSelectedDrawing(MainDataGridView).File}");
+            }
+            else
+            {
+                StatusBar.UpdateMain($"{DataGrid.CountOfSelection(MainDataGridView)} drawings selected.");
+            }
         }
 
         private void PartNumberDataGridContextMenuStrip_Click(object sender, EventArgs e)
         {
-            if (DataGrid.SelectionLessThanOrEqual(1000))
-                ContextClipboard.CopyPartNumber();
+            if (DataGrid.SelectionLessThanOrEqual(1000, MainDataGridView))
+                ContextClipboard.CopyPartNumber(MainDataGridView);
         }
 
         private void DrawingFilenameDataGridContextMenuStrip_Click(object sender, EventArgs e)
         {
-            if (DataGrid.SelectionLessThanOrEqual(1000))
-                ContextClipboard.CopyDrawingFileName();
+            if (DataGrid.SelectionLessThanOrEqual(1000, MainDataGridView))
+                ContextClipboard.CopyDrawingFileName(MainDataGridView);
         }
 
         private void FilePathDataGridContextMenuStrip_Click(object sender, EventArgs e)
         {
-            if (DataGrid.SelectionLessThanOrEqual(1000))
-                ContextClipboard.CopyFilePath();
+            if (DataGrid.SelectionLessThanOrEqual(1000, MainDataGridView))
+                ContextClipboard.CopyFilePath(MainDataGridView);
         }
 
         private void FileExplorerDataGridContextMenuStrip_Click(object sender, EventArgs e)
         {
-            if (DataGrid.SelectionLessThanOrEqual(5))
-                ContextClipboard.OpenWithFileExplorer();
+            if (DataGrid.SelectionLessThanOrEqual(5, MainDataGridView))
+                ContextClipboard.OpenWithFileExplorer(MainDataGridView);
         }
 
         private void SendToBatchDataGridContextMenuStrip_Click(object sender, EventArgs e)
         {
-            if (DataGrid.SelectionLessThanOrEqual(1))
+            if (DataGrid.SelectionLessThanOrEqual(1, MainDataGridView))
                 BatchDataGrid.PullMainSelectionToBatchCell();
 
         }
@@ -193,7 +208,10 @@ namespace EDF.UI
             {
                 OPCheckBox.Checked = true;
             }
-            RefreshFilterResults();
+            else
+            {
+                RefreshFilterResults();
+            }
         }
 
         private void OPCheckBox_CheckedChanged(object sender, EventArgs e)
@@ -202,7 +220,25 @@ namespace EDF.UI
             {
                 BMCheckBox.Checked = true;
             }
-            RefreshFilterResults();
+            else
+            {
+                RefreshFilterResults();
+            }
+        }
+
+        private void UpdateDBMainToolStripMenu_Click(object sender, EventArgs e)
+        {
+            if (DirectoryScan.PostLoadComplete)
+            {
+                Thread t = new Thread(() => DirectoryScan.PostLoadDatabaseUpdate(0));
+                t.Start();
+                StatusBar.UpdateMain("Scanning drives for drawings.");
+                Log.Write.Info("Manually start postload db update");
+            }
+            else
+            {
+                StatusBar.UpdateMain("Update already in progress.");
+            }
         }
     }
 }

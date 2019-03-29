@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Text.RegularExpressions;
 using EDF.DL;
+using EDF.Common;
 
 namespace EDF.UI
 {
@@ -18,10 +19,10 @@ namespace EDF.UI
         { 
             MainForm.eDrawings.Control.eDrawingControlWrapper.CloseActiveDoc("");
 
-            IEnumerator<string> selected = DataGrid.GetSelectedDrawings();
+            IEnumerator<IDrawing> selected = DataGrid.GetSelectedDrawings(MainReference.DataGridReference);
             if (selected.MoveNext())
             {
-                Current = selected.Current;
+                Current = selected.Current.Path;
 
                 MainReference.PreviewNameTextBoxRefernce.Text = Current.Split('\\').Last();
 

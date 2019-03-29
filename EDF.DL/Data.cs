@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using System.Linq;
 using EDF.Common;
 using System.Configuration;
+using Microsoft.Win32;
 
 namespace EDF.DL
 {
@@ -34,6 +35,25 @@ namespace EDF.DL
         public static string ProgramFolder { get; }
 
         public static bool UpdatePending { get; set; } = false;
+
+        public static string GetEDrawingsExecutable()
+        {
+            string installDir = string.Empty;
+            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\eDrawings\e2018");
+            if (key != null)
+                installDir = Path.Combine((string)key.GetValue("InstallDir"), "eDrawings.exe");
+            key.Close();
+
+            if (installDir == string.Empty)
+            {
+                key = Registry.CurrentUser.OpenSubKey($@"Software\eDrawings\e{DateTime.Today.Year}");
+                if (key != null)
+                    installDir = Path.Combine((string)key.GetValue("InstallDir"), "eDrawings.exe");
+                key.Close();
+            }
+
+            return installDir;
+        }
 
         public static IEnumerable<string> BatchPrintLoadFile(bool isCSVFile, string filename)
         {

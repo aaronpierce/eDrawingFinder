@@ -17,19 +17,6 @@ namespace EDF.UI
         // Filters datagrid on filename by given textbox value on button click.
         public static List<EDF.DL.Drawing> Filter(bool startWithCheckBox, string filterText, bool OPCheckBox, bool BMCheckBox)
         {
-
-
-            if (Data.UpdatePending)
-            {
-                int counter = 0;
-
-                while (Data.UpdatePending)
-                {
-                    counter++;
-                    if (counter > 10) { counter = 0; Log.Write.Debug("Waiting on Update to Search."); }
-                }
-            }
-
             string whereGroup = string.Empty;
 
             if (!(OPCheckBox && BMCheckBox))
@@ -42,6 +29,20 @@ namespace EDF.UI
             string startsWith = startWithCheckBox == true ? "" : "%";
 
             return SqliteDataAccess.LoadDrawings(filter:filterText, starts:startsWith, group:whereGroup);
+        }
+
+        public static bool Ready {
+            get {
+                if (!Data.UpdatePending)
+                {
+                    return true;
+                }
+                else
+                {
+                    StatusBar.UpdateMain("Database updating.");
+                    return false;
+                }
+            }
         }
     }
 }

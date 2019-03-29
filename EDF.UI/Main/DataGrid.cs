@@ -12,7 +12,7 @@ namespace EDF.UI
 {
     class DataGrid
     {
-        public static void Load()
+        public static void MainLoad()
         {
             MainReference.DataGridReference.DataSource = SqliteDataAccess.LoadAllDrawings();
             ApplyGridSettings();
@@ -26,18 +26,18 @@ namespace EDF.UI
         }
 
 
-        public static IEnumerator<string> GetSelectedDrawings()
+        public static IEnumerator<IDrawing> GetSelectedDrawings(DataGridView DGV)
         {
-            List<string> items = new List<string>();
-            foreach (DataGridViewTextBoxCell item in MainReference.DataGridReference.SelectedCells)
+            List<IDrawing> items = new List<IDrawing>();
+            foreach (DataGridViewRow row in DGV.SelectedRows)
             {
-                if (item.ColumnIndex == 2)
+                items.Add(new Drawing()
                 {
-                    if (item.RowIndex >= 0)
-                    {
-                        items.Add(item.Value.ToString());
-                    }
-                }
+                    File = row.Cells["File"].Value.ToString(),
+                    Path = row.Cells["Path"].Value.ToString(),
+                    Group = row.Cells["Group"].Value.ToString()
+
+                });
             }
 
             // Gets an enumearator from selected data grid items and sends those into the printer functions
@@ -45,8 +45,21 @@ namespace EDF.UI
 
         }
 
-        public static int CountOfSelection() => MainReference.DataGridReference.SelectedRows.Count;
-        public static bool SelectionLessThanOrEqual(int cap) => (CountOfSelection() <= cap) ? true : false;
+        public static IDrawing GetFirstSelectedDrawing(DataGridView DGV)
+        {
+            Drawing returnDrawing = new Drawing() { File = "", Path = "", Group = "" };
+            foreach (DataGridViewRow row in DGV.SelectedRows)
+            {
+                returnDrawing.File = row.Cells["File"].Value.ToString();
+                returnDrawing.Path = row.Cells["Path"].Value.ToString();
+                returnDrawing.Group = row.Cells["Group"].Value.ToString();
+                break;
+            }
+            return returnDrawing;
+        }
+
+        public static int CountOfSelection(DataGridView DGV) => DGV.SelectedRows.Count;
+        public static bool SelectionLessThanOrEqual(int cap, DataGridView DGV) => (CountOfSelection(DGV) <= cap) ? true : false;
 
     }
 

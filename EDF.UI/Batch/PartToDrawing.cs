@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace EDF.UI
 {
-    class DrawingToPart
+    class PartToDrawing
     {
         public static List<Matcher> Match(List<string> parts)
         {

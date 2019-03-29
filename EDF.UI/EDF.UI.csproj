@@ -152,7 +152,7 @@
       <DependentUpon>BatchForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Batch\BatchReference.cs" />
-    <Compile Include="Batch\DrawingToPart.cs" />
+    <Compile Include="Batch\PartToDrawing.cs" />
     <Compile Include="Batch\Matcher.cs" />
     <Compile Include="Alert\Alert.cs">
       <SubType>Form</SubType>
@@ -173,12 +173,7 @@
     </Compile>
     <Compile Include="Main\MainReference.cs" />
     <Compile Include="Main\Preview.cs" />
-    <Compile Include="PrintProgress\PrintProgressForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="PrintProgress\PrintProgressForm.Designer.cs">
-      <DependentUpon>PrintProgressForm.cs</DependentUpon>
-    </Compile>
+    <Compile Include="Main\StatusBar.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Main\Search.cs" />
@@ -197,9 +192,6 @@
     <EmbeddedResource Include="Main\MainForm.resx">
       <DependentUpon>MainForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="PrintProgress\PrintProgressForm.resx">
-      <DependentUpon>PrintProgressForm.cs</DependentUpon>
-    </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
@@ -214,9 +206,6 @@
       <DependentUpon>TestForm.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="app.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Include="DrawingDatabase.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />

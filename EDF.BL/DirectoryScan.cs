@@ -14,6 +14,7 @@ namespace EDF.BL
     {
         private static List<Drawing> opDrawings;
         private static List<Drawing> bmDrawings;
+        public static bool PostLoadComplete { get; set; } = false;
 
         public static void DirectorySearch()
         {
@@ -77,7 +78,6 @@ namespace EDF.BL
             
             if (File.Exists(SqliteDataAccess.LoadDatabaseName()))
             {
-                //ThreadedMessageBox.ShowMessageBox("Initial database image is being created.\n\nThis is a one time process\n\nEstimated wait is 15 seconds. Please Wait.", "Creating Database");
                 Log.Write.Info("Database exists in precheck.");
                 Thread t = new Thread(() => PostLoadDatabaseUpdate());
                 t.Start();
@@ -110,12 +110,12 @@ namespace EDF.BL
             bmDrawings = null;            
         }
 
-        public static void PostLoadDatabaseUpdate()
+        public static void PostLoadDatabaseUpdate(int milliseconds = 10000)
         {
+            PostLoadComplete = false;
+            System.Threading.Thread.Sleep(milliseconds);
             Log.Write.Info("Starting PostLoad DirectoryScan for Database update");
             DirectorySearch();
-
-            System.Threading.Thread.Sleep(20000);
 
             Log.Write.Info("Database update now pending");
             Stopwatch stopwatch = new Stopwatch();
@@ -130,6 +130,9 @@ namespace EDF.BL
 
             stopwatch.Stop();
             Log.Write.Info($"Database updated [Pending for {stopwatch.Elapsed.Seconds}.{stopwatch.Elapsed.Milliseconds} seconds]");
+
+            if (!PostLoadComplete)
+                PostLoadComplete = true;
 
         }
     }

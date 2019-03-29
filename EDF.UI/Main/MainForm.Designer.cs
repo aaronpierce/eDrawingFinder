@@ -70,8 +70,12 @@
             this.PreviewNameLabel = new System.Windows.Forms.Label();
             this.FilterButton = new System.Windows.Forms.Button();
             this.MainStatusStrip = new System.Windows.Forms.StatusStrip();
+            this.StatusStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
+            this.AlignmentToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.VersionMainStatusStrip = new System.Windows.Forms.ToolStripStatusLabel();
             this.TestButton = new System.Windows.Forms.Button();
+            this.UpdateDBMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             CheckBoxPanel = new System.Windows.Forms.Panel();
             CheckBoxPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
@@ -177,21 +181,21 @@
             // PartNumberDataGridContextMenuStrip
             // 
             this.PartNumberDataGridContextMenuStrip.Name = "PartNumberDataGridContextMenuStrip";
-            this.PartNumberDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
+            this.PartNumberDataGridContextMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.PartNumberDataGridContextMenuStrip.Text = "Part Number";
             this.PartNumberDataGridContextMenuStrip.Click += new System.EventHandler(this.PartNumberDataGridContextMenuStrip_Click);
             // 
             // DrawingFilenameDataGridContextMenuStrip
             // 
             this.DrawingFilenameDataGridContextMenuStrip.Name = "DrawingFilenameDataGridContextMenuStrip";
-            this.DrawingFilenameDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
+            this.DrawingFilenameDataGridContextMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.DrawingFilenameDataGridContextMenuStrip.Text = "Drawing Filename";
             this.DrawingFilenameDataGridContextMenuStrip.Click += new System.EventHandler(this.DrawingFilenameDataGridContextMenuStrip_Click);
             // 
             // FilePathDataGridContextMenuStrip
             // 
             this.FilePathDataGridContextMenuStrip.Name = "FilePathDataGridContextMenuStrip";
-            this.FilePathDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
+            this.FilePathDataGridContextMenuStrip.Size = new System.Drawing.Size(180, 22);
             this.FilePathDataGridContextMenuStrip.Text = "File Path";
             this.FilePathDataGridContextMenuStrip.Click += new System.EventHandler(this.FilePathDataGridContextMenuStrip_Click);
             // 
@@ -343,7 +347,9 @@
             // SettingsMainToolStripMenu
             // 
             this.SettingsMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.PrinterSelectMainToolStripMenu});
+            this.PrinterSelectMainToolStripMenu,
+            this.toolStripSeparator1,
+            this.UpdateDBMainToolStripMenu});
             this.SettingsMainToolStripMenu.Name = "SettingsMainToolStripMenu";
             this.SettingsMainToolStripMenu.ShortcutKeyDisplayString = "";
             this.SettingsMainToolStripMenu.Size = new System.Drawing.Size(61, 20);
@@ -355,7 +361,7 @@
             this.PrinterSelectMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrinterSelectionComboBox});
             this.PrinterSelectMainToolStripMenu.Name = "PrinterSelectMainToolStripMenu";
-            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(143, 22);
+            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(180, 22);
             this.PrinterSelectMainToolStripMenu.Text = "Printer Select";
             // 
             // PrinterSelectionComboBox
@@ -462,13 +468,25 @@
             // MainStatusStrip
             // 
             this.MainStatusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.StatusStripStatusLabel,
+            this.AlignmentToolStripStatusLabel,
             this.VersionMainStatusStrip});
-            this.MainStatusStrip.LayoutStyle = System.Windows.Forms.ToolStripLayoutStyle.HorizontalStackWithOverflow;
             this.MainStatusStrip.Location = new System.Drawing.Point(0, 541);
             this.MainStatusStrip.Name = "MainStatusStrip";
             this.MainStatusStrip.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
             this.MainStatusStrip.Size = new System.Drawing.Size(1194, 22);
             this.MainStatusStrip.TabIndex = 18;
+            // 
+            // StatusStripStatusLabel
+            // 
+            this.StatusStripStatusLabel.Name = "StatusStripStatusLabel";
+            this.StatusStripStatusLabel.Size = new System.Drawing.Size(0, 17);
+            // 
+            // AlignmentToolStripStatusLabel
+            // 
+            this.AlignmentToolStripStatusLabel.Name = "AlignmentToolStripStatusLabel";
+            this.AlignmentToolStripStatusLabel.Size = new System.Drawing.Size(1017, 17);
+            this.AlignmentToolStripStatusLabel.Spring = true;
             // 
             // VersionMainStatusStrip
             // 
@@ -489,6 +507,18 @@
             this.TestButton.UseVisualStyleBackColor = true;
             this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
             // 
+            // UpdateDBMainToolStripMenu
+            // 
+            this.UpdateDBMainToolStripMenu.Name = "UpdateDBMainToolStripMenu";
+            this.UpdateDBMainToolStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.UpdateDBMainToolStripMenu.Text = "Update Database";
+            this.UpdateDBMainToolStripMenu.Click += new System.EventHandler(this.UpdateDBMainToolStripMenu_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
+            // 
             // MainForm
             // 
             this.AcceptButton = this.FilterButton;
@@ -496,6 +526,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Window;
             this.ClientSize = new System.Drawing.Size(1194, 563);
+            this.Controls.Add(this.StartsWithFilterCheckBox);
             this.Controls.Add(CheckBoxPanel);
             this.Controls.Add(this.TestButton);
             this.Controls.Add(this.MainStatusStrip);
@@ -503,7 +534,6 @@
             this.Controls.Add(this.PreviewPanel);
             this.Controls.Add(this.ExpandButton);
             this.Controls.Add(this.OpenButton);
-            this.Controls.Add(this.StartsWithFilterCheckBox);
             this.Controls.Add(this.FilterTextBox);
             this.Controls.Add(this.MainDataGridView);
             this.Controls.Add(this.PrintButton);
@@ -574,6 +604,10 @@
         private System.Windows.Forms.CheckBox OPCheckBox;
         private System.Windows.Forms.CheckBox BMCheckBox;
         private System.Windows.Forms.MenuStrip MainToolStripMenu;
+        private System.Windows.Forms.ToolStripStatusLabel StatusStripStatusLabel;
+        private System.Windows.Forms.ToolStripStatusLabel AlignmentToolStripStatusLabel;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripMenuItem UpdateDBMainToolStripMenu;
     }
 }
 
