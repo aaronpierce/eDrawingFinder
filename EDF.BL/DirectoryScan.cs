@@ -1,12 +1,11 @@
-﻿using System;
+﻿using EDF.Common;
+using EDF.DL;
+using System;
 using System.Collections.Generic;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
-using System.Threading;
-using EDF.Common;
-using EDF.DL;
+using System.Threading.Tasks;
 
 namespace EDF.BL
 {
@@ -14,29 +13,47 @@ namespace EDF.BL
     {
         private static List<Drawing> opDrawings;
         private static List<Drawing> bmDrawings;
+        private static Task PostLoadUpdateTask { get; set; }  = new Task(() => PostLoadDatabaseUpdate());
+        public static Task ManualLoadUpdateTask { get; set; } = new Task(() => PostLoadDatabaseUpdate(0));
         public static bool PostLoadComplete { get; set; } = false;
+        private static bool DBFileExists { get; set; } = false;
 
         public static void DirectorySearch()
         {
-            
-            opDrawings = new List<Drawing>();
-            Log.Write.Info("Starting OP directory scan");
-            Process(opDrawings, @"\\pokydata1\CAD\DWG", DrawingGroup.OP, new List<string>() { "BM" });
-            
+            Stopwatch stopwatch = new Stopwatch();
+            stopwatch.Start();
 
-            bmDrawings = new List<Drawing>();
-            Log.Write.Info("Starting BM directory scan");
-            Process(bmDrawings, @"\\pokydata1\CAD\DWG\BM", DrawingGroup.BM, new List<string>() { "" });
+            Task opTask = OPSearch();
+            Task bmTask = BMSearch();
 
+            Task.WaitAll(opTask, bmTask);
+
+            stopwatch.Stop();
+            Log.Write.Info($"Total directory scan took {stopwatch.Elapsed.Seconds}.{stopwatch.Elapsed.Milliseconds} seconds");
 
         }
 
-        private static void Process(List<Drawing> drawingList, string parentDirectory, DrawingGroup group, List<string> exclusions)
+        private static Task BMSearch()
+        {
+            bmDrawings = new List<Drawing>();
+            Log.Write.Info("Starting BM directory scan");
+            return Task.Run(() => Process(bmDrawings, @"\\pokydata1\CAD\DWG\BM", DrawingGroup.BM, new List<string>() { "" }));
+        }
+
+        private static Task OPSearch()
+        {
+            opDrawings = new List<Drawing>();
+            Log.Write.Info("Starting OP directory scan");
+            return Task.Run(() => Process(opDrawings, @"\\pokydata1\CAD\DWG", DrawingGroup.OP, new List<string>() { "BM" }));
+            
+        }
+
+        private static Task Process(List<Drawing> drawingList, string parentDirectory, DrawingGroup group, List<string> exclusions)
         {
             Stopwatch stopwatch = Stopwatch.StartNew();
             GetDBData(drawingList, parentDirectory, group.ToString(), exclusions);
             stopwatch.Stop();
-            Log.Write.Info($"Directory scan of {group.ToString()} took {stopwatch.Elapsed.Seconds}.{stopwatch.Elapsed.Milliseconds} seconds yielding {drawingList.Count} results");
+            return Task.Run(() => Log.Write.Info($"Directory scan of {group.ToString()} took {stopwatch.Elapsed.Seconds}.{stopwatch.Elapsed.Milliseconds} seconds yielding {drawingList.Count} results"));
         }
 
         public static void GetDBData(List<Drawing> drawingList, string parentDirectory, string group, List<string> exclusions)
@@ -75,16 +92,28 @@ namespace EDF.BL
 
         public static bool DatabaseExists()
         {
-            
+
             if (File.Exists(SqliteDataAccess.LoadDatabaseName()))
             {
-                Log.Write.Info("Database exists in precheck.");
-                Thread t = new Thread(() => PostLoadDatabaseUpdate());
-                t.Start();
-                return true;
+                Log.Write.Info("Database exists in precheck");
+                DBFileExists = true;
+                               
+                if (SqliteDataAccess.IsTableEmpty())
+                {
+                    Log.Write.Info("Database exists but is empty in precheck");
+                    SqliteDataAccess.ClearTable();
+                    return false;
+                }
+                else
+                {
+                    PostLoadUpdateTask.Start();
+                    return true;
+                }
+
             }
             else
             {
+                DBFileExists = false;
                 return false;
             }
 
@@ -92,31 +121,31 @@ namespace EDF.BL
 
         public static void PreLoadDatabase()
         {
-            Log.Write.Info("Database doesnt exist in precheck.");
-            SQLiteConnection.CreateFile(SqliteDataAccess.LoadDatabaseName());
+            if (!DBFileExists)
+                SQLiteConnection.CreateFile(SqliteDataAccess.LoadDatabaseName());
+
             SqliteDataAccess.BuildTable();
             DirectorySearch();
             WriteToDatabase();
 
         }
-
-        private static void WriteToDatabase()
-        {
-            Log.Write.Info("Writting to DB");
-            SqliteDataAccess.SaveDrawings(opDrawings);
-            SqliteDataAccess.SaveDrawings(bmDrawings);
-
-            opDrawings = null;
-            bmDrawings = null;            
-        }
-
-        public static void PostLoadDatabaseUpdate(int milliseconds = 10000)
+        public static void PostLoadDatabaseUpdate(int milliseconds = 30000)
         {
             PostLoadComplete = false;
+
             System.Threading.Thread.Sleep(milliseconds);
+
             Log.Write.Info("Starting PostLoad DirectoryScan for Database update");
             DirectorySearch();
 
+            DatabaseProcessing();
+
+            if (!PostLoadComplete)
+                PostLoadComplete = true;
+        }
+
+        private static void DatabaseProcessing()
+        {
             Log.Write.Info("Database update now pending");
             Stopwatch stopwatch = new Stopwatch();
             stopwatch.Start();
@@ -130,10 +159,16 @@ namespace EDF.BL
 
             stopwatch.Stop();
             Log.Write.Info($"Database updated [Pending for {stopwatch.Elapsed.Seconds}.{stopwatch.Elapsed.Milliseconds} seconds]");
-
-            if (!PostLoadComplete)
-                PostLoadComplete = true;
-
         }
+        private static void WriteToDatabase()
+        {
+            Log.Write.Info("Writing to DB");
+            SqliteDataAccess.SaveDrawings(opDrawings);
+            SqliteDataAccess.SaveDrawings(bmDrawings);
+
+            opDrawings = null;
+            bmDrawings = null;
+        }
+
     }
 }

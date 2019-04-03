@@ -32,7 +32,7 @@ namespace EDF.UI
             Log.Write.Debug("In ShowCreateDBAlert Function");
 
             string message = "Creating initial database image.\n\n" +
-                             "This is a one time process. Estimated wait is 15 seconds...\n\n" +
+                             "Estimated wait is 15 seconds...\n\n" +
                              "This window will close on completion.";
 
             string title = "Creating Database";

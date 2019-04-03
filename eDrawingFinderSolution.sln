@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDF.BL", "EDF.BL\EDF.BL.csp
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDF.Common", "EDF.Common\EDF.Common.csproj", "{0FF8D33C-631F-4662-B134-1EB2057D4DFD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDF.DLTests", "EDF.DLTests\EDF.DLTests.csproj", "{F4853F87-EB12-4F16-A050-24AB0B2DB346}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EDF.DLTests", "Tests\EDF.DLTests\EDF.DLTests.csproj", "{F4853F87-EB12-4F16-A050-24AB0B2DB346}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

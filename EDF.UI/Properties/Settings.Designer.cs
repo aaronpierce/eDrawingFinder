@@ -46,5 +46,17 @@ namespace EDF.UI.Properties {
                 this["DefaultPrinter"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool eDrawingDefault {
+            get {
+                return ((bool)(this["eDrawingDefault"]));
+            }
+            set {
+                this["eDrawingDefault"] = value;
+            }
+        }
     }
 }

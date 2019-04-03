@@ -85,11 +85,11 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\EDF.DL\EDF.DL.csproj">
+    <ProjectReference Include="..\..\EDF.DL\EDF.DL.csproj">
       <Project>{E2135253-F735-48DC-A959-88F8317060AB}</Project>
       <Name>EDF.DL</Name>
     </ProjectReference>
-    <ProjectReference Include="..\EDF.UI\EDF.UI.csproj">
+    <ProjectReference Include="..\..\EDF.UI\EDF.UI.csproj">
       <Project>{38e6d205-e6b3-401f-a47d-035989511992}</Project>
       <Name>EDF.UI</Name>
     </ProjectReference>

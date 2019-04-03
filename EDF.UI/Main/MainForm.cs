@@ -2,10 +2,9 @@
 using System.Windows.Forms;
 using EDF.Common;
 using Squirrel;
-using EDF.DL;
 using EDF.BL;
 using System.Threading;
-using System.IO;
+using EDF.DL;
 
 namespace EDF.UI
 {
@@ -24,62 +23,48 @@ namespace EDF.UI
         private void MainForm_Load(object sender, EventArgs e)
         {
             Log.Write.Info("################## - New application instance has started - ##################");
+            SetDrawingControls();
+            SetUIReferences();
+
+            DatabasePreCheck();
+            DataGrid.MainLoad();
+
+            Preview.Expand();
+
+            UserSettings.Apply();
+            FilePrint.SetPrinterOptions();
+
+            CheckForUpdate();
+
+            Log.Write.Info("Passed loading phase in Main Form");
+        }
+
+        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            UserSettings.Save();
+        }
+
+        private void SetDrawingControls()
+        {
             // If eDrawings >= 2018 is not installed these will be null and application will close.
-            if (eDrawings.Control is null || eDrawings.PreviewControl is null) { this.Close();  }
+            if (eDrawings.Control is null || eDrawings.PreviewControl is null) { this.Close(); }
 
             // Once the form loads, add the Control and set it to invisible.
             this.Controls.Add(eDrawings.Control);
             eDrawings.Control.Visible = false;
 
             this.PreviewPanel.Controls.Add(eDrawings.PreviewControl);
-
-
-            MainReference.SendToBatchDataGridContextMenuStripReference = SendToBatchDataGridContextMenuStrip;
-            MainReference.PreviewNameTextBoxRefernce = PreviewNameTextBox;
-            MainReference.PreviewLastModifiedTextBoxReference = PreviewLastModifiedTextBox;
-            MainReference.PreviewRevisionTextBoxReference = PreviewRevisionTextBox;
-            MainReference.PrinterSelectionComboBoxReference = PrinterSelectionComboBox;
-            MainReference.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
-            MainReference.FilterTextBoxReference = FilterTextBox;
-            MainReference.DataGridReference = MainDataGridView;
-            MainReference.StatusStripStatusLabelReference = StatusStripStatusLabel;
-            MainReference.OPCheckBoxReference = OPCheckBox;
-            MainReference.BMCheckBoxReference = BMCheckBox;
-
-            BatchReference.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
-
-            if (!DirectoryScan.DatabaseExists())
-            {
-                AlertForm.ShowCreateDBAlert();
-                DirectoryScan.PreLoadDatabase();
-            }
-
-            DataGrid.MainLoad();
-
-            if (AlertForm.CreateDBAlertThread.IsAlive)
-                AlertForm.CreateDBAlertThread.Abort();
-
-
-            Log.Write.Debug("Passed precheck in Main Form");
-
-            Preview.Expand();
-
-            // Apply Settings
-            if (!(Properties.Settings.Default.FormExpanded == Preview.MainFormExpanded))
-                Preview.Expand();
-
-            if (!(Properties.Settings.Default.DefaultPrinter == String.Empty))
-                FilePrint.SelectedPrinter = Properties.Settings.Default.DefaultPrinter;
-
-             CheckForUpdate();
         }
 
-        private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
+        private void DatabasePreCheck()
         {
-            //Set and Save Settings
-            Properties.Settings.Default.DefaultPrinter = FilePrint.SelectedPrinter;
-            Properties.Settings.Default.FormExpanded = Preview.MainFormExpanded;
-            Properties.Settings.Default.Save();
+            if (!DirectoryScan.DatabaseExists())
+            {
+                Log.Write.Info("Database needed to be built/rebuilt.");
+                AlertForm.ShowCreateDBAlert();
+                DirectoryScan.PreLoadDatabase();
+                AlertForm.CreateDBAlertThread.Abort();
+            }
         }
 
         private async void CheckForUpdate()
@@ -120,11 +105,7 @@ namespace EDF.UI
             RefreshFilterResults();
         }
 
-        private void SettingsMainToolStripMenu_Click(object sender, EventArgs e)
-        {
-            FilePrint.SetPrinterOptions();
-            MainReference.PrinterSelectionComboBoxReference.SelectedItem = FilePrint.SelectedPrinter;
-        }
+
 
         private void PrinterSelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -197,11 +178,6 @@ namespace EDF.UI
 
         }
 
-        private void TestButton_Click(object sender, EventArgs e)
-        {
-            AlertForm.ShowCreateDBAlert();
-        }
-
         private void BMCheckBox_CheckedChanged(object sender, EventArgs e)
         {
             if (!BMCheckBox.Checked && !OPCheckBox.Checked)
@@ -230,8 +206,7 @@ namespace EDF.UI
         {
             if (DirectoryScan.PostLoadComplete)
             {
-                Thread t = new Thread(() => DirectoryScan.PostLoadDatabaseUpdate(0));
-                t.Start();
+                DirectoryScan.ManualLoadUpdateTask.Start();
                 StatusBar.UpdateMain("Scanning drives for drawings.");
                 Log.Write.Info("Manually start postload db update");
             }
@@ -240,5 +215,35 @@ namespace EDF.UI
                 StatusBar.UpdateMain("Update already in progress.");
             }
         }
+
+        private void SetUIReferences()
+        {
+            MainReference.SendToBatchDataGridContextMenuStripReference = SendToBatchDataGridContextMenuStrip;
+            MainReference.PreviewNameTextBoxRefernce = PreviewNameTextBox;
+            MainReference.PreviewLastModifiedTextBoxReference = PreviewLastModifiedTextBox;
+            MainReference.PreviewRevisionTextBoxReference = PreviewRevisionTextBox;
+            MainReference.PrinterSelectionComboBoxReference = PrinterSelectionComboBox;
+            MainReference.StartsWithCheckBoxReference = StartsWithFilterCheckBox;
+            MainReference.FilterTextBoxReference = FilterTextBox;
+            MainReference.DataGridReference = MainDataGridView;
+            MainReference.StatusStripStatusLabelReference = StatusStripStatusLabel;
+            MainReference.OPCheckBoxReference = OPCheckBox;
+            MainReference.BMCheckBoxReference = BMCheckBox;
+            MainReference.EDrawingsDefaultMainToolStipMenuReference = EDrawingsDefaultMainToolStipMenu;
+
+            BatchReference.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
+
+        }
+
+        private void EDrawingsDefaultMainToolStipMenu_Click(object sender, EventArgs e)
+        {
+            Log.Write.Debug($"CheckBox Status [{EDrawingsDefaultMainToolStipMenu.Checked}]");
+
+            if (string.IsNullOrEmpty(FileOpen.EDrawingsInstall))
+                FileOpen.EDrawingsInstall = Data.GetEDrawingsExecutable();
+
+            Log.Write.Info($"eDrawing open with set to {(EDrawingsDefaultMainToolStipMenu.Checked ? (!string.IsNullOrEmpty(FileOpen.EDrawingsInstall) ? FileOpen.EDrawingsInstall : "OS defined.") : "OS defined.")}");
+        }
+        
     }
 }

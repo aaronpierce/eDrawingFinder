@@ -39,6 +39,7 @@ namespace EDF.UI
         // If expanded == false, extend width, otherwise shrink width
         public static void Expand()
         {
+            Log.Write.Debug("Expand function accessed");
             if (MainFormExpanded)
             {
                 Program.MainFormReference.Width -= 365;

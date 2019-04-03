@@ -66,6 +66,7 @@ namespace EDF.UI
             MainReference.PrinterSelectionComboBoxReference.ComboBox.Items.Clear();
             MainReference.PrinterSelectionComboBoxReference.ComboBox.Items.AddRange(printersList.ToArray<object>());
 
+            MainReference.PrinterSelectionComboBoxReference.SelectedItem = SelectedPrinter ?? PrinterSettings.PrinterName;
         }
 
         // Main print function that established page setup options and sends print command.

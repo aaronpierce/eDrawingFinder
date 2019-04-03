@@ -30,6 +30,7 @@
         {
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Panel CheckBoxPanel;
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.BMCheckBox = new System.Windows.Forms.CheckBox();
             this.OPCheckBox = new System.Windows.Forms.CheckBox();
@@ -60,6 +61,9 @@
             this.SettingsMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectionComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.EDrawingsDefaultMainToolStipMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.UpdateDBMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpandButton = new System.Windows.Forms.Button();
             this.PreviewPanel = new System.Windows.Forms.Panel();
             this.PreviewRevisionTextBox = new System.Windows.Forms.TextBox();
@@ -73,9 +77,6 @@
             this.StatusStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.AlignmentToolStripStatusLabel = new System.Windows.Forms.ToolStripStatusLabel();
             this.VersionMainStatusStrip = new System.Windows.Forms.ToolStripStatusLabel();
-            this.TestButton = new System.Windows.Forms.Button();
-            this.UpdateDBMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             CheckBoxPanel = new System.Windows.Forms.Panel();
             CheckBoxPanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainDataGridView)).BeginInit();
@@ -143,6 +144,9 @@
             this.MainDataGridView.AllowUserToDeleteRows = false;
             this.MainDataGridView.AllowUserToResizeColumns = false;
             this.MainDataGridView.AllowUserToResizeRows = false;
+            dataGridViewCellStyle1.BackColor = System.Drawing.Color.White;
+            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            this.MainDataGridView.AlternatingRowsDefaultCellStyle = dataGridViewCellStyle1;
             this.MainDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.MainDataGridView.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.MainDataGridView.ClipboardCopyMode = System.Windows.Forms.DataGridViewClipboardCopyMode.EnableWithoutHeaderText;
@@ -151,6 +155,7 @@
             this.MainDataGridView.Location = new System.Drawing.Point(7, 62);
             this.MainDataGridView.Name = "MainDataGridView";
             this.MainDataGridView.ReadOnly = true;
+            this.MainDataGridView.RowHeadersVisible = false;
             this.MainDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.MainDataGridView.Size = new System.Drawing.Size(815, 474);
             this.MainDataGridView.TabIndex = 4;
@@ -181,21 +186,21 @@
             // PartNumberDataGridContextMenuStrip
             // 
             this.PartNumberDataGridContextMenuStrip.Name = "PartNumberDataGridContextMenuStrip";
-            this.PartNumberDataGridContextMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.PartNumberDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
             this.PartNumberDataGridContextMenuStrip.Text = "Part Number";
             this.PartNumberDataGridContextMenuStrip.Click += new System.EventHandler(this.PartNumberDataGridContextMenuStrip_Click);
             // 
             // DrawingFilenameDataGridContextMenuStrip
             // 
             this.DrawingFilenameDataGridContextMenuStrip.Name = "DrawingFilenameDataGridContextMenuStrip";
-            this.DrawingFilenameDataGridContextMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.DrawingFilenameDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
             this.DrawingFilenameDataGridContextMenuStrip.Text = "Drawing Filename";
             this.DrawingFilenameDataGridContextMenuStrip.Click += new System.EventHandler(this.DrawingFilenameDataGridContextMenuStrip_Click);
             // 
             // FilePathDataGridContextMenuStrip
             // 
             this.FilePathDataGridContextMenuStrip.Name = "FilePathDataGridContextMenuStrip";
-            this.FilePathDataGridContextMenuStrip.Size = new System.Drawing.Size(180, 22);
+            this.FilePathDataGridContextMenuStrip.Size = new System.Drawing.Size(169, 22);
             this.FilePathDataGridContextMenuStrip.Text = "File Path";
             this.FilePathDataGridContextMenuStrip.Click += new System.EventHandler(this.FilePathDataGridContextMenuStrip_Click);
             // 
@@ -348,20 +353,20 @@
             // 
             this.SettingsMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrinterSelectMainToolStripMenu,
+            this.EDrawingsDefaultMainToolStipMenu,
             this.toolStripSeparator1,
             this.UpdateDBMainToolStripMenu});
             this.SettingsMainToolStripMenu.Name = "SettingsMainToolStripMenu";
             this.SettingsMainToolStripMenu.ShortcutKeyDisplayString = "";
             this.SettingsMainToolStripMenu.Size = new System.Drawing.Size(61, 20);
             this.SettingsMainToolStripMenu.Text = "Settings";
-            this.SettingsMainToolStripMenu.Click += new System.EventHandler(this.SettingsMainToolStripMenu_Click);
             // 
             // PrinterSelectMainToolStripMenu
             // 
             this.PrinterSelectMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrinterSelectionComboBox});
             this.PrinterSelectMainToolStripMenu.Name = "PrinterSelectMainToolStripMenu";
-            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(180, 22);
+            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(189, 22);
             this.PrinterSelectMainToolStripMenu.Text = "Printer Select";
             // 
             // PrinterSelectionComboBox
@@ -372,6 +377,28 @@
             this.PrinterSelectionComboBox.Size = new System.Drawing.Size(250, 23);
             this.PrinterSelectionComboBox.Sorted = true;
             this.PrinterSelectionComboBox.SelectedIndexChanged += new System.EventHandler(this.PrinterSelectionComboBox_SelectedIndexChanged);
+            // 
+            // EDrawingsDefaultMainToolStipMenu
+            // 
+            this.EDrawingsDefaultMainToolStipMenu.Checked = true;
+            this.EDrawingsDefaultMainToolStipMenu.CheckOnClick = true;
+            this.EDrawingsDefaultMainToolStipMenu.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.EDrawingsDefaultMainToolStipMenu.Name = "EDrawingsDefaultMainToolStipMenu";
+            this.EDrawingsDefaultMainToolStipMenu.Size = new System.Drawing.Size(189, 22);
+            this.EDrawingsDefaultMainToolStipMenu.Text = "Open With eDrawings";
+            this.EDrawingsDefaultMainToolStipMenu.Click += new System.EventHandler(this.EDrawingsDefaultMainToolStipMenu_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(186, 6);
+            // 
+            // UpdateDBMainToolStripMenu
+            // 
+            this.UpdateDBMainToolStripMenu.Name = "UpdateDBMainToolStripMenu";
+            this.UpdateDBMainToolStripMenu.Size = new System.Drawing.Size(189, 22);
+            this.UpdateDBMainToolStripMenu.Text = "Update Database";
+            this.UpdateDBMainToolStripMenu.Click += new System.EventHandler(this.UpdateDBMainToolStripMenu_Click);
             // 
             // ExpandButton
             // 
@@ -496,29 +523,6 @@
             this.VersionMainStatusStrip.Text = "eDrawing Finder, Version x.x.x";
             this.VersionMainStatusStrip.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
-            // TestButton
-            // 
-            this.TestButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.TestButton.Location = new System.Drawing.Point(845, 30);
-            this.TestButton.Name = "TestButton";
-            this.TestButton.Size = new System.Drawing.Size(84, 25);
-            this.TestButton.TabIndex = 19;
-            this.TestButton.Text = "Test";
-            this.TestButton.UseVisualStyleBackColor = true;
-            this.TestButton.Click += new System.EventHandler(this.TestButton_Click);
-            // 
-            // UpdateDBMainToolStripMenu
-            // 
-            this.UpdateDBMainToolStripMenu.Name = "UpdateDBMainToolStripMenu";
-            this.UpdateDBMainToolStripMenu.Size = new System.Drawing.Size(180, 22);
-            this.UpdateDBMainToolStripMenu.Text = "Update Database";
-            this.UpdateDBMainToolStripMenu.Click += new System.EventHandler(this.UpdateDBMainToolStripMenu_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
-            // 
             // MainForm
             // 
             this.AcceptButton = this.FilterButton;
@@ -528,7 +532,6 @@
             this.ClientSize = new System.Drawing.Size(1194, 563);
             this.Controls.Add(this.StartsWithFilterCheckBox);
             this.Controls.Add(CheckBoxPanel);
-            this.Controls.Add(this.TestButton);
             this.Controls.Add(this.MainStatusStrip);
             this.Controls.Add(this.FilterButton);
             this.Controls.Add(this.PreviewPanel);
@@ -600,7 +603,6 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
         private System.Windows.Forms.ToolStripStatusLabel VersionMainStatusStrip;
         private System.Windows.Forms.StatusStrip MainStatusStrip;
-        private System.Windows.Forms.Button TestButton;
         private System.Windows.Forms.CheckBox OPCheckBox;
         private System.Windows.Forms.CheckBox BMCheckBox;
         private System.Windows.Forms.MenuStrip MainToolStripMenu;
@@ -608,6 +610,7 @@
         private System.Windows.Forms.ToolStripStatusLabel AlignmentToolStripStatusLabel;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem UpdateDBMainToolStripMenu;
+        private System.Windows.Forms.ToolStripMenuItem EDrawingsDefaultMainToolStipMenu;
     }
 }
 

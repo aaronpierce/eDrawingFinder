@@ -71,7 +71,7 @@ namespace EDF.UI
         {
             BatchReference.ProgressBarReference.Visible = false;
             DataGridStatistics();
-            BatchReference.BatchConfirmButtonReference.Enabled = true;
+            SetConfirmed(false);
         }
 
         public static void Print()
@@ -83,7 +83,7 @@ namespace EDF.UI
             FilePrint.Process(GetDrawings(), BatchReference.BatchDataGridReference.RowCount);
 
             StatusBar.UpdateBatch("Print Complete.");
-            BatchReference.BatchConfirmButtonReference.Enabled = true;
+            SetConfirmed(false);
         }
 
         public static IEnumerator<IDrawing> GetDrawings()
@@ -130,15 +130,20 @@ namespace EDF.UI
             DialogResult conf = MessageBox.Show(text: text, caption: caption, buttons: MessageBoxButtons.OKCancel, icon: MessageBoxIcon.Question);
             if (conf.ToString() == "OK")
             {
-                BatchReference.BatchConfirmButtonReference.Enabled = false;
-                BatchReference.BatchPrintButtonReference.Enabled = true;
-                StatusBar.UpdateBatch($"Printing is ready. {BatchReference.BatchDataGridReference.RowCount-ErrorCount()} file(s) will be sent to {printer}.");
+                SetConfirmed(true);
+                StatusBar.UpdateBatch($"Printing is ready. {BatchReference.BatchDataGridReference.RowCount - ErrorCount()} file(s) will be sent to {printer}.");
             }
             else
             {
                 Log.Write.Info("Batch Print Job Cancelled.");
-            }
-                
+            }   
+        }
+
+        public static void SetConfirmed(bool ready)
+        {
+            // If param ready is true, it disables confirm button and enables print button.
+            BatchReference.BatchConfirmButtonReference.Enabled = !ready;
+            BatchReference.BatchPrintButtonReference.Enabled = ready;
         }
 
     }

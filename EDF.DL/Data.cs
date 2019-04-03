@@ -39,17 +39,26 @@ namespace EDF.DL
         public static string GetEDrawingsExecutable()
         {
             string installDir = string.Empty;
-            RegistryKey key = Registry.CurrentUser.OpenSubKey(@"Software\eDrawings\e2018");
-            if (key != null)
-                installDir = Path.Combine((string)key.GetValue("InstallDir"), "eDrawings.exe");
-            key.Close();
-
-            if (installDir == string.Empty)
+            int year = DateTime.Today.Year + 1;
+            while (string.IsNullOrEmpty(installDir))
             {
-                key = Registry.CurrentUser.OpenSubKey($@"Software\eDrawings\e{DateTime.Today.Year}");
-                if (key != null)
-                    installDir = Path.Combine((string)key.GetValue("InstallDir"), "eDrawings.exe");
-                key.Close();
+                Log.Write.Debug($"Checking for eDrawings {year}");
+                using (RegistryKey key = Registry.CurrentUser.OpenSubKey($@"Software\eDrawings\e{year}"))
+                {
+                    if (key != null)
+                    {
+                        installDir = Path.Combine((string)key.GetValue("InstallDir"), "eDrawings.exe");
+                        Log.Write.Info($"eDrawing {year} install path found. {installDir}");
+                    }
+                }
+
+                if (string.IsNullOrEmpty((installDir)) && year == 2018)
+                {
+                    Log.Write.Info($"No eDrawings installation >= 2018");
+                    break;
+                }
+
+                year--;
             }
 
             return installDir;

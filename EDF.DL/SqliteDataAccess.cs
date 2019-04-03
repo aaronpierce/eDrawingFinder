@@ -91,9 +91,14 @@ namespace EDF.DL
                 string dropTable = "DROP TABLE \"Drawings\"";
 
                 SQLiteCommand command = new SQLiteCommand(dropTable, connection);
-                command.ExecuteNonQuery();
-
-                connection.Close();
+                try
+                {
+                    command.ExecuteNonQuery();
+                }
+                catch
+                {
+                    Log.Write.Info("Drawing table did not exist so it was not dropped");
+                }
             }
         }
 
@@ -111,8 +116,27 @@ namespace EDF.DL
                 SQLiteCommand command = new SQLiteCommand(createTable, connection);
                 command.ExecuteNonQuery();
 
-                connection.Close();
             }
+        }
+
+        public static bool IsTableEmpty()
+        {
+            int result;
+            using (IDbConnection connection = new SQLiteConnection(LoadConnectionString()))
+            {
+                try
+                {
+                    result = connection.ExecuteScalar<int>("SELECT COUNT(*) FROM Drawings");
+                }
+                catch
+                {
+                    Log.Write.Debug("Table didnt exists");
+                    return true;
+                }
+            }
+
+            Log.Write.Info($"Drawings table has {result} at loading check");
+            return (result > 0 ? false : true);
         }
 
         //Load connection string from EDF.UI app.config settings

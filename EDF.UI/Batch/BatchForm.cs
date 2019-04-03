@@ -10,12 +10,6 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-/*ToDo:
- * Fix multiple files opening causing errors.
- * Look into how batch opens files and see if its checking for registry install location.
- * Add delay to post load database update.
- */ 
-
 
 namespace EDF.UI
 {
@@ -48,8 +42,6 @@ namespace EDF.UI
             StatusBar.UpdateBatch("Ready");
 
             BatchReference.SendToBatchDataGridContextMenuStripRefernce.Enabled = true;
-
-
         }
 
         public static BatchForm New()
