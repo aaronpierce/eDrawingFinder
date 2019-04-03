@@ -14,7 +14,7 @@ $NugetPackageFileName = "$Title.$Version.nupkg"
 
 if($Release) {
     $NugetOutput = ".\releases"
-    $ReleaseDir = '\\pokydata1\CAD\eDrawingFinder\Releases'
+    $ReleaseDir = '<Directory you will store released versions - Should be accesiable to all users>'
 } else {
     $NugetOutput = ".\local"
     $ReleaseDir = '.\local\deployment'}
@@ -26,6 +26,7 @@ Write-Host "Starting Squirrel releasify on $NugetPackageFileName"
 Squirrel --releasify "$NugetOutput\$NugetPackageFileName" --releaseDir $ReleaseDir --setupIcon "..\Resources\Images\setup.ico" --framework-version=461  --no-delta --no-msi | Write-Output
 Write-Host "Succesfully deployed version $Version to '$ReleaseDir'."
 
+#Cmdline arg for adding gif loading screen.
 #--loadingGif "..\Resources\Images\blocks.gif"
 
 pause
