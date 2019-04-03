@@ -18,11 +18,10 @@ namespace EDF.UI
             if (!(string.IsNullOrEmpty(Properties.Settings.Default.DefaultPrinter)))
                 FilePrint.SelectedPrinter = Properties.Settings.Default.DefaultPrinter;
 
-            // Fix this to make sure check/uncheck is appropriate on boot.
             if (!(Properties.Settings.Default.eDrawingDefault))
                 MainReference.EDrawingsDefaultMainToolStipMenuReference.CheckState = System.Windows.Forms.CheckState.Unchecked;
             else
-                FileOpen.EDrawingsInstall = Data.GetEDrawingsExecutable();
+                FileOpen.EDrawingsInstall = Data.GetMostRecentEDrawingInstall();
 
 
             Log.Write.Debug($"Loaded Settings - Expanded {Properties.Settings.Default.FormExpanded}, " +

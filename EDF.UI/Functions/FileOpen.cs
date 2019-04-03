@@ -25,11 +25,11 @@ namespace EDF.UI
                 {
                     Thread.Sleep(500);
                     Log.Write.Info($"eDrawingInstall - {EDrawingsInstall}");
-                    if (!string.IsNullOrEmpty(EDrawingsInstall))
+                    if (MainReference.EDrawingsDefaultMainToolStipMenuReference.Checked)
                     {
                         try
                         {
-                            Log.Write.Info($"Opening files using OS process");
+                            Log.Write.Info($"Opening files using eDrawing install location.");
                             Process.Start(EDrawingsInstall, list.Current.Path);
                         }
                         catch (System.ComponentModel.Win32Exception)
@@ -37,6 +37,11 @@ namespace EDF.UI
                             Log.Write.Info($"Using OS to open files. eDrawing install threw exception. {EDrawingsInstall}");
                             Process.Start(list.Current.Path);
                         } 
+                        catch (System.InvalidOperationException)
+                        {
+                            Log.Write.Info($"Using OS to open files. eDrawing install threw exception. {EDrawingsInstall}");
+                            Process.Start(list.Current.Path);
+                        }
                     }
                     else
                     {

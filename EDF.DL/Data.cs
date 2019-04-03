@@ -8,6 +8,7 @@ using System.Linq;
 using EDF.Common;
 using System.Configuration;
 using Microsoft.Win32;
+using System.Text.RegularExpressions;
 
 namespace EDF.DL
 {
@@ -64,6 +65,46 @@ namespace EDF.DL
             return installDir;
         }
 
+        private static List<EDrawingInstall> GetEDrawingsInstallations()
+        {
+            List<EDrawingInstall> installations = new List<EDrawingInstall>();
+            using (RegistryKey key = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Microsoft\Windows\CurrentVersion\Uninstall"))
+            {
+                foreach (string subkey_name in key.GetSubKeyNames())
+                {
+                    using (RegistryKey subkey = key.OpenSubKey(subkey_name))
+                    {
+                        if (subkey.GetValue("DisplayName") != null)
+                        {
+                            if (subkey.GetValue("DisplayName").ToString().Contains("eDrawing"))
+                            {
+                                installations.Add(new EDrawingInstall {
+                                    Name = subkey.GetValue("DisplayName").ToString(),
+                                    Install = subkey.GetValue("InstallLocation").ToString(),
+                                    Year = EDrawingInstall.GetYear(subkey.GetValue("DisplayName").ToString())
+                                });
+                            }
+                        }
+                    }
+                }
+            }
+
+            return installations;
+        }
+
+        public static string GetMostRecentEDrawingInstall()
+        {
+            List<EDrawingInstall> installations = GetEDrawingsInstallations();
+            EDrawingInstall newest = new EDrawingInstall();
+            foreach (EDrawingInstall install in installations)
+            {
+                if (install.Year > (int)newest.Year)
+                    newest = install;
+            }
+
+            return newest.FullPath;
+        }
+
         public static IEnumerable<string> BatchPrintLoadFile(bool isCSVFile, string filename)
         {
             List<string> drawings = new List<string>();
@@ -91,13 +132,28 @@ namespace EDF.DL
                 }
 
             }
-
             return drawings;
+        }
+    }
 
+    class EDrawingInstall
+    {
+        public string Name { get; set; }
+        public string Install { get; set; }
+        public int Year { get; set; }
+
+        public string FullPath {
+            get {
+                return Path.Combine(Install, "eDrawings.exe");
+                    }
         }
 
+        private static Regex YearRegex { get; set; } = new Regex(@"(19|20)\d{2}");
 
-
-
+        public static int GetYear(string install)
+        {
+            Match regMatch = YearRegex.Match(install);
+            return (regMatch.Success) ? Int32.Parse(regMatch.Value.ToString()) : 0;
+        }
     }
 }

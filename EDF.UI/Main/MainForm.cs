@@ -240,7 +240,7 @@ namespace EDF.UI
             Log.Write.Debug($"CheckBox Status [{EDrawingsDefaultMainToolStipMenu.Checked}]");
 
             if (string.IsNullOrEmpty(FileOpen.EDrawingsInstall))
-                FileOpen.EDrawingsInstall = Data.GetEDrawingsExecutable();
+                FileOpen.EDrawingsInstall = Data.GetMostRecentEDrawingInstall();
 
             Log.Write.Info($"eDrawing open with set to {(EDrawingsDefaultMainToolStipMenu.Checked ? (!string.IsNullOrEmpty(FileOpen.EDrawingsInstall) ? FileOpen.EDrawingsInstall : "OS defined.") : "OS defined.")}");
         }
