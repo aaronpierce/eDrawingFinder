@@ -22,21 +22,30 @@ namespace EDF.UI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            Log.Write.Info("################## - New application instance has started - ##################");
-            SetDrawingControls();
-            SetUIReferences();
+            if (SetDrawingControls())
+            {               
+                Log.Write.Info("################## - New application instance has started - ##################");
 
-            DatabasePreCheck();
-            DataGrid.MainLoad();
+                SetDrawingControls();
+                SetUIReferences();
 
-            Preview.Expand();
+                DatabasePreCheck();
+                DataGrid.MainLoad();
 
-            UserSettings.Apply();
-            FilePrint.SetPrinterOptions();
+                Preview.Expand();
 
-            CheckForUpdate();
+                UserSettings.Apply();
+                FilePrint.SetPrinterOptions();
 
-            Log.Write.Info("Passed loading phase in Main Form");
+                CheckForUpdate();
+
+                Log.Write.Info("Passed loading phase in Main Form");
+            }
+            else
+            {
+                Environment.Exit(0);
+            }
+            
         }
 
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
@@ -44,16 +53,23 @@ namespace EDF.UI
             UserSettings.Save();
         }
 
-        private void SetDrawingControls()
+        private bool SetDrawingControls()
         {
             // If eDrawings >= 2018 is not installed these will be null and application will close.
-            if (eDrawings.Control is null || eDrawings.PreviewControl is null) { this.Close(); }
+            if (!(eDrawings.Control is null || eDrawings.PreviewControl is null))
+            { 
+                     // Once the form loads, add the Control and set it to invisible.
+                this.Controls.Add(eDrawings.Control);
+                eDrawings.Control.Visible = false;
 
-            // Once the form loads, add the Control and set it to invisible.
-            this.Controls.Add(eDrawings.Control);
-            eDrawings.Control.Visible = false;
-
-            this.PreviewPanel.Controls.Add(eDrawings.PreviewControl);
+                this.PreviewPanel.Controls.Add(eDrawings.PreviewControl);
+                return true;
+            }
+            else
+            {
+                MessageBoxes.EDrawingsRequirmentError();
+                return false;
+            }
         }
 
         private void DatabasePreCheck()

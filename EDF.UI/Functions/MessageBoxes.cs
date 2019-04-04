@@ -11,7 +11,18 @@ namespace EDF.UI
     {
         public static void TooManyFilesSelected(string title)
         {
-            MessageBox.Show("Too many files are currently selected.", title, MessageBoxButtons.OK, MessageBoxIcon.Error);
+            MessageBox.Show("Too many files are currently selected.",
+                            title,
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
+        }
+
+        public static void EDrawingsRequirmentError()
+        {
+            MessageBox.Show("Installation of eDrawings 2018 or newer was not found.",
+                            "Error - Installation Missing",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error);
         }
     }
 }

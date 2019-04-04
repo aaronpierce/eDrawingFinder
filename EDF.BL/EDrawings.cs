@@ -16,11 +16,11 @@ namespace EDF.UI
             {
                 Control = new eDrawingHostControl.eDrawingControl();
                 PreviewControl = new eDrawingHostControl.eDrawingControl();
+                //For testing application terminating on bad controls.
                 //throw new Exception("Test Exception for missing eDrawings installation.");
             }
             catch
             {
-                MessageBox.Show("eDrawings 2018 Installation Not Found", "Error - Installation Missing", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 Control = null;
                 PreviewControl = null;
             }
