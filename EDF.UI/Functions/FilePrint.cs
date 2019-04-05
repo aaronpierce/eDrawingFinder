@@ -1,11 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Drawing.Printing;
+using System;
 using System.Windows.Forms;
 using System.Threading;
 using EDF.DL;
 using EDF.Common;
 using System.IO;
+using System.Drawing;
 
 namespace EDF.UI
 {
@@ -52,16 +54,21 @@ namespace EDF.UI
             }
         }
 
-       
+
         // Filles PrinterSelectionComboBox with list of installed printers upon opening
         public static void SetPrinterOptions()
         {
             PrinterSettings.StringCollection printers = PrinterSettings.InstalledPrinters;
-            var printersList = new List<string>();
+            List<string> printersList = new List<string>();
+            var LongestPrinter = (name: "", length: 0);
             foreach (string printer in printers)
             {
+                LongestPrinter = (printer.Count() > LongestPrinter.length) ? (printer, printer.Count()) : LongestPrinter;
                 printersList.Add(printer);
             }
+
+            MainReference.PrinterSelectionComboBoxReference.ComboBox.Width = TextRenderer.MeasureText(LongestPrinter.name, MainReference.PrinterSelectionComboBoxReference.ComboBox.Font).Width + 20;
+            MainReference.PrinterSelectionComboBoxReference.ComboBox.DropDownWidth = MainReference.PrinterSelectionComboBoxReference.ComboBox.Width;
 
             MainReference.PrinterSelectionComboBoxReference.ComboBox.Items.Clear();
             MainReference.PrinterSelectionComboBoxReference.ComboBox.Items.AddRange(printersList.ToArray<object>());

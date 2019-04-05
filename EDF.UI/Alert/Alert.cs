@@ -41,6 +41,11 @@ namespace EDF.UI
             CreateDBAlertThread = new Thread(() => alert.ShowDialog());
             CreateDBAlertThread.Start();
         }
+
+        private void AlertForm_Load(object sender, EventArgs e)
+        {
+
+        }
     }
 
 

@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using EDF.Common;
 using EDF.DL;
 
 namespace EDF.UI
@@ -20,18 +21,21 @@ namespace EDF.UI
 
         public static void Get()
         {
-            OpenFileDialog.ShowDialog();
+            DialogResult result = OpenFileDialog.ShowDialog();
+            if (result.ToString() == "OK")
+            {
+                Log.Write.Debug(result);
 
-            bool isCSVFile = Path.GetExtension(OpenFileDialog.FileName).Equals(".csv") ? true : false;
+                bool isCSVFile = Path.GetExtension(OpenFileDialog.FileName).Equals(".csv") ? true : false;
 
-            List<string> drawings = new List<string>();
+                List<string> drawings = new List<string>();
 
-            BatchReference.BatchFileTextBoxReference.Text = OpenFileDialog.FileName;
+                BatchReference.BatchFileTextBoxReference.Text = OpenFileDialog.FileName;
 
-            drawings = Data.BatchPrintLoadFile(isCSVFile, OpenFileDialog.FileName).ToList();
+                drawings = Data.BatchPrintLoadFile(isCSVFile, OpenFileDialog.FileName).ToList();
 
-            BatchDataGrid.LoadedDrawingList = drawings;
-
+                BatchDataGrid.LoadedDrawingList = drawings;
+            }
         }
     }
 }

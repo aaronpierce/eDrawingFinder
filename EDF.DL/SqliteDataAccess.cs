@@ -130,7 +130,7 @@ namespace EDF.DL
                 }
                 catch
                 {
-                    Log.Write.Debug("Table didnt exists");
+                    Log.Write.Info("Table doesn't exist");
                     return true;
                 }
             }

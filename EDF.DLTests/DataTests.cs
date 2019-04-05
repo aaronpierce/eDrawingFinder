@@ -14,8 +14,11 @@ namespace EDF.DL.Tests
         [TestMethod()]
         public void GetEDrawingsInstallationsTest()
         {
-            Data.GetEDrawingsInstallations();
-            Assert.Fail();
+            string expected = @"C:\Program Files\SOLIDWORKS Corp\eDrawings\eDrawings.exe";
+
+            string actual = Data.GetMostRecentEDrawingInstall();
+
+            Assert.AreEqual(expected, actual);
         }
     }
 }

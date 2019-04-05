@@ -64,6 +64,7 @@
             this.EDrawingsDefaultMainToolStipMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.UpdateDBMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.ViewLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpandButton = new System.Windows.Forms.Button();
             this.PreviewPanel = new System.Windows.Forms.Panel();
             this.PreviewRevisionTextBox = new System.Windows.Forms.TextBox();
@@ -355,7 +356,8 @@
             this.PrinterSelectMainToolStripMenu,
             this.EDrawingsDefaultMainToolStipMenu,
             this.toolStripSeparator1,
-            this.UpdateDBMainToolStripMenu});
+            this.UpdateDBMainToolStripMenu,
+            this.ViewLogsToolStripMenuItem});
             this.SettingsMainToolStripMenu.Name = "SettingsMainToolStripMenu";
             this.SettingsMainToolStripMenu.ShortcutKeyDisplayString = "";
             this.SettingsMainToolStripMenu.Size = new System.Drawing.Size(61, 20);
@@ -371,10 +373,11 @@
             // 
             // PrinterSelectionComboBox
             // 
-            this.PrinterSelectionComboBox.DropDownWidth = 250;
+            this.PrinterSelectionComboBox.DropDownWidth = 200;
+            this.PrinterSelectionComboBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.PrinterSelectionComboBox.MaxDropDownItems = 15;
             this.PrinterSelectionComboBox.Name = "PrinterSelectionComboBox";
-            this.PrinterSelectionComboBox.Size = new System.Drawing.Size(250, 23);
+            this.PrinterSelectionComboBox.Size = new System.Drawing.Size(200, 23);
             this.PrinterSelectionComboBox.Sorted = true;
             this.PrinterSelectionComboBox.SelectedIndexChanged += new System.EventHandler(this.PrinterSelectionComboBox_SelectedIndexChanged);
             // 
@@ -399,6 +402,13 @@
             this.UpdateDBMainToolStripMenu.Size = new System.Drawing.Size(189, 22);
             this.UpdateDBMainToolStripMenu.Text = "Update Database";
             this.UpdateDBMainToolStripMenu.Click += new System.EventHandler(this.UpdateDBMainToolStripMenu_Click);
+            // 
+            // ViewLogsToolStripMenuItem
+            // 
+            this.ViewLogsToolStripMenuItem.Name = "ViewLogsToolStripMenuItem";
+            this.ViewLogsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
+            this.ViewLogsToolStripMenuItem.Text = "View Logs";
+            this.ViewLogsToolStripMenuItem.Click += new System.EventHandler(this.ViewLogsToolStripMenuItem_Click);
             // 
             // ExpandButton
             // 
@@ -512,15 +522,15 @@
             // AlignmentToolStripStatusLabel
             // 
             this.AlignmentToolStripStatusLabel.Name = "AlignmentToolStripStatusLabel";
-            this.AlignmentToolStripStatusLabel.Size = new System.Drawing.Size(1017, 17);
+            this.AlignmentToolStripStatusLabel.Size = new System.Drawing.Size(934, 17);
             this.AlignmentToolStripStatusLabel.Spring = true;
             // 
             // VersionMainStatusStrip
             // 
             this.VersionMainStatusStrip.Font = new System.Drawing.Font("Segoe UI", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.VersionMainStatusStrip.Name = "VersionMainStatusStrip";
-            this.VersionMainStatusStrip.Size = new System.Drawing.Size(162, 17);
-            this.VersionMainStatusStrip.Text = "eDrawing Finder, Version x.x.x";
+            this.VersionMainStatusStrip.Size = new System.Drawing.Size(214, 17);
+            this.VersionMainStatusStrip.Text = "eDrawing Finder, Version 0.0.0-devBuild";
             this.VersionMainStatusStrip.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // MainForm
@@ -611,6 +621,7 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem UpdateDBMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem EDrawingsDefaultMainToolStipMenu;
+        private System.Windows.Forms.ToolStripMenuItem ViewLogsToolStripMenuItem;
     }
 }
 

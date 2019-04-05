@@ -5,6 +5,9 @@ using Squirrel;
 using EDF.BL;
 using System.Threading;
 using EDF.DL;
+using System.Diagnostics;
+using System.IO;
+using System.Threading.Tasks;
 
 namespace EDF.UI
 {
@@ -14,6 +17,10 @@ namespace EDF.UI
         public static EDrawings eDrawings = new EDrawings();
         public static BatchForm batchForm;
         public static TestForm testForm;
+        public static bool ReleasingProd = true;
+        public static bool ReleasingTest = false;
+        public static string UpdateLocation = (ReleasingProd) ? @"\\pokydata1\CAD\eDrawingFinder\Releases" : (ReleasingTest) ? @"\\pokydata1\CAD\eDrawingFinder\Releases" : @"";
+        
     
         public MainForm()
         {
@@ -22,9 +29,13 @@ namespace EDF.UI
 
         private void MainForm_Load(object sender, EventArgs e)
         {
+            if (ReleasingProd || ReleasingTest) { CheckForUpdate(); }
+            Log.Write.Info("################## - Application instance has started - ##################");
+
             if (SetDrawingControls())
             {               
-                Log.Write.Info("################## - New application instance has started - ##################");
+                
+
 
                 SetDrawingControls();
                 SetUIReferences();
@@ -37,8 +48,7 @@ namespace EDF.UI
                 UserSettings.Apply();
                 FilePrint.SetPrinterOptions();
 
-                CheckForUpdate();
-
+                
                 Log.Write.Info("Passed loading phase in Main Form");
             }
             else
@@ -51,6 +61,7 @@ namespace EDF.UI
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             UserSettings.Save();
+            Log.Write.Info("################## - Application instance has closed - ##################");
         }
 
         private bool SetDrawingControls()
@@ -85,16 +96,16 @@ namespace EDF.UI
 
         private async void CheckForUpdate()
         {
-            using (var updateManager = new UpdateManager(@"\\pokydata1\CAD\eDrawingFinder\Releases"))
+            using (var updateManager = new UpdateManager(UpdateLocation))
             {
                 VersionMainStatusStrip.Text = $"eDrawing Finder, Version {updateManager.CurrentlyInstalledVersion()}";
                 VersionMainStatusStrip.Alignment = ToolStripItemAlignment.Right;
-                var releaseEntry = await updateManager.UpdateApp();
-                Log.Write.Info($"Current application version [{updateManager.CurrentlyInstalledVersion()}] | {$"Version [{releaseEntry?.Version.ToString()}] update is pending application restart" ?? "No updates found"}");
+                ReleaseEntry releaseEntry = await updateManager.UpdateApp();
+                Log.Write.Info($"Current application version [{updateManager.CurrentlyInstalledVersion()}] | {((string.IsNullOrEmpty(releaseEntry?.Version.ToString())) ? "No updates found" : $"Version [{releaseEntry?.Version.ToString()}] update is pending application restart")}");                                                
             }
         }
 
-        private void RefreshFilterResults(string keyword = ".")
+            private void RefreshFilterResults(string keyword = ".")
         {
             MainDataGridView.ClearSelection();
             if (Search.Ready)
@@ -260,6 +271,10 @@ namespace EDF.UI
 
             Log.Write.Info($"eDrawing open with set to {(EDrawingsDefaultMainToolStipMenu.Checked ? (!string.IsNullOrEmpty(FileOpen.EDrawingsInstall) ? FileOpen.EDrawingsInstall : "OS defined.") : "OS defined.")}");
         }
-        
+
+        private void ViewLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Process.Start(Path.Combine(Data.ProgramFolder, "logs"));
+        }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -23,10 +24,9 @@ namespace EDF.UI
             else
                 FileOpen.EDrawingsInstall = Data.GetMostRecentEDrawingInstall();
 
-
-            Log.Write.Debug($"Loaded Settings - Expanded {Properties.Settings.Default.FormExpanded}, " +
-                            $"Printer {Properties.Settings.Default.DefaultPrinter}, " +
-                            $"eDrawing {Properties.Settings.Default.eDrawingDefault}"
+            Log.Write.Info($"Loaded Settings{{ Expanded:[{Properties.Settings.Default.FormExpanded}], " +
+                            $"Printer:[{(Properties.Settings.Default.DefaultPrinter.Contains(@"\") ? Properties.Settings.Default.DefaultPrinter.Split('\\').Last() : Properties.Settings.Default.DefaultPrinter)}], " +
+                            $"eDrawing:[{Properties.Settings.Default.eDrawingDefault}] }}"
                             );
         }
 
@@ -37,9 +37,9 @@ namespace EDF.UI
             Properties.Settings.Default.FormExpanded = Preview.MainFormExpanded;
             Properties.Settings.Default.eDrawingDefault = MainReference.EDrawingsDefaultMainToolStipMenuReference.Checked;
 
-            Log.Write.Debug($"Saved Settings - Expanded {Preview.MainFormExpanded}, " +
-                            $"Printer {FilePrint.SelectedPrinter}, " +
-                            $"eDrawing {MainReference.EDrawingsDefaultMainToolStipMenuReference.Checked}"
+            Log.Write.Info($"Saved Settings{{ Expanded:[{Preview.MainFormExpanded}], " +
+                            $"Printer:[{(FilePrint.SelectedPrinter.Contains(@"\") ? FilePrint.SelectedPrinter.Split('\\').Last() : FilePrint.SelectedPrinter)}], " +
+                            $"eDrawing:[{MainReference.EDrawingsDefaultMainToolStipMenuReference.Checked}] }}"
                             );
 
             Properties.Settings.Default.Save();

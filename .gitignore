@@ -263,6 +263,6 @@ __pycache__/
 # Personal Additions
 /[Nn]uget/local/*.*/
 /[Nn]uget/local/deployment/*
-!/[Nn]uget/releases/
-/[Nn]uget/releases/*.*
+!/[Nn]uget/network/
+/[Nn]uget/network/*.*
 /[Nn]uget/SquirrelDeploy.ps1
