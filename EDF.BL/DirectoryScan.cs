@@ -140,8 +140,7 @@ namespace EDF.BL
 
             DatabaseProcessing();
 
-            if (!PostLoadComplete)
-                PostLoadComplete = true;
+            PostLoadComplete = true;
         }
 
         private static void DatabaseProcessing()

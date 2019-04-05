@@ -34,9 +34,6 @@ namespace EDF.UI
 
             if (SetDrawingControls())
             {               
-                
-
-
                 SetDrawingControls();
                 SetUIReferences();
 
@@ -48,7 +45,6 @@ namespace EDF.UI
                 UserSettings.Apply();
                 FilePrint.SetPrinterOptions();
 
-                
                 Log.Write.Info("Passed loading phase in Main Form");
             }
             else
@@ -229,20 +225,6 @@ namespace EDF.UI
             }
         }
 
-        private void UpdateDBMainToolStripMenu_Click(object sender, EventArgs e)
-        {
-            if (DirectoryScan.PostLoadComplete)
-            {
-                DirectoryScan.ManualLoadUpdateTask.Start();
-                StatusBar.UpdateMain("Scanning drives for drawings.");
-                Log.Write.Info("Manually start postload db update");
-            }
-            else
-            {
-                StatusBar.UpdateMain("Update already in progress.");
-            }
-        }
-
         private void SetUIReferences()
         {
             MainReference.SendToBatchDataGridContextMenuStripReference = SendToBatchDataGridContextMenuStrip;
@@ -272,7 +254,27 @@ namespace EDF.UI
             Log.Write.Info($"eDrawing open with set to {(EDrawingsDefaultMainToolStipMenu.Checked ? (!string.IsNullOrEmpty(FileOpen.EDrawingsInstall) ? FileOpen.EDrawingsInstall : "OS defined.") : "OS defined.")}");
         }
 
-        private void ViewLogsToolStripMenuItem_Click(object sender, EventArgs e)
+        private void UpdateDBMainToolStripMenu_Click_1(object sender, EventArgs e)
+        {
+            if (DirectoryScan.PostLoadComplete)
+            {
+                DirectoryScan.ManualLoadUpdateTask.Start();
+                StatusBar.UpdateMain("Scanning drives for drawings.");
+                Log.Write.Info("Manually start postload db update");
+            }
+            else
+            {
+                StatusBar.UpdateMain("Update already in progress.");
+            }
+        }
+
+        private void UpdateAppMainToolStripMenu_Click(object sender, EventArgs e)
+        {
+            CheckForUpdate();
+            StatusBar.UpdateMain("Checking for application update.");
+        }
+
+        private void LogsMainToolStripMenu_Click(object sender, EventArgs e)
         {
             Process.Start(Path.Combine(Data.ProgramFolder, "logs"));
         }

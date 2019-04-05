@@ -62,9 +62,11 @@
             this.PrinterSelectMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectionComboBox = new System.Windows.Forms.ToolStripComboBox();
             this.EDrawingsDefaultMainToolStipMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UpdateDBMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
-            this.ViewLogsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.UpdateAppMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.LogsMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.ExpandButton = new System.Windows.Forms.Button();
             this.PreviewPanel = new System.Windows.Forms.Panel();
             this.PreviewRevisionTextBox = new System.Windows.Forms.TextBox();
@@ -283,7 +285,8 @@
             this.MainToolStripMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.FileMainToolStripMenu,
             this.ToolsMainToolStripMenu,
-            this.SettingsMainToolStripMenu});
+            this.SettingsMainToolStripMenu,
+            this.helpToolStripMenuItem});
             this.MainToolStripMenu.Location = new System.Drawing.Point(0, 0);
             this.MainToolStripMenu.Name = "MainToolStripMenu";
             this.MainToolStripMenu.RenderMode = System.Windows.Forms.ToolStripRenderMode.Professional;
@@ -354,10 +357,7 @@
             // 
             this.SettingsMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrinterSelectMainToolStripMenu,
-            this.EDrawingsDefaultMainToolStipMenu,
-            this.toolStripSeparator1,
-            this.UpdateDBMainToolStripMenu,
-            this.ViewLogsToolStripMenuItem});
+            this.EDrawingsDefaultMainToolStipMenu});
             this.SettingsMainToolStripMenu.Name = "SettingsMainToolStripMenu";
             this.SettingsMainToolStripMenu.ShortcutKeyDisplayString = "";
             this.SettingsMainToolStripMenu.Size = new System.Drawing.Size(61, 20);
@@ -391,24 +391,42 @@
             this.EDrawingsDefaultMainToolStipMenu.Text = "Open With eDrawings";
             this.EDrawingsDefaultMainToolStipMenu.Click += new System.EventHandler(this.EDrawingsDefaultMainToolStipMenu_Click);
             // 
-            // toolStripSeparator1
+            // helpToolStripMenuItem
             // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(186, 6);
+            this.helpToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.UpdateDBMainToolStripMenu,
+            this.toolStripSeparator1,
+            this.UpdateAppMainToolStripMenu,
+            this.LogsMainToolStripMenu});
+            this.helpToolStripMenuItem.Name = "helpToolStripMenuItem";
+            this.helpToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.helpToolStripMenuItem.Text = "Help";
             // 
             // UpdateDBMainToolStripMenu
             // 
             this.UpdateDBMainToolStripMenu.Name = "UpdateDBMainToolStripMenu";
-            this.UpdateDBMainToolStripMenu.Size = new System.Drawing.Size(189, 22);
-            this.UpdateDBMainToolStripMenu.Text = "Update Database";
-            this.UpdateDBMainToolStripMenu.Click += new System.EventHandler(this.UpdateDBMainToolStripMenu_Click);
+            this.UpdateDBMainToolStripMenu.Size = new System.Drawing.Size(237, 22);
+            this.UpdateDBMainToolStripMenu.Text = "Update Drawing Database";
+            this.UpdateDBMainToolStripMenu.Click += new System.EventHandler(this.UpdateDBMainToolStripMenu_Click_1);
             // 
-            // ViewLogsToolStripMenuItem
+            // toolStripSeparator1
             // 
-            this.ViewLogsToolStripMenuItem.Name = "ViewLogsToolStripMenuItem";
-            this.ViewLogsToolStripMenuItem.Size = new System.Drawing.Size(189, 22);
-            this.ViewLogsToolStripMenuItem.Text = "View Logs";
-            this.ViewLogsToolStripMenuItem.Click += new System.EventHandler(this.ViewLogsToolStripMenuItem_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(234, 6);
+            // 
+            // UpdateAppMainToolStripMenu
+            // 
+            this.UpdateAppMainToolStripMenu.Name = "UpdateAppMainToolStripMenu";
+            this.UpdateAppMainToolStripMenu.Size = new System.Drawing.Size(237, 22);
+            this.UpdateAppMainToolStripMenu.Text = "Check For Application Updates";
+            this.UpdateAppMainToolStripMenu.Click += new System.EventHandler(this.UpdateAppMainToolStripMenu_Click);
+            // 
+            // LogsMainToolStripMenu
+            // 
+            this.LogsMainToolStripMenu.Name = "LogsMainToolStripMenu";
+            this.LogsMainToolStripMenu.Size = new System.Drawing.Size(237, 22);
+            this.LogsMainToolStripMenu.Text = "View Logs";
+            this.LogsMainToolStripMenu.Click += new System.EventHandler(this.LogsMainToolStripMenu_Click);
             // 
             // ExpandButton
             // 
@@ -522,7 +540,7 @@
             // AlignmentToolStripStatusLabel
             // 
             this.AlignmentToolStripStatusLabel.Name = "AlignmentToolStripStatusLabel";
-            this.AlignmentToolStripStatusLabel.Size = new System.Drawing.Size(934, 17);
+            this.AlignmentToolStripStatusLabel.Size = new System.Drawing.Size(965, 17);
             this.AlignmentToolStripStatusLabel.Spring = true;
             // 
             // VersionMainStatusStrip
@@ -618,10 +636,12 @@
         private System.Windows.Forms.MenuStrip MainToolStripMenu;
         private System.Windows.Forms.ToolStripStatusLabel StatusStripStatusLabel;
         private System.Windows.Forms.ToolStripStatusLabel AlignmentToolStripStatusLabel;
-        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem UpdateDBMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem EDrawingsDefaultMainToolStipMenu;
-        private System.Windows.Forms.ToolStripMenuItem ViewLogsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem helpToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem UpdateAppMainToolStripMenu;
+        private System.Windows.Forms.ToolStripMenuItem LogsMainToolStripMenu;
+        private System.Windows.Forms.ToolStripMenuItem UpdateDBMainToolStripMenu;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
     }
 }
 
