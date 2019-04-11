@@ -22,5 +22,6 @@ namespace EDF.UI
         public static CheckBox OPCheckBoxReference { get; internal set; }
         public static CheckBox BMCheckBoxReference { get; internal set; }
         public static ToolStripMenuItem EDrawingsDefaultMainToolStipMenuReference { get; set; }
+        public static ToolStripMenuItem CheckboxFilterMainToolStipMenuReference { get; set; }
     }
 }

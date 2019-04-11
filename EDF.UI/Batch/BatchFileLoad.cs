@@ -19,7 +19,7 @@ namespace EDF.UI
             Title = "Open A List of Drawings"
         };
 
-        public static void Get()
+        public static bool Get()
         {
             DialogResult result = OpenFileDialog.ShowDialog();
             if (result.ToString() == "OK")
@@ -35,6 +35,12 @@ namespace EDF.UI
                 drawings = Data.BatchPrintLoadFile(isCSVFile, OpenFileDialog.FileName).ToList();
 
                 BatchDataGrid.LoadedDrawingList = drawings;
+
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }

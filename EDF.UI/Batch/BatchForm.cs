@@ -66,8 +66,8 @@ namespace EDF.UI
 
         private void SelectFileButton_Click(object sender, EventArgs e)
         {
-            BatchFileLoad.Get();
-            BatchDataGrid.SetInputIntoGrid();
+            if (BatchFileLoad.Get())
+                BatchDataGrid.SetInputIntoGrid();
         }
 
         private void BatchConfirmButton_Click(object sender, EventArgs e)

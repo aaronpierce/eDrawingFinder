@@ -17,7 +17,9 @@ namespace EDF.UI
         public static EDrawings eDrawings = new EDrawings();
         public static BatchForm batchForm;
         public static TestForm testForm;
-        public static bool ReleasingProd = true;
+
+        // Use these variables for test/prod release builds to prevent local installation on every VS build.       
+        public static bool ReleasingProd = false;
         public static bool ReleasingTest = false;
         public static string UpdateLocation = (ReleasingProd) ? @"\\pokydata1\CAD\eDrawingFinder\Releases" : (ReleasingTest) ? @"\\pokydata1\CAD\eDrawingFinder\Releases" : @"";
         
@@ -129,7 +131,6 @@ namespace EDF.UI
         }
 
 
-
         private void PrinterSelectionComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             this.Invoke((MethodInvoker)(() => FilePrint.SelectedPrinter = PrinterSelectionComboBox.Text));
@@ -201,25 +202,27 @@ namespace EDF.UI
 
         }
 
-        private void BMCheckBox_CheckedChanged(object sender, EventArgs e)
+        private void OPBMCheckBox_CheckedChanged(object sender, EventArgs e)
         {
-            if (!BMCheckBox.Checked && !OPCheckBox.Checked)
-            {
-                OPCheckBox.Checked = true;
-            }
-            else
-            {
-                RefreshFilterResults();
-            }
-        }
+            CheckBox checkBox = (CheckBox)sender;
 
-        private void OPCheckBox_CheckedChanged(object sender, EventArgs e)
-        {
             if (!OPCheckBox.Checked && !BMCheckBox.Checked)
             {
+                OPCheckBox.CheckedChanged -= OPBMCheckBox_CheckedChanged;
+                BMCheckBox.CheckedChanged -= OPBMCheckBox_CheckedChanged;
+
+                //Set both to checked to ensure one stays checked
+                OPCheckBox.Checked = true;
                 BMCheckBox.Checked = true;
+
+                //Uncheck the one that was intended to be unchecked
+                checkBox.Checked = false;
+
+                OPCheckBox.CheckedChanged += OPBMCheckBox_CheckedChanged;
+                BMCheckBox.CheckedChanged += OPBMCheckBox_CheckedChanged;
             }
-            else
+
+            if (CheckboxFilterMainToolStipMenu.Checked)
             {
                 RefreshFilterResults();
             }
@@ -239,6 +242,7 @@ namespace EDF.UI
             MainReference.OPCheckBoxReference = OPCheckBox;
             MainReference.BMCheckBoxReference = BMCheckBox;
             MainReference.EDrawingsDefaultMainToolStipMenuReference = EDrawingsDefaultMainToolStipMenu;
+            MainReference.CheckboxFilterMainToolStipMenuReference = CheckboxFilterMainToolStipMenu;
 
             BatchReference.SendToBatchDataGridContextMenuStripRefernce = SendToBatchDataGridContextMenuStrip;
 
@@ -277,6 +281,7 @@ namespace EDF.UI
         private void LogsMainToolStripMenu_Click(object sender, EventArgs e)
         {
             Process.Start(Path.Combine(Data.ProgramFolder, "logs"));
+            StatusBar.UpdateMain("Log file folder opened.");
         }
     }
 }

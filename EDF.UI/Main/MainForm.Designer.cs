@@ -61,7 +61,9 @@
             this.SettingsMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.PrinterSelectionComboBox = new System.Windows.Forms.ToolStripComboBox();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this.EDrawingsDefaultMainToolStipMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.CheckboxFilterMainToolStipMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.helpToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.UpdateDBMainToolStripMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
@@ -103,8 +105,8 @@
             // BMCheckBox
             // 
             this.BMCheckBox.AutoSize = true;
-            this.BMCheckBox.Checked = true;
-            this.BMCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.BMCheckBox.Checked = global::EDF.UI.Properties.Settings.Default.BMChecked;
+            this.BMCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::EDF.UI.Properties.Settings.Default, "BMChecked", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.BMCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.BMCheckBox.Location = new System.Drawing.Point(18, 3);
             this.BMCheckBox.Name = "BMCheckBox";
@@ -113,13 +115,14 @@
             this.BMCheckBox.Text = "BM";
             this.BMCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.BMCheckBox.UseVisualStyleBackColor = true;
-            this.BMCheckBox.CheckedChanged += new System.EventHandler(this.BMCheckBox_CheckedChanged);
+            this.BMCheckBox.CheckedChanged += new System.EventHandler(this.OPBMCheckBox_CheckedChanged);
             // 
             // OPCheckBox
             // 
             this.OPCheckBox.AutoSize = true;
-            this.OPCheckBox.Checked = true;
+            this.OPCheckBox.Checked = global::EDF.UI.Properties.Settings.Default.OPChecked;
             this.OPCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.OPCheckBox.DataBindings.Add(new System.Windows.Forms.Binding("Checked", global::EDF.UI.Properties.Settings.Default, "OPChecked", true, System.Windows.Forms.DataSourceUpdateMode.OnPropertyChanged));
             this.OPCheckBox.FlatStyle = System.Windows.Forms.FlatStyle.System;
             this.OPCheckBox.Location = new System.Drawing.Point(72, 3);
             this.OPCheckBox.Name = "OPCheckBox";
@@ -128,7 +131,7 @@
             this.OPCheckBox.Text = "OP";
             this.OPCheckBox.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             this.OPCheckBox.UseVisualStyleBackColor = true;
-            this.OPCheckBox.CheckedChanged += new System.EventHandler(this.OPCheckBox_CheckedChanged);
+            this.OPCheckBox.CheckedChanged += new System.EventHandler(this.OPBMCheckBox_CheckedChanged);
             // 
             // PrintButton
             // 
@@ -267,7 +270,6 @@
             this.StartsWithFilterCheckBox.TabIndex = 8;
             this.StartsWithFilterCheckBox.Text = "Starts Wtih";
             this.StartsWithFilterCheckBox.UseVisualStyleBackColor = true;
-            this.StartsWithFilterCheckBox.CheckedChanged += new System.EventHandler(this.StartsWithFilterCheckBox_CheckedChanged);
             // 
             // OpenButton
             // 
@@ -357,7 +359,9 @@
             // 
             this.SettingsMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrinterSelectMainToolStripMenu,
-            this.EDrawingsDefaultMainToolStipMenu});
+            this.toolStripSeparator4,
+            this.EDrawingsDefaultMainToolStipMenu,
+            this.CheckboxFilterMainToolStipMenu});
             this.SettingsMainToolStripMenu.Name = "SettingsMainToolStripMenu";
             this.SettingsMainToolStripMenu.ShortcutKeyDisplayString = "";
             this.SettingsMainToolStripMenu.Size = new System.Drawing.Size(61, 20);
@@ -368,7 +372,7 @@
             this.PrinterSelectMainToolStripMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.PrinterSelectionComboBox});
             this.PrinterSelectMainToolStripMenu.Name = "PrinterSelectMainToolStripMenu";
-            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(189, 22);
+            this.PrinterSelectMainToolStripMenu.Size = new System.Drawing.Size(208, 22);
             this.PrinterSelectMainToolStripMenu.Text = "Printer Select";
             // 
             // PrinterSelectionComboBox
@@ -381,15 +385,28 @@
             this.PrinterSelectionComboBox.Sorted = true;
             this.PrinterSelectionComboBox.SelectedIndexChanged += new System.EventHandler(this.PrinterSelectionComboBox_SelectedIndexChanged);
             // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(205, 6);
+            // 
             // EDrawingsDefaultMainToolStipMenu
             // 
             this.EDrawingsDefaultMainToolStipMenu.Checked = true;
             this.EDrawingsDefaultMainToolStipMenu.CheckOnClick = true;
             this.EDrawingsDefaultMainToolStipMenu.CheckState = System.Windows.Forms.CheckState.Checked;
             this.EDrawingsDefaultMainToolStipMenu.Name = "EDrawingsDefaultMainToolStipMenu";
-            this.EDrawingsDefaultMainToolStipMenu.Size = new System.Drawing.Size(189, 22);
+            this.EDrawingsDefaultMainToolStipMenu.Size = new System.Drawing.Size(208, 22);
             this.EDrawingsDefaultMainToolStipMenu.Text = "Open With eDrawings";
             this.EDrawingsDefaultMainToolStipMenu.Click += new System.EventHandler(this.EDrawingsDefaultMainToolStipMenu_Click);
+            // 
+            // CheckboxFilterMainToolStipMenu
+            // 
+            this.CheckboxFilterMainToolStipMenu.Checked = global::EDF.UI.Properties.Settings.Default.ReactiveCheckbox;
+            this.CheckboxFilterMainToolStipMenu.CheckOnClick = true;
+            this.CheckboxFilterMainToolStipMenu.Name = "CheckboxFilterMainToolStipMenu";
+            this.CheckboxFilterMainToolStipMenu.Size = new System.Drawing.Size(208, 22);
+            this.CheckboxFilterMainToolStipMenu.Text = "Filter On Checkbox Select";
             // 
             // helpToolStripMenuItem
             // 
@@ -642,6 +659,8 @@
         private System.Windows.Forms.ToolStripMenuItem LogsMainToolStripMenu;
         private System.Windows.Forms.ToolStripMenuItem UpdateDBMainToolStripMenu;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripMenuItem CheckboxFilterMainToolStipMenu;
     }
 }
 
